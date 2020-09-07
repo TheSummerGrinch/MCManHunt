@@ -7,8 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -77,10 +75,10 @@ public class ManHuntUtilities {
         ManHuntUtilities.GAME_PAUSED.set(false);
         ManHuntUtilities.HUNTER_MOVEMENT_RESTRICTED.set(false);
         ManHuntUtilities.RUNNER_MOVEMENT_RESTRICTED.set(false);
-        ManHuntUtilities.RUNNER_MAP.clear();
-        ManHuntUtilities.HUNTER_MAP.clear();
         clearHuntersInventory();
         clearRunnersInventory();
+        ManHuntUtilities.RUNNER_MAP.clear();
+        ManHuntUtilities.HUNTER_MAP.clear();
     }
 
     private static void clearRunnersInventory() {

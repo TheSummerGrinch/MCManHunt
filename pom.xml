@@ -6,7 +6,7 @@
 
     <groupId>io.github.thesummergrinch</groupId>
     <artifactId>MCManhunt</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>MCManhunt</name>
