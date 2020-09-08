@@ -11,6 +11,11 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class OnPlayerLoginEventHandler implements Listener {
 
+    /**
+     * This EventHandler is deprecated and will be removed after the next snapshot-release.
+     * @param event
+     */
+    @Deprecated
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLoginEvent(final PlayerLoginEvent event) {
         final Player player = event.getPlayer();

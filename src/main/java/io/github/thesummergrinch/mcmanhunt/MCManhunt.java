@@ -7,6 +7,8 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+
 public final class MCManhunt extends JavaPlugin {
 
     @Override
@@ -15,7 +17,8 @@ public final class MCManhunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnDeathEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnRespawnEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnLogoutEventHandler(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerLoginEventHandler(), this);
+        //This EventHandler is redundant and will be removed after the next snapshot-release.
+        //this.getServer().getPluginManager().registerEvents(new OnPlayerLoginEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMoveEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnEnderDragonDeathEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDimensionChangeEventHandler(), this);
@@ -32,6 +35,8 @@ public final class MCManhunt extends JavaPlugin {
         this.getCommand("joinrunners").setExecutor(new JoinRunnersCommandExecutor());
         this.getCommand("leaverunners").setExecutor(new LeaveRunnersCommandExecutor());
         this.getCommand("leavehunters").setExecutor(new LeaveHuntersCommandExecutor());
+        this.getCommand("setmaxhunters").setExecutor(new SetMaxHuntersCommandExecutor());
+        this.getCommand("setmaxrunners").setExecutor(new SetMaxRunnersCommandExecutor());
         ManHuntUtilities.updateFromConfig();
         if(ManHuntUtilities.getConfig().getBoolean("allow-metrics")) {
             final int pluginID = 8784;

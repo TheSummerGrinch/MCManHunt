@@ -13,6 +13,11 @@ import org.bukkit.inventory.meta.CompassMeta;
 
 public class OnCompassInteractEventHandler implements Listener {
 
+    /** If a Hunter interacts with air, and they hold a tracking compass in either hand, the compass' ItemMeta will be
+     * updated to track the location of the corresponding Runner.
+     *
+     * @param event - The PlayerInteractEvent passed by the Server.
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractEvent(final PlayerInteractEvent event) {
         Player player = event.getPlayer();

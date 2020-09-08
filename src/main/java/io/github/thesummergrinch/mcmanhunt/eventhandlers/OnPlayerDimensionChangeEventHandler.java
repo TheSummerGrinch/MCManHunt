@@ -14,6 +14,11 @@ import org.bukkit.inventory.meta.CompassMeta;
 
 public class OnPlayerDimensionChangeEventHandler implements Listener {
 
+    /** Updates the tracking compasses, so they will not point towards the Runners in the Nether. Only does so if the
+     * the Entity is a Player, the Player is a Hunter, and the Environment is the Nether.
+     *
+     * @param event - The EntityPortalExitEvent passed by the Server.
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDimensionChangeEvent(final EntityPortalExitEvent event) {
         if (event.getEntityType().equals(EntityType.PLAYER) || GameFlowUtilities.isGameInProgress()) {

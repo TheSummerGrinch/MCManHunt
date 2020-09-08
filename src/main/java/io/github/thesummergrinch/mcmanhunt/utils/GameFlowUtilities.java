@@ -10,6 +10,9 @@ public final class GameFlowUtilities {
     private static final AtomicBoolean GAME_IN_PROGRESS = new AtomicBoolean(false);
     private static final AtomicBoolean GAME_PAUSED = new AtomicBoolean(false);
 
+    /**
+     * Restricts player-movement, distributes tracker compasses to the Hunters and starts the game.
+     */
     public static synchronized void startGame() {
         GAME_IN_PROGRESS.set(true);
         PlayerMovementUtilities.restrictRunnerMovement();
@@ -32,6 +35,10 @@ public final class GameFlowUtilities {
         }.runTaskLater(ManHuntUtilities.MANHUNT_PLUGIN, 800);
     }
 
+    /**
+     * Sets the relevant gameflow-flags, allows player-movement, clears the inventories of the participating players,
+     * and resets the teams.
+     */
     public static synchronized void stopGame() {
         GAME_IN_PROGRESS.set(false);
         GAME_PAUSED.set(false);
@@ -42,13 +49,20 @@ public final class GameFlowUtilities {
         ManHuntUtilities.resetplayerroles();
     }
 
-    public static synchronized void pauseGame(Player player) {
+    /** Restricts the movement of all participating players, effectively pausing the game.
+     *
+     * @param player - Player-object of the player who issued the pausegame-command.
+     */
+    public static synchronized void pauseGame(final Player player) {
         GAME_PAUSED.set(true);
         PlayerMovementUtilities.restrictHunterMovement();
         PlayerMovementUtilities.restrictRunnerMovement();
         ManHuntUtilities.broadcastMessage("The game was paused by " + player.getName() + ".");
     }
 
+    /**
+     * Resumes the game, after a 5-second delay.
+     */
     public static synchronized void resumeGame() {
         GAME_PAUSED.set(false);
         ManHuntUtilities.broadcastMessage("Game will resume in 5 seconds!");
@@ -61,20 +75,20 @@ public final class GameFlowUtilities {
         }.runTaskLater(ManHuntUtilities.MANHUNT_PLUGIN, 100);
     }
 
+    /**Checks if the game is in progress.
+     *
+     * @return boolean - True if the game is in progress, false otherwise.
+     */
     public static synchronized boolean isGameInProgress() {
         return GAME_IN_PROGRESS.get();
     }
 
-    public static synchronized void setGameInProgress(final boolean gameInProgress) {
-        GAME_IN_PROGRESS.set(gameInProgress);
-    }
-
+    /** Checks if the game is paused.
+     *
+     * @return boolean - True if the game is paused, false otherwise.
+     */
     public static synchronized boolean isGamePaused() {
         return GAME_PAUSED.get();
-    }
-
-    public static synchronized void setGamePaused(final boolean gamePaused) {
-        GAME_PAUSED.set(gamePaused);
     }
 
 }

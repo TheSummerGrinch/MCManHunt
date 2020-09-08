@@ -58,6 +58,14 @@ commands:
     description: Lists all players in the runner-team.
     usage: /listrunners
     permission: mcmanhunt.info
+  setmaxhunters:
+    description: Sets the maximum number of players on the Hunter-team.
+    usage: /setmaxhunters [integer]
+    permission: mcmanhunt.config
+  setmaxrunners:
+    description: Sets the maximum number of players on the Runner-team.
+    usage: /setmaxrunners [integer]
+    permission: mcmanhunt.config
 permissions:
   mcmanhunt.*:
     description: Gives access to all MCManHunt commands.
@@ -77,3 +85,6 @@ permissions:
   mcmanhunt.roles.player:
     description: Allows the user access to various player-related role-commands.
     default: true
+  mcmanhunt.config:
+    description: Allows the user access to configuration options.
+    default: op

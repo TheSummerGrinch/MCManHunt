@@ -11,6 +11,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class OnDeathEventHandler implements Listener {
 
+    /** If a player on the Runner-team dies, they will be placed into spectator-mode and removed from the Runner-team.
+     * If a player on the Hunter-team dies, nothing happens. Only works when the game is in progress.
+     *
+     * @param event - The PlayerDeathEvent passed by the Server.
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(final PlayerDeathEvent event) {
         Player player = event.getEntity();
