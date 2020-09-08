@@ -71,6 +71,12 @@ public final class ManHuntUtilities {
         return config;
     }
 
+    public static void updateFromConfig() {
+        final FileConfiguration config = ManHuntUtilities.getConfig();
+        maxHunters = config.getInt("max-hunters");
+        maxRunners = config.getInt("max-runners");
+    }
+
     public static synchronized boolean addHunter(String playerName) {
         final Player player = ManHuntUtilities.SERVER.getPlayer(playerName);
         if (player != null && player.isOnline() && !ManHuntUtilities.HUNTER_MAP.containsKey(playerName) && !ManHuntUtilities.RUNNER_MAP.containsKey(playerName)) {
