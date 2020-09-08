@@ -1,25 +1,23 @@
 package io.github.thesummergrinch.mcmanhunt.commands;
 
+import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class AddHunterCommandExecutor implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (sender instanceof Player) {
-            if (sender.isOp()) {
-                if (!ManHuntUtilities.GAME_IN_PROGRESS.get()) {
-                    if (!ManHuntUtilities.addHunter(args[0])) return false;
-                    ManHuntUtilities.SERVER.broadcastMessage(args[0] + " was added to the Hunters!");
-                } else {
-                    ManHuntUtilities.SERVER.broadcastMessage("New players cannot be added while the game is in progress. " +
-                            "To stop the game, use /stopgame and /resetplayerroles.");
-                }
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+        if (sender instanceof Player && sender.isOp()) {
+            if (!GameFlowUtilities.isGameInProgress()) {
+                if (!ManHuntUtilities.addHunter(args[0])) return false;
+                ManHuntUtilities.broadcastMessage(args[0] + " was added to the Hunters!");
+            } else {
+                ManHuntUtilities.broadcastMessage("New players cannot be added while the game is in progress. " +
+                        "To stop the game, use /stopgame and /resetplayerroles.");
             }
             return true;
         }

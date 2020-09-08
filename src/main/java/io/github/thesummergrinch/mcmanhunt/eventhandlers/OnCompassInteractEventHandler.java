@@ -1,6 +1,8 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
+import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
+import io.github.thesummergrinch.mcmanhunt.utils.PlayerInventoryUtilities;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +16,7 @@ public class OnCompassInteractEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractEvent(final PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (ManHuntUtilities.isHunter(player) && ManHuntUtilities.GAME_IN_PROGRESS.get()) {
+        if (ManHuntUtilities.isHunter(player) && GameFlowUtilities.isGameInProgress()) {
             if (player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)
                     && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().split(" ").length == 2) {
                 if (!ManHuntUtilities.isRunner(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0])) {
@@ -22,7 +24,7 @@ public class OnCompassInteractEventHandler implements Listener {
                     return;
                 }
                 player.getInventory().getItemInMainHand()
-                        .setItemMeta(ManHuntUtilities.updateCompassMeta((CompassMeta) player.getInventory()
+                        .setItemMeta(PlayerInventoryUtilities.updateCompassMeta((CompassMeta) player.getInventory()
                                 .getItemInMainHand().getItemMeta()));
             } else if (player.getInventory().getItemInOffHand().getType().equals(Material.COMPASS)
                     && player.getInventory().getItemInOffHand()
@@ -32,7 +34,7 @@ public class OnCompassInteractEventHandler implements Listener {
                     return;
                 }
                 player.getInventory().getItemInOffHand()
-                        .setItemMeta(ManHuntUtilities.updateCompassMeta((CompassMeta) player.getInventory()
+                        .setItemMeta(PlayerInventoryUtilities.updateCompassMeta((CompassMeta) player.getInventory()
                                 .getItemInOffHand().getItemMeta()));
             }
         }

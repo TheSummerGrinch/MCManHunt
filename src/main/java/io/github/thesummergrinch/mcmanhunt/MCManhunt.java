@@ -2,6 +2,7 @@ package io.github.thesummergrinch.mcmanhunt;
 
 import io.github.thesummergrinch.mcmanhunt.commands.*;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.*;
+import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,8 +31,10 @@ public final class MCManhunt extends JavaPlugin {
         this.getCommand("joinrunners").setExecutor(new JoinRunnersCommandExecutor());
         this.getCommand("leaverunners").setExecutor(new LeaveRunnersCommandExecutor());
         this.getCommand("leavehunters").setExecutor(new LeaveHuntersCommandExecutor());
-        final int pluginID = 8784;
-        final Metrics metrics = new Metrics(this, pluginID);
+        if(ManHuntUtilities.getConfig().getBoolean("allow-metrics")) {
+            final int pluginID = 8784;
+            final Metrics metrics = new Metrics(this, pluginID);
+        }
     }
 
     @Override

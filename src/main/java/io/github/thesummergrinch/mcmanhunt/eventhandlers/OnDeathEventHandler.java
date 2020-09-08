@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
+import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -13,12 +14,12 @@ public class OnDeathEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(final PlayerDeathEvent event) {
         Player player = event.getEntity();
-        if (ManHuntUtilities.GAME_IN_PROGRESS.get() && ManHuntUtilities.isRunner(player)) {
+        if (GameFlowUtilities.isGameInProgress() && ManHuntUtilities.isRunner(player)) {
             ManHuntUtilities.removeRunner(player.getName());
             player.setGameMode(GameMode.SPECTATOR);
             if (ManHuntUtilities.isRunnerMapEmpty()) {
-                ManHuntUtilities.SERVER.broadcastMessage("The Hunters win!");
-                ManHuntUtilities.stopGame();
+                ManHuntUtilities.broadcastMessage("The Hunters win!");
+                GameFlowUtilities.stopGame();
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
+import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,7 +16,7 @@ public class OnPlayerDimensionChangeEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDimensionChangeEvent(final EntityPortalExitEvent event) {
-        if (event.getEntityType().equals(EntityType.PLAYER)) {
+        if (event.getEntityType().equals(EntityType.PLAYER) || GameFlowUtilities.isGameInProgress()) {
             return;
         }
         final Player player = (Player) event.getEntity();

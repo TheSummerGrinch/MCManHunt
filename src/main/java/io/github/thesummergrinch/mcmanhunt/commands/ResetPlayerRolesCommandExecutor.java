@@ -1,16 +1,23 @@
 package io.github.thesummergrinch.mcmanhunt.commands;
 
+import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 public class ResetPlayerRolesCommandExecutor implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (sender.isOp()) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+        if (sender instanceof Player && sender.isOp()) {
+            if (GameFlowUtilities.isGameInProgress()) {
+                sender.sendMessage(ChatColor.RED + "A game is currently in progress. To stop the game and reset roles" +
+                        ", use /stopgame.");
+                return true;
+            }
             ManHuntUtilities.resetplayerroles();
             return true;
         }

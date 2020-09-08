@@ -4,14 +4,13 @@ import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class ListHuntersCommandExecutor implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (ManHuntUtilities.isHunterMapEmpty()) {
-            ManHuntUtilities.SERVER.broadcastMessage("The hunter-team has no members!");
+            ManHuntUtilities.broadcastMessage("The hunter-team has no members!");
         } else {
             StringBuilder builder = new StringBuilder("The hunter team consists of: ");
             ManHuntUtilities.getHunters().forEach((player) -> builder.append(player.getName()).append(", "));
