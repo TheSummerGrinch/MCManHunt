@@ -49,7 +49,8 @@ public final class GameFlowUtilities {
         ManHuntUtilities.resetplayerroles();
     }
 
-    /** Restricts the movement of all participating players, effectively pausing the game.
+    /**
+     * Restricts the movement of all participating players, effectively pausing the game.
      *
      * @param player - Player-object of the player who issued the pausegame-command.
      */
@@ -75,7 +76,8 @@ public final class GameFlowUtilities {
         }.runTaskLater(ManHuntUtilities.MANHUNT_PLUGIN, 100);
     }
 
-    /**Checks if the game is in progress.
+    /**
+     * Checks if the game is in progress.
      *
      * @return boolean - True if the game is in progress, false otherwise.
      */
@@ -83,7 +85,8 @@ public final class GameFlowUtilities {
         return GAME_IN_PROGRESS.get();
     }
 
-    /** Checks if the game is paused.
+    /**
+     * Checks if the game is paused.
      *
      * @return boolean - True if the game is paused, false otherwise.
      */

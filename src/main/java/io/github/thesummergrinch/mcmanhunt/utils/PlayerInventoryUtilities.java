@@ -48,6 +48,7 @@ public final class PlayerInventoryUtilities {
     /**
      * Creates an ItemStack of a Compass, with a quantity of 1. Also creates a CompassMeta with the correct parameters
      * to follow a player, and assigns it to said Compass.
+     *
      * @param playerTrackedCompassMeta - The username of the player that will be tracked by the compass.
      * @return compass - The compass made to track the specified player.
      */
@@ -80,6 +81,7 @@ public final class PlayerInventoryUtilities {
     /**
      * Gives the specified player one compass per player on the Runner-team. Typically used when a Hunter respawns after
      * dying.
+     *
      * @param player - The Player-object that will receive new tracking compasses.
      */
     public static void givePlayerHunterCompasses(final Player player) {

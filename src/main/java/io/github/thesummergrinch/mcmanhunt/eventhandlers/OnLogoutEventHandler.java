@@ -9,7 +9,8 @@ import org.bukkit.event.Listener;
 
 public class OnLogoutEventHandler implements Listener {
 
-    /** Removes players from their respective teams should they leave when a game is ongoing. Does not remove players
+    /**
+     * Removes players from their respective teams should they leave when a game is ongoing. Does not remove players
      * from their team if they leave while the game is paused.
      *
      * @param event - The PlayerConnectionCloseEvent passed by the Server.

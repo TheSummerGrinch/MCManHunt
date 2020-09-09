@@ -11,7 +11,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class OnRespawnEventHandler implements Listener {
 
-    /** Called when a player respawns. If the player is on the Hunter-team, the player will receive new tracking
+    /**
+     * Called when a player respawns. If the player is on the Hunter-team, the player will receive new tracking
      * compasses.
      *
      * @param event - The PlayerRespawnEvent passed by the server when a player respawns.

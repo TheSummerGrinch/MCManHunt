@@ -7,7 +7,8 @@ public final class PlayerMovementUtilities {
     private static final AtomicBoolean HUNTER_MOVEMENT_RESTRICTED = new AtomicBoolean(false);
     private static final AtomicBoolean RUNNER_MOVEMENT_RESTRICTED = new AtomicBoolean(false);
 
-    /** Checks whether or not the HUNTER_MOVEMENT_RESTRICTED-flag is set to true and returns the result.
+    /**
+     * Checks whether or not the HUNTER_MOVEMENT_RESTRICTED-flag is set to true and returns the result.
      *
      * @return boolean - true if Hunter-movement is set to be restricted. False otherwise.
      */
@@ -15,7 +16,8 @@ public final class PlayerMovementUtilities {
         return PlayerMovementUtilities.HUNTER_MOVEMENT_RESTRICTED.get();
     }
 
-    /** Checks whether or not the RUNNER_MOVEMENT_RESTRICTED-flag is set to true and returns the result.
+    /**
+     * Checks whether or not the RUNNER_MOVEMENT_RESTRICTED-flag is set to true and returns the result.
      *
      * @return boolean - true if Runner-movement is set to be restricted. False otherwise.
      */

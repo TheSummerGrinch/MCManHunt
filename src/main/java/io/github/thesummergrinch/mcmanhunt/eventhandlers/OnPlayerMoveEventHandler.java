@@ -11,7 +11,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class OnPlayerMoveEventHandler implements Listener {
 
-    /** Called when a player moves. The movement of players is supposed to be restricted, the event will be cancelled.
+    /**
+     * Called when a player moves. The movement of players is supposed to be restricted, the event will be cancelled.
      * Cancelling the event will prevent the players from moving and looking around, thus keeping them from gaining an
      * unfair advantage.
      *

@@ -11,7 +11,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 public class OnEnderDragonDeathEventHandler implements Listener {
 
-    /** Checks whether an EntityDeathsEvent corresponds to the death of the Enderdragon, which would fulfill the win-
+    /**
+     * Checks whether an EntityDeathsEvent corresponds to the death of the Enderdragon, which would fulfill the win-
      * condition of the Runner-team.
      *
      * @param event - The EntityDeathEvent passed by the Server.
