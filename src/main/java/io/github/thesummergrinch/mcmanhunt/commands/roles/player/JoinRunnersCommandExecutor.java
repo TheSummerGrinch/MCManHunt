@@ -1,4 +1,4 @@
-package io.github.thesummergrinch.mcmanhunt.commands;
+package io.github.thesummergrinch.mcmanhunt.commands.roles.player;
 
 import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;

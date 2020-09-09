@@ -1,4 +1,4 @@
-package io.github.thesummergrinch.mcmanhunt.commands;
+package io.github.thesummergrinch.mcmanhunt.commands.gamestate;
 
 import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;

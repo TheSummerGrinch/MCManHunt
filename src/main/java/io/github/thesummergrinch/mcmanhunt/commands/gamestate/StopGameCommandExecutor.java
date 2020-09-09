@@ -1,29 +1,28 @@
-package io.github.thesummergrinch.mcmanhunt.commands;
+package io.github.thesummergrinch.mcmanhunt.commands.gamestate;
 
 import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
+import io.github.thesummergrinch.mcmanhunt.utils.PlayerMovementUtilities;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PauseGameCommandExecutor implements CommandExecutor {
+public class StopGameCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (sender instanceof Player && sender.isOp()) {
             if (GameFlowUtilities.isGameInProgress()) {
-                if (!GameFlowUtilities.isGamePaused()) {
-                    GameFlowUtilities.pauseGame((Player) sender);
-                } else {
-                    ManHuntUtilities.broadcastMessage("The game is already paused. To resume the game, use /resumegame.");
-                }
+                GameFlowUtilities.stopGame();
+                PlayerMovementUtilities.allowHunterMovement();
+                PlayerMovementUtilities.allowRunnerMovement();
             } else {
-                ManHuntUtilities.broadcastMessage("There is no ongoing game. To start a game, use /startgame.");
+                ManHuntUtilities.broadcastMessage(ChatColor.RED + "There is no game ongoing. You can reset the teams using /resetplayerroles.");
             }
             return true;
         }
         return false;
     }
-
 }

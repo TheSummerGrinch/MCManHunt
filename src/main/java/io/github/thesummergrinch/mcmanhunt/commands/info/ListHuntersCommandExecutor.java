@@ -1,4 +1,4 @@
-package io.github.thesummergrinch.mcmanhunt.commands;
+package io.github.thesummergrinch.mcmanhunt.commands.info;
 
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bukkit.command.Command;

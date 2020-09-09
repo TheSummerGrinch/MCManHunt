@@ -1,6 +1,17 @@
 package io.github.thesummergrinch.mcmanhunt;
 
-import io.github.thesummergrinch.mcmanhunt.commands.*;
+import io.github.thesummergrinch.mcmanhunt.commands.config.SetMaxHuntersCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.config.SetMaxRunnersCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.gamestate.PauseGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.gamestate.ResumeGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.gamestate.StartGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.gamestate.StopGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.info.ListHuntersCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.info.ListRunnersCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.roles.AddHunterCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.roles.AddRunnerCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.roles.ResetPlayerRolesCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.roles.player.*;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.*;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bstats.bukkit.Metrics;
