@@ -9,12 +9,14 @@ import org.bukkit.plugin.Plugin;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class ManHuntUtilities {
 
 
+    private static final AtomicBoolean IS_FIRST_RUN =  new AtomicBoolean(false);
     private static final Server SERVER = Bukkit.getServer();
-    public static final Plugin MANHUNT_PLUGIN = SERVER.getPluginManager().getPlugin("MCManHunt");
+    private static final Plugin MANHUNT_PLUGIN = SERVER.getPluginManager().getPlugin("MCManHunt");
     private static final Map<String, Player> HUNTER_MAP;
     private static final Map<String, Player> RUNNER_MAP;
 
@@ -24,6 +26,14 @@ public final class ManHuntUtilities {
     static {
         HUNTER_MAP = new HashMap<>();
         RUNNER_MAP = new HashMap<>();
+    }
+
+    public static Plugin getManHuntPlugin() {
+        return ManHuntUtilities.MANHUNT_PLUGIN;
+    }
+
+    public static boolean isFirstRun() {
+        return ManHuntUtilities.IS_FIRST_RUN.get();
     }
 
     /**
@@ -114,6 +124,7 @@ public final class ManHuntUtilities {
     public static FileConfiguration getConfig() {
         if (!MANHUNT_PLUGIN.getDataFolder().exists()) {
             MANHUNT_PLUGIN.saveDefaultConfig();
+            ManHuntUtilities.IS_FIRST_RUN.set(true);
         }
         return MANHUNT_PLUGIN.getConfig();
     }

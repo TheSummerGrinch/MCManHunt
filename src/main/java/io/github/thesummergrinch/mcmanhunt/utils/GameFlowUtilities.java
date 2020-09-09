@@ -25,14 +25,14 @@ public final class GameFlowUtilities {
                 PlayerMovementUtilities.allowRunnerMovement();
                 ManHuntUtilities.broadcastMessage("The Runners can now start!");
             }
-        }.runTaskLater(ManHuntUtilities.MANHUNT_PLUGIN, 200);
+        }.runTaskLater(ManHuntUtilities.getManHuntPlugin(), 200);
         new BukkitRunnable() {
             @Override
             public void run() {
                 PlayerMovementUtilities.allowHunterMovement();
                 ManHuntUtilities.broadcastMessage("The Hunters are coming!");
             }
-        }.runTaskLater(ManHuntUtilities.MANHUNT_PLUGIN, 800);
+        }.runTaskLater(ManHuntUtilities.getManHuntPlugin(), 800);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class GameFlowUtilities {
                 PlayerMovementUtilities.allowHunterMovement();
                 ManHuntUtilities.broadcastMessage("Game has resumed!");
             }
-        }.runTaskLater(ManHuntUtilities.MANHUNT_PLUGIN, 100);
+        }.runTaskLater(ManHuntUtilities.getManHuntPlugin(), 100);
     }
 
     /**
