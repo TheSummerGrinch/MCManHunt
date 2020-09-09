@@ -13,7 +13,7 @@ public class StartGameCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player && sender.isOp()) {
+        if (sender instanceof Player) {
             if (ManHuntUtilities.isHunterMapEmpty()) {
                 ManHuntUtilities.broadcastMessage(ChatColor.RED + "There are no hunters assigned to the hunter-team. " +
                         "Assign players to the hunter-team using /addhunter [playername]. The game will not start.");

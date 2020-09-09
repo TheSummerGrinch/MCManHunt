@@ -11,7 +11,7 @@ public class AddHunterCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player && sender.isOp()) {
+        if (sender instanceof Player) {
             if (!GameFlowUtilities.isGameInProgress()) {
                 if (!ManHuntUtilities.addHunter(args[0])) return false;
                 ManHuntUtilities.broadcastMessage(args[0] + " was added to the Hunters!");

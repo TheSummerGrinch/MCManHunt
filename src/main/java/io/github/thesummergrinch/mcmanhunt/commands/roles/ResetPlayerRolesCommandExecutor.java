@@ -12,7 +12,7 @@ public class ResetPlayerRolesCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player && sender.isOp()) {
+        if (sender instanceof Player) {
             if (GameFlowUtilities.isGameInProgress()) {
                 sender.sendMessage(ChatColor.RED + "A game is currently in progress. To stop the game and reset roles" +
                         ", use /stopgame.");

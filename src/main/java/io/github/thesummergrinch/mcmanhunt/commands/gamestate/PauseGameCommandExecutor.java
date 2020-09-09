@@ -11,7 +11,7 @@ public class PauseGameCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player && sender.isOp()) {
+        if (sender instanceof Player) {
             if (GameFlowUtilities.isGameInProgress()) {
                 if (!GameFlowUtilities.isGamePaused()) {
                     GameFlowUtilities.pauseGame((Player) sender);
