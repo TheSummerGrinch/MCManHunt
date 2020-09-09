@@ -73,11 +73,7 @@ commands:
 permissions:
   mcmanhunt.*:
     description: Gives access to all MCManHunt commands.
-    children:
-      mcmanhunt.roles: false
-      mcmanhunt.gamestate: false
-      mcmanhunt.info: true
-      mcmanhunt.config: false
+    default: op
   mcmanhunt.roles:
     description: Allows the user to change and reset the playerroles.
     default: op
