@@ -8,13 +8,17 @@ import org.bukkit.inventory.meta.CompassMeta;
 
 public final class PlayerInventoryUtilities {
 
+    public static void clearPlayerInventory(final Player player) {
+        if(player.isOnline()) player.getInventory().clear();
+    }
+
     /**
      * Clears the inventory of the Runners. Typically used when the game ends, or the game is terminated before its
      * natural conclusion.
      */
     public static void clearRunnersInventory() {
         ManHuntUtilities.getRunners().forEach((player) -> {
-            if (player.isOnline()) player.getInventory().clear();
+            clearPlayerInventory(player);
         });
     }
 
@@ -24,7 +28,7 @@ public final class PlayerInventoryUtilities {
      */
     public static void clearHuntersInventory() {
         ManHuntUtilities.getHunters().forEach((player) -> {
-            if (player.isOnline()) player.getInventory().clear();
+            clearPlayerInventory(player);
         });
     }
 

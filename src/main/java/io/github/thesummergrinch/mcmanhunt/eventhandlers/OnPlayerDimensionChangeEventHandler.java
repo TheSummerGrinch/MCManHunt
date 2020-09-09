@@ -22,7 +22,7 @@ public class OnPlayerDimensionChangeEventHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDimensionChangeEvent(final EntityPortalExitEvent event) {
-        if (event.getEntityType().equals(EntityType.PLAYER) || GameFlowUtilities.isGameInProgress()) {
+        if (!event.getEntityType().equals(EntityType.PLAYER) || !GameFlowUtilities.isGameInProgress()) {
             return;
         }
         final Player player = (Player) event.getEntity();
