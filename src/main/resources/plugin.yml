@@ -66,6 +66,10 @@ commands:
     description: Sets the maximum number of players on the Runner-team.
     usage: /setmaxrunners [integer]
     permission: mcmanhunt.config
+  joinrandomteam:
+    description: Join a random team.
+    usage: /joinrandom
+    permission: mcmanhunt.roles.player
 permissions:
   mcmanhunt.*:
     description: Gives access to all MCManHunt commands.
@@ -73,6 +77,7 @@ permissions:
       mcmanhunt.roles: false
       mcmanhunt.gamestate: false
       mcmanhunt.info: true
+      mcmanhunt.config: false
   mcmanhunt.roles:
     description: Allows the user to change and reset the playerroles.
     default: op
