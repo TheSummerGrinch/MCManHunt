@@ -15,6 +15,7 @@ public class OnLogoutEventHandler implements Listener {
      *
      * @param event - The PlayerConnectionCloseEvent passed by the Server.
      */
+    @Deprecated
     @EventHandler(priority = EventPriority.HIGH)
     public void onLogoutEvent(final PlayerConnectionCloseEvent event) {
         final String playerName = event.getPlayerName();
@@ -28,5 +29,4 @@ public class OnLogoutEventHandler implements Listener {
             }
         }
     }
-
 }
