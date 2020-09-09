@@ -3,12 +3,14 @@ package io.github.thesummergrinch.mcmanhunt.utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class GameFlowUtilities {
 
     private static final AtomicBoolean GAME_IN_PROGRESS = new AtomicBoolean(false);
     private static final AtomicBoolean GAME_PAUSED = new AtomicBoolean(false);
+    private static final AtomicBoolean TEAMS_ARE_RANDOMIZED = new AtomicBoolean(false);
 
     /**
      * Restricts player-movement, distributes tracker compasses to the Hunters and starts the game.
@@ -92,6 +94,25 @@ public final class GameFlowUtilities {
      */
     public static synchronized boolean isGamePaused() {
         return GAME_PAUSED.get();
+    }
+
+    public static synchronized boolean areTeamsRandomized() {
+        return TEAMS_ARE_RANDOMIZED.get();
+    }
+
+    public static synchronized void startRandomizedGame() {
+        ArrayList<Player> players = (ArrayList<Player>) Arrays.asList(ManHuntUtilities.getPlayersInRandomQueue().toArray(new Player[0]));
+        Collections.shuffle(players);
+        int playersOnRunnerTeam = players.size() / 2;
+        for(int x = -playersOnRunnerTeam; x < 0; x++) {
+            ManHuntUtilities.addRunner(players.get(x + playersOnRunnerTeam));
+        }
+        for (int y = playersOnRunnerTeam - 1; y < players.size(); y++) {
+            ManHuntUtilities.addHunter(players.get(y));
+        }
+        ManHuntUtilities.clearRandomTeamQueue();
+        TEAMS_ARE_RANDOMIZED.set(false);
+        startGame();
     }
 
 }

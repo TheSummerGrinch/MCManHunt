@@ -20,12 +20,18 @@ public class JoinRandomTeamCommandExecutor implements CommandExecutor {
                 player.sendMessage("The game is already in progress. Please try again when the current game ends.");
                 return true;
             } else {
-                if (Math.random() > 0.5) {
-                    player.sendMessage("You have been placed in the Runner-team!");
-                    return ManHuntUtilities.addRunner(player);
+                if (!GameFlowUtilities.areTeamsRandomized()) {
+                    if (Math.random() > 0.5) {
+                        player.sendMessage("You have been placed in the Runner-team!");
+                        return ManHuntUtilities.addRunner(player);
+                    } else {
+                        player.sendMessage("You have been placed in the Hunter-team");
+                        return ManHuntUtilities.addHunter(player);
+                    }
                 } else {
-                    player.sendMessage("You have been placed in the Hunter-team");
-                    return ManHuntUtilities.addHunter(player);
+                    ManHuntUtilities.addPlayerToRandomQueue(player);
+                    player.sendMessage("You will be randomly placed in a team when the game starts!");
+                    return true;
                 }
             }
         }

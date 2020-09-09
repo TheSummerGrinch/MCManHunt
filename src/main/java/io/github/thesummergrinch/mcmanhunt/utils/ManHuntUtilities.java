@@ -6,9 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class ManHuntUtilities {
@@ -19,6 +17,7 @@ public final class ManHuntUtilities {
     private static final Plugin MANHUNT_PLUGIN = SERVER.getPluginManager().getPlugin("MCManHunt");
     private static final Map<String, Player> HUNTER_MAP;
     private static final Map<String, Player> RUNNER_MAP;
+    private static final Set<Player> RANDOM_TEAM_QUEUE;
 
     private static int maxRunners;
     private static int maxHunters;
@@ -26,6 +25,19 @@ public final class ManHuntUtilities {
     static {
         HUNTER_MAP = new HashMap<>();
         RUNNER_MAP = new HashMap<>();
+        RANDOM_TEAM_QUEUE = new HashSet<>();
+    }
+
+    public static boolean addPlayerToRandomQueue(final Player player) {
+        return RANDOM_TEAM_QUEUE.add(player);
+    }
+
+    public static Set<Player> getPlayersInRandomQueue() {
+        return RANDOM_TEAM_QUEUE;
+    }
+
+    public static void clearRandomTeamQueue() {
+        RANDOM_TEAM_QUEUE.clear();
     }
 
     public static Plugin getManHuntPlugin() {

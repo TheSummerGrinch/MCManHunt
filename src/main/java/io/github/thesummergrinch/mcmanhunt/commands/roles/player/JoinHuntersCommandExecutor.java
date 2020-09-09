@@ -13,7 +13,10 @@ public class JoinHuntersCommandExecutor implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player && ((Player) sender).isOnline() && !GameFlowUtilities.isGameInProgress()) {
             final Player player = ((Player) sender).getPlayer();
-            if (ManHuntUtilities.isHunter(player)) {
+            if(GameFlowUtilities.areTeamsRandomized()) {
+                player.sendMessage("The game is in random-mode! Use /joinrandomteam to participate in this game!");
+                return true;
+            } else if (ManHuntUtilities.isHunter(player)) {
                 player.sendMessage("You are already a member of the Hunter-team!");
             } else if (ManHuntUtilities.isRunner(player)) {
                 player.sendMessage("You are a member of the Runner-team. To leave the Runner-team and join the Hunter-team, use /leaverunners and /joinhunters.");

@@ -28,7 +28,11 @@ public class StartGameCommandExecutor implements CommandExecutor {
                 return true;
             }
             if (!GameFlowUtilities.isGameInProgress()) {
-                GameFlowUtilities.startGame();
+                if(!GameFlowUtilities.areTeamsRandomized()) {
+                    GameFlowUtilities.startGame();
+                } else {
+                    GameFlowUtilities.startRandomizedGame();
+                }
             } else {
                 ManHuntUtilities.broadcastMessage(ChatColor.RED + "A game is already in progress! You can stop this game using /stopgame.");
             }
