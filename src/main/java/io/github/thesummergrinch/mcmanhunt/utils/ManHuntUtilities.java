@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class ManHuntUtilities {
 
 
-    private static final AtomicBoolean IS_FIRST_RUN =  new AtomicBoolean(false);
+    private static final AtomicBoolean IS_FIRST_RUN = new AtomicBoolean(false);
     private static final Server SERVER = Bukkit.getServer();
     private static final Plugin MANHUNT_PLUGIN = SERVER.getPluginManager().getPlugin("MCManHunt");
     private static final Map<String, Player> HUNTER_MAP;
@@ -46,6 +46,10 @@ public final class ManHuntUtilities {
 
     public static boolean isFirstRun() {
         return ManHuntUtilities.IS_FIRST_RUN.get();
+    }
+
+    public static void setFirstRun(final boolean isFirstRun) {
+        ManHuntUtilities.IS_FIRST_RUN.set(true);
     }
 
     /**
@@ -353,10 +357,6 @@ public final class ManHuntUtilities {
             if (Character.isLetter(argument.charAt(x))) return true;
         }
         return false;
-    }
-
-    public static void setFirstRun(final boolean isFirstRun) {
-        ManHuntUtilities.IS_FIRST_RUN.set(true);
     }
 
 }

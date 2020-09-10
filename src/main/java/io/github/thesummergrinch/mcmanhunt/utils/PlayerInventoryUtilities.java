@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.CompassMeta;
 public final class PlayerInventoryUtilities {
 
     public static void clearPlayerInventory(final Player player) {
-        if(player.isOnline()) player.getInventory().clear();
+        if (player.isOnline()) player.getInventory().clear();
     }
 
     /**

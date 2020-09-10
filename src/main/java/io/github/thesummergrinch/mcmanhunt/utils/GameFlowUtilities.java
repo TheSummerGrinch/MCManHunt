@@ -3,7 +3,9 @@ package io.github.thesummergrinch.mcmanhunt.utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class GameFlowUtilities {
@@ -104,7 +106,7 @@ public final class GameFlowUtilities {
         ArrayList<Player> players = (ArrayList<Player>) Arrays.asList(ManHuntUtilities.getPlayersInRandomQueue().toArray(new Player[0]));
         Collections.shuffle(players);
         int playersOnRunnerTeam = players.size() / 2;
-        for(int x = -playersOnRunnerTeam; x < 0; x++) {
+        for (int x = -playersOnRunnerTeam; x < 0; x++) {
             ManHuntUtilities.addRunner(players.get(x + playersOnRunnerTeam));
         }
         for (int y = playersOnRunnerTeam - 1; y < players.size(); y++) {

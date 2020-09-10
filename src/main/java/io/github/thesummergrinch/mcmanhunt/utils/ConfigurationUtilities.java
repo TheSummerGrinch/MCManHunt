@@ -1,11 +1,8 @@
 package io.github.thesummergrinch.mcmanhunt.utils;
 
-import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.logging.Level;
-
-import static org.bukkit.Bukkit.getServer;
 
 public final class ConfigurationUtilities {
 
@@ -18,7 +15,7 @@ public final class ConfigurationUtilities {
             ManHuntUtilities.getManHuntPlugin().getLogger().log(Level.INFO, "A config.yml was automatically " +
                     "generated.");
         }
-        if(fileConfiguration == null || forcedUpdate) {
+        if (fileConfiguration == null || forcedUpdate) {
             fileConfiguration = ManHuntUtilities.getManHuntPlugin().getConfig();
         }
         return fileConfiguration;

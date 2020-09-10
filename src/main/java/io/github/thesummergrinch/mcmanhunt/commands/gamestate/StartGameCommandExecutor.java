@@ -28,7 +28,7 @@ public class StartGameCommandExecutor implements CommandExecutor {
                 return true;
             }
             if (!GameFlowUtilities.isGameInProgress()) {
-                if(!GameFlowUtilities.areTeamsRandomized()) {
+                if (!GameFlowUtilities.areTeamsRandomized()) {
                     GameFlowUtilities.startGame();
                 } else {
                     GameFlowUtilities.startRandomizedGame();

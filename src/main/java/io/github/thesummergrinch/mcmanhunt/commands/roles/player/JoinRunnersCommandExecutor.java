@@ -13,7 +13,7 @@ public class JoinRunnersCommandExecutor implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player && ((Player) sender).isOnline() && !GameFlowUtilities.isGameInProgress()) {
             final Player player = ((Player) sender).getPlayer();
-            if(GameFlowUtilities.areTeamsRandomized()) {
+            if (GameFlowUtilities.areTeamsRandomized()) {
                 player.sendMessage("The game is in random-mode! Use /joinrandomteam to participate in this game!");
                 return true;
             } else if (ManHuntUtilities.isHunter(player)) {
