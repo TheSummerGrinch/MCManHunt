@@ -57,6 +57,6 @@ public final class MCManhunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // TODO Save any ongoing game, do that it can be resumed later.
     }
 }

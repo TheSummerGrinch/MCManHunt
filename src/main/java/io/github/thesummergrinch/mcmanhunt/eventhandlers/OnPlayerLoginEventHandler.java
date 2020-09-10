@@ -10,6 +10,11 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class OnPlayerLoginEventHandler implements Listener {
 
+    /**
+     * When a player logs in, check whether or not a game is ongoing. If not, and the player is currently in a team,
+     * reset the player-roles and clear the player's inventory.
+     * @param event - The PlayerLoginEvent passed by the server.
+     */
     @EventHandler
     public void onPlayerLoginEvent(final PlayerLoginEvent event) {
         final Player player = event.getPlayer();

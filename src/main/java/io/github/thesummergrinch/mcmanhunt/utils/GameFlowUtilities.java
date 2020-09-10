@@ -98,10 +98,17 @@ public final class GameFlowUtilities {
         return GAME_PAUSED.get();
     }
 
+    /**
+     * Returns whether or not the teams are to be randomized.
+     * @return boolean - True if teams are to be randomized, false otherwise.
+     */
     public static synchronized boolean areTeamsRandomized() {
         return TEAMS_ARE_RANDOMIZED.get();
     }
 
+    /**
+     * Randomizes the teams and starts the game. (Will modularize the randomization).
+     */
     public static synchronized void startRandomizedGame() {
         ArrayList<Player> players = (ArrayList<Player>) Arrays.asList(ManHuntUtilities.getPlayersInRandomQueue().toArray(new Player[0]));
         Collections.shuffle(players);

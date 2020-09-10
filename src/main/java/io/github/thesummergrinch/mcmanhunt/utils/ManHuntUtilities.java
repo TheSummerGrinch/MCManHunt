@@ -28,26 +28,50 @@ public final class ManHuntUtilities {
         RANDOM_TEAM_QUEUE = new HashSet<>();
     }
 
+    /**
+     * Adds a player to the Random Queue. This allows players to be randomly assigned to a team when the game starts.
+     * @param player - The player that is to be placed into the Random Queue.
+     * @return boolean - True if the player was successfully added to the Random Queue. False otherwise.
+     */
     public static boolean addPlayerToRandomQueue(final Player player) {
         return RANDOM_TEAM_QUEUE.add(player);
     }
 
+    /**
+     * Returns a Set containing all Player-objects in the Random Queue.
+     * @return Set of Player-objects in the Random Queue.
+     */
     public static Set<Player> getPlayersInRandomQueue() {
         return RANDOM_TEAM_QUEUE;
     }
 
+    /**
+     * Clears the Random Queue.
+     */
     public static void clearRandomTeamQueue() {
         RANDOM_TEAM_QUEUE.clear();
     }
 
+    /**
+     * Returns a cached Plugin-object for this plugin.
+     * @return Plugin-object.
+     */
     public static Plugin getManHuntPlugin() {
         return ManHuntUtilities.MANHUNT_PLUGIN;
     }
 
+    /**
+     * Returns the value of the IS_FIRST_RUN AtomicBoolean.
+     * @return boolean - IS_FIRST_RUN.get()
+     */
     public static boolean isFirstRun() {
         return ManHuntUtilities.IS_FIRST_RUN.get();
     }
 
+    /**
+     * Sets the value of the IS_FIRST_RUN AtomicBoolean to the value set in the method-parameter.
+     * @param isFirstRun - true or false.
+     */
     public static void setFirstRun(final boolean isFirstRun) {
         ManHuntUtilities.IS_FIRST_RUN.set(true);
     }

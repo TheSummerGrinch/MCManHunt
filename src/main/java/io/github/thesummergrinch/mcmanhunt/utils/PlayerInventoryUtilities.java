@@ -8,6 +8,10 @@ import org.bukkit.inventory.meta.CompassMeta;
 
 public final class PlayerInventoryUtilities {
 
+    /**
+     * Clears the inverntory of the given Player.
+     * @param player - Player whose inventory will be cleared.
+     */
     public static void clearPlayerInventory(final Player player) {
         if (player.isOnline()) player.getInventory().clear();
     }
