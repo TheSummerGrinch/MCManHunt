@@ -27,7 +27,6 @@ public final class MCManhunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnCompassInteractEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnDeathEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnRespawnEventHandler(), this);
-        //this.getServer().getPluginManager().registerEvents(new OnLogoutEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLoginEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMoveEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnEnderDragonDeathEventHandler(), this);
