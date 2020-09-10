@@ -18,6 +18,8 @@ import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+
 public final class MCManhunt extends JavaPlugin {
 
     @Override
@@ -47,8 +49,8 @@ public final class MCManhunt extends JavaPlugin {
         this.getCommand("setmaxrunners").setExecutor(new SetMaxRunnersCommandExecutor());
         this.getCommand("joinrandomteam").setExecutor(new JoinRandomTeamCommandExecutor());
         ManHuntUtilities.updateFromConfig();
-        if (ManHuntUtilities.getConfig().getBoolean("allow-metrics") && !ManHuntUtilities.isFirstRun()) {
         if (ConfigurationUtilities.getBoolean("allow-metrics") && !ManHuntUtilities.isFirstRun()) {
+            getLogger().log(Level.CONFIG, "Metrics are enabled.");
             final int pluginID = 8784;
             final Metrics metrics = new Metrics(this, pluginID);
         }
