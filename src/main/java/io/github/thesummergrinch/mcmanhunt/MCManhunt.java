@@ -13,6 +13,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.roles.AddRunnerCommandExecut
 import io.github.thesummergrinch.mcmanhunt.commands.roles.ResetPlayerRolesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.roles.player.*;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.*;
+import io.github.thesummergrinch.mcmanhunt.utils.ConfigurationUtilities;
 import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,6 +48,7 @@ public final class MCManhunt extends JavaPlugin {
         this.getCommand("joinrandomteam").setExecutor(new JoinRandomTeamCommandExecutor());
         ManHuntUtilities.updateFromConfig();
         if (ManHuntUtilities.getConfig().getBoolean("allow-metrics") && !ManHuntUtilities.isFirstRun()) {
+        if (ConfigurationUtilities.getBoolean("allow-metrics") && !ManHuntUtilities.isFirstRun()) {
             final int pluginID = 8784;
             final Metrics metrics = new Metrics(this, pluginID);
         }

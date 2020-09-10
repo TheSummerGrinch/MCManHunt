@@ -133,6 +133,7 @@ public final class ManHuntUtilities {
      *
      * @return fileConfiguration - The FileConfiguration read from the config.yml.
      */
+    @Deprecated
     public static FileConfiguration getConfig() {
         if (!MANHUNT_PLUGIN.getDataFolder().exists()) {
             MANHUNT_PLUGIN.saveDefaultConfig();
@@ -145,9 +146,8 @@ public final class ManHuntUtilities {
      * Updates the configurable settings read from the config.yml.
      */
     public static void updateFromConfig() {
-        final FileConfiguration config = ManHuntUtilities.getConfig();
-        maxHunters = config.getInt("max-hunters");
-        maxRunners = config.getInt("max-runners");
+        maxHunters = ConfigurationUtilities.getInt("max-hunters");
+        maxRunners = ConfigurationUtilities.getInt("max-runners");
     }
 
     /**
@@ -353,6 +353,10 @@ public final class ManHuntUtilities {
             if (Character.isLetter(argument.charAt(x))) return true;
         }
         return false;
+    }
+
+    public static void setFirstRun(final boolean isFirstRun) {
+        ManHuntUtilities.IS_FIRST_RUN.set(true);
     }
 
 }
