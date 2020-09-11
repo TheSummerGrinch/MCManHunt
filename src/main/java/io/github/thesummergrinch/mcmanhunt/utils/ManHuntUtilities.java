@@ -294,8 +294,14 @@ public final class ManHuntUtilities {
         return false;
     }
 
+    /**
+     * Gets the UUID of the player with the specified playername.
+     * @param playerName - Name of the player.
+     * @return UUID - The UUID of the player.
+     */
     public static UUID getPlayerUUID(final String playerName) {
         return SERVER.getPlayerUniqueId(playerName);
     }
 
 }
+

@@ -22,7 +22,8 @@ public final class GameFlowUtilities {
         PlayerMovementUtilities.restrictRunnerMovement();
         PlayerMovementUtilities.restrictHunterMovement();
         PlayerInventoryUtilities.distributeTrackers();
-        ManHuntUtilities.broadcastMessage("The Game will start in 10 seconds! The Runner(s) will have a 30 second head-start!");
+        ManHuntUtilities.broadcastMessage("The Game will start in 10 seconds! The Runner(s) will have a 30 second " +
+                "head-start!");
         new BukkitRunnable() {
             @Override
             public void run() {
