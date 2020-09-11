@@ -158,8 +158,8 @@ public final class ManHuntUtilities {
      * Updates the configurable settings read from the config.yml.
      */
     public static void updateFromConfig() {
-        maxHunters = ConfigurationUtilities.getInt("max-hunters");
-        maxRunners = ConfigurationUtilities.getInt("max-runners");
+        maxHunters = ConfigurationUtilities.getInt(SERVER.getPluginManager().getPlugin("MCManHunt"), "max-hunters");
+        maxRunners = ConfigurationUtilities.getInt(SERVER.getPluginManager().getPlugin("MCManHunt"), "max-runners");
     }
 
     /**

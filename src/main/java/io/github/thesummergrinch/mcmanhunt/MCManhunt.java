@@ -48,7 +48,7 @@ public final class MCManhunt extends JavaPlugin {
         this.getCommand("setmaxrunners").setExecutor(new SetMaxRunnersCommandExecutor());
         this.getCommand("joinrandomteam").setExecutor(new JoinRandomTeamCommandExecutor());
         ManHuntUtilities.updateFromConfig();
-        if (ConfigurationUtilities.getBoolean("allow-metrics") && !ManHuntUtilities.isFirstRun()) {
+        if (ConfigurationUtilities.getBoolean(this, "allow-metrics") && !ManHuntUtilities.isFirstRun()) {
             getLogger().log(Level.CONFIG, "Metrics are enabled.");
             final int pluginID = 8784;
             new Metrics(this, pluginID);
