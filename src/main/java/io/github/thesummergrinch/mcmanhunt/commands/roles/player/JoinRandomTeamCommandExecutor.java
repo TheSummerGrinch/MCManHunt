@@ -32,7 +32,7 @@ public class JoinRandomTeamCommandExecutor implements CommandExecutor {
                         return ManHuntUtilities.addHunter(player);
                     }
                 } else {
-                    if(ManHuntUtilities.addPlayerToRandomQueue(player)) {
+                    if (ManHuntUtilities.addPlayerToRandomQueue(player)) {
                         player.sendMessage("You will be randomly placed in a team when the game starts!");
                         return true;
                     }

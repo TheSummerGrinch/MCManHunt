@@ -98,6 +98,7 @@ public final class GameFlowUtilities {
 
     /**
      * Returns whether or not the teams are to be randomized.
+     *
      * @return boolean - True if teams are to be randomized, false otherwise.
      */
     public static synchronized boolean areTeamsRandomized() {

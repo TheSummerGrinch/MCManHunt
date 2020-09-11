@@ -13,10 +13,11 @@ public class ResetPlayerRolesCommandExecutor implements CommandExecutor {
     /**
      * Handles the /resetplayerroles-command. When this command is received, the sender is a player, and the sender has
      * the appropriate permissions, the player-roles will be reset. If not, the method will return false.
-     * @param sender - The command-sender.
+     *
+     * @param sender  - The command-sender.
      * @param command - The command issued by the command-sender.
-     * @param label - Label
-     * @param args - Command-arguments. Should be empty, but any arguments will be disregarded.
+     * @param label   - Label
+     * @param args    - Command-arguments. Should be empty, but any arguments will be disregarded.
      * @return boolean - True if the sender filled all the conditions to issue the command. False otherwise.
      */
     @Override
