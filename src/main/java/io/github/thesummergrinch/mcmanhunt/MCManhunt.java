@@ -51,7 +51,7 @@ public final class MCManhunt extends JavaPlugin {
         if (ConfigurationUtilities.getBoolean("allow-metrics") && !ManHuntUtilities.isFirstRun()) {
             getLogger().log(Level.CONFIG, "Metrics are enabled.");
             final int pluginID = 8784;
-            final Metrics metrics = new Metrics(this, pluginID);
+            new Metrics(this, pluginID);
         }
     }
 
