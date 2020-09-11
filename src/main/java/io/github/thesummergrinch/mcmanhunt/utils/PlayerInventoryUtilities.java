@@ -21,9 +21,7 @@ public final class PlayerInventoryUtilities {
      * natural conclusion.
      */
     public static void clearRunnersInventory() {
-        ManHuntUtilities.getRunners().forEach((player) -> {
-            clearPlayerInventory(player);
-        });
+        ManHuntUtilities.getRunners().forEach(PlayerInventoryUtilities::clearPlayerInventory);
     }
 
     /**
@@ -31,9 +29,7 @@ public final class PlayerInventoryUtilities {
      * natural conclusion.
      */
     public static void clearHuntersInventory() {
-        ManHuntUtilities.getHunters().forEach((player) -> {
-            clearPlayerInventory(player);
-        });
+        ManHuntUtilities.getHunters().forEach(PlayerInventoryUtilities::clearPlayerInventory);
     }
 
     /**
