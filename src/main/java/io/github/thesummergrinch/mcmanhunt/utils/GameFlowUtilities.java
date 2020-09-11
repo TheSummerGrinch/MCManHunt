@@ -48,8 +48,6 @@ public final class GameFlowUtilities {
         GAME_PAUSED.set(false);
         PlayerMovementUtilities.allowHunterMovement();
         PlayerMovementUtilities.allowRunnerMovement();
-        PlayerInventoryUtilities.clearHuntersInventory();
-        PlayerInventoryUtilities.clearRunnersInventory();
         ManHuntUtilities.resetplayerroles();
     }
 
