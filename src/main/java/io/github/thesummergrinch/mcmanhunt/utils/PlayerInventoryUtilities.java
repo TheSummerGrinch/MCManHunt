@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.CompassMeta;
 public final class PlayerInventoryUtilities {
 
     /**
-     * Clears the inventory of the given Player.
+     * Clears the inverntory of the given Player.
      * @param player - Player whose inventory will be cleared.
      */
     public static void clearPlayerInventory(final Player player) {
@@ -21,7 +21,9 @@ public final class PlayerInventoryUtilities {
      * natural conclusion.
      */
     public static void clearRunnersInventory() {
-        ManHuntUtilities.getRunners().forEach(PlayerInventoryUtilities::clearPlayerInventory);
+        ManHuntUtilities.getRunners().forEach((player) -> {
+            clearPlayerInventory(player);
+        });
     }
 
     /**
@@ -29,7 +31,9 @@ public final class PlayerInventoryUtilities {
      * natural conclusion.
      */
     public static void clearHuntersInventory() {
-        ManHuntUtilities.getHunters().forEach(PlayerInventoryUtilities::clearPlayerInventory);
+        ManHuntUtilities.getHunters().forEach((player) -> {
+            clearPlayerInventory(player);
+        });
     }
 
     /**
