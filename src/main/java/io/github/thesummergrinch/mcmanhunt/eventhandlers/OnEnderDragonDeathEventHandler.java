@@ -20,7 +20,7 @@ public class OnEnderDragonDeathEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDragonDeathEvent(EntityDeathEvent event) {
         final LivingEntity entity = event.getEntity();
-        if (GameFlowUtilities.isGameInProgress() && event.getEntity() instanceof EnderDragon) {
+        if (GameFlowUtilities.isGameInProgress() && entity instanceof EnderDragon) {
             ManHuntUtilities.broadcastMessage("The Runners have won the Game!");
             GameFlowUtilities.stopGame();
         }
