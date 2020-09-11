@@ -2,7 +2,6 @@ package io.github.thesummergrinch.mcmanhunt.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -15,8 +14,8 @@ public final class ManHuntUtilities {
     private static final AtomicBoolean IS_FIRST_RUN = new AtomicBoolean(false);
     private static final Server SERVER = Bukkit.getServer();
     private static final Plugin MANHUNT_PLUGIN = SERVER.getPluginManager().getPlugin("MCManHunt");
-    private static final Map<String, Player> HUNTER_MAP;
-    private static final Map<String, Player> RUNNER_MAP;
+    private static final Map<UUID, Player> HUNTER_MAP;
+    private static final Map<UUID, Player> RUNNER_MAP;
     private static final Set<Player> RANDOM_TEAM_QUEUE;
 
     private static int maxRunners;
@@ -166,45 +165,14 @@ public final class ManHuntUtilities {
     /**
      * Adds the specified player to the Hunter-team.
      *
-     * @param playerName - Username of the player that needs to be added to the Hunter-team.
-     * @return boolean - True if successfully added to the Hunter-team, false otherwise.
-     */
-    public static synchronized boolean addHunter(String playerName) {
-        final Player player = ManHuntUtilities.SERVER.getPlayer(playerName);
-        if (player != null && player.isOnline() && !ManHuntUtilities.HUNTER_MAP.containsKey(playerName)
-                && !ManHuntUtilities.RUNNER_MAP.containsKey(playerName) && !ManHuntUtilities.isHunterTeamOverCapacity()) {
-            ManHuntUtilities.HUNTER_MAP.put(playerName, player);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Adds the specified player to the Runner-team.
-     *
-     * @param playerName - Username of the player that needs to be added to the Runner-team.
-     * @return boolean - True if successfully added to the Runner-team.
-     */
-    public static synchronized boolean addRunner(String playerName) {
-        final Player player = ManHuntUtilities.SERVER.getPlayer(playerName);
-        if (player != null && player.isOnline() && !ManHuntUtilities.HUNTER_MAP.containsKey(playerName)
-                && !ManHuntUtilities.RUNNER_MAP.containsKey(playerName) && !ManHuntUtilities.isRunnerTeamFull()) {
-            ManHuntUtilities.RUNNER_MAP.put(playerName, player);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Adds the specified player to the Hunter-team.
-     *
      * @param player - Player-object of the player that needs to be added to the Hunter-team.
      * @return boolean - True if successfully added to the Hunter-team, false otherwise.
      */
     public static synchronized boolean addHunter(final Player player) {
-        if (player != null && player.isOnline() && !ManHuntUtilities.isHunter(player)
-                && !ManHuntUtilities.isRunner(player) && !ManHuntUtilities.isHunterTeamOverCapacity()) {
-            ManHuntUtilities.HUNTER_MAP.put(player.getName(), player);
+        final UUID playerUUID = player.getUniqueId();
+        if (player.isOnline() && !ManHuntUtilities.isHunter(playerUUID)
+                && !ManHuntUtilities.isRunner(playerUUID) && !ManHuntUtilities.isHunterTeamOverCapacity()) {
+            ManHuntUtilities.HUNTER_MAP.put(playerUUID, player);
             return true;
         }
         return false;
@@ -217,9 +185,10 @@ public final class ManHuntUtilities {
      * @return boolean - True if successfully added to the Runner-team.
      */
     public static synchronized boolean addRunner(final Player player) {
-        if (player != null && player.isOnline() && !ManHuntUtilities.isHunter(player)
-                && !ManHuntUtilities.isRunner(player) && !ManHuntUtilities.isRunnerTeamFull()) {
-            ManHuntUtilities.RUNNER_MAP.put(player.getName(), player);
+        final UUID playerUUID = player.getUniqueId();
+        if (player.isOnline() && !ManHuntUtilities.isHunter(playerUUID)
+                && !ManHuntUtilities.isRunner(playerUUID) && !ManHuntUtilities.isRunnerTeamFull()) {
+            ManHuntUtilities.RUNNER_MAP.put(playerUUID, player);
             return true;
         }
         return false;
@@ -234,23 +203,13 @@ public final class ManHuntUtilities {
     }
 
     /**
-     * Checks if the specified player is in the Hunter-team.
-     *
-     * @param player - The Player-object of the player that is being checked.
-     * @return boolean - True if the player is in the Hunter-team, false otherwise.
-     */
-    public static synchronized boolean isHunter(final Player player) {
-        return ManHuntUtilities.HUNTER_MAP.containsValue(player);
-    }
-
-    /**
      * Checks if the specified player is in the Runner-team.
      *
-     * @param playerName - The username of the player that is being checked.
+     * @param playerUUID - The username of the player that is being checked.
      * @return boolean - True if the player is in the Hunter-team, false otherwise.
      */
-    public static synchronized boolean isHunter(final String playerName) {
-        return ManHuntUtilities.HUNTER_MAP.containsKey(playerName);
+    public static synchronized boolean isHunter(final UUID playerUUID) {
+        return ManHuntUtilities.HUNTER_MAP.containsKey(playerUUID);
     }
 
     /**
@@ -292,67 +251,29 @@ public final class ManHuntUtilities {
     /**
      * Removes the specified player from the Hunter-team.
      *
-     * @param playerName - Username of the player that is to be removed from the Hunter-team.
+     * @param playerUUID - UUID of the player that is to be removed from the Hunter-team.
      */
-    public static synchronized void removeHunter(final String playerName) {
-        ManHuntUtilities.HUNTER_MAP.remove(playerName);
+    public static synchronized boolean removeHunter(final UUID playerUUID) {
+        return ManHuntUtilities.HUNTER_MAP.remove(playerUUID) != null;
     }
 
     /**
      * Removes the specified player from the Runner-team.
      *
-     * @param playerName - Username of the player that is to be removed from the Runner-team.
+     * @param playerUUID - UUID of the player that is to be removed from the Runner-team.
      */
-    public static synchronized void removeRunner(final String playerName) {
-        ManHuntUtilities.RUNNER_MAP.remove(playerName);
-    }
-
-    /**
-     * Checks whether or not the specified player is in the Runner-team.
-     *
-     * @param player - The Player-object of the player that is to be checked.
-     * @return boolean - True if the specified player is in the Runner-team, false otherwise.
-     */
-    public static synchronized boolean isRunner(final Player player) {
-        return ManHuntUtilities.RUNNER_MAP.containsValue(player);
+    public static synchronized boolean removeRunner(final UUID playerUUID) {
+        return ManHuntUtilities.RUNNER_MAP.remove(playerUUID) != null;
     }
 
     /**
      * Checks whether or not the specified player is in the Hunter-team.
      *
-     * @param playerName - The Player-object of the player that is to be checked.
+     * @param playerUUID - The UUID of the player that is to be checked.
      * @return - True if the specified player is in the Hunter-team, false otherwise.
      */
-    public static synchronized boolean isRunner(final String playerName) {
-        return ManHuntUtilities.RUNNER_MAP.containsKey(playerName);
-    }
-
-    /**
-     * Removes the specified player from the Hunter-team.
-     *
-     * @param player - The Player-object of the player to be removed from the Hunter-team.
-     * @return boolean - True if successfully removed from the Hunter-team, false otherwise.
-     */
-    public static synchronized boolean removePlayerFromHunters(final Player player) {
-        if (ManHuntUtilities.HUNTER_MAP.containsValue(player)) {
-            ManHuntUtilities.HUNTER_MAP.remove(player.getName());
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Removes the specified player from the Runner-team.
-     *
-     * @param player - The Player-object of the player to be removed from the Runner-team.
-     * @return boolean - True if successfully removed from the Runner-team, false otherwise.
-     */
-    public static synchronized boolean removePlayerFromRunners(final Player player) {
-        if (ManHuntUtilities.RUNNER_MAP.containsValue(player)) {
-            ManHuntUtilities.RUNNER_MAP.remove(player.getName());
-            return true;
-        }
-        return false;
+    public static synchronized boolean isRunner(final UUID playerUUID) {
+        return ManHuntUtilities.RUNNER_MAP.containsKey(playerUUID);
     }
 
     /**
@@ -366,6 +287,10 @@ public final class ManHuntUtilities {
             if (Character.isLetter(argument.charAt(x))) return true;
         }
         return false;
+    }
+
+    public static UUID getPlayerUUID(final String playerName) {
+        return SERVER.getPlayerUniqueId(playerName);
     }
 
 }
