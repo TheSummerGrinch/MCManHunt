@@ -12,7 +12,7 @@ public class LeaveRunnersCommandExecutor implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player && ((Player) sender).isOnline()) {
             final Player player = ((Player) sender).getPlayer();
-            if (ManHuntUtilities.removePlayerFromRunners(player)) {
+            if (ManHuntUtilities.removeRunner(player.getUniqueId())) {
                 ManHuntUtilities.broadcastMessage(player.getName() + " left the Runner-team!");
             } else {
                 player.sendMessage("You could not be removed from the Runner-team. Check whether you are a member using /listrunners");

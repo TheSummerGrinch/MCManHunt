@@ -9,6 +9,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.UUID;
+
 public class OnDeathEventHandler implements Listener {
 
     /**
@@ -19,9 +21,10 @@ public class OnDeathEventHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeathEvent(final PlayerDeathEvent event) {
-        Player player = event.getEntity();
-        if (GameFlowUtilities.isGameInProgress() && ManHuntUtilities.isRunner(player)) {
-            ManHuntUtilities.removeRunner(player.getName());
+        final Player player = event.getEntity();
+        final UUID playerUUID = player.getUniqueId();
+        if (GameFlowUtilities.isGameInProgress() && ManHuntUtilities.isRunner(playerUUID)) {
+            ManHuntUtilities.removeRunner(playerUUID);
             player.setGameMode(GameMode.SPECTATOR);
             if (ManHuntUtilities.isRunnerMapEmpty()) {
                 ManHuntUtilities.broadcastMessage("The Hunters win!");

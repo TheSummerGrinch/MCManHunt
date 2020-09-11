@@ -7,13 +7,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class JoinRandomTeamCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (ManHuntUtilities.isRunner(player) || ManHuntUtilities.isHunter(player)) {
+            final Player player = (Player) sender;
+            final UUID playerUUID = player.getUniqueId();
+            if (ManHuntUtilities.isRunner(playerUUID) || ManHuntUtilities.isHunter(playerUUID)) {
                 player.sendMessage("You have already joined a team. Please leave your team and try again.");
                 return true;
             } else if (GameFlowUtilities.isGameInProgress()) {
@@ -29,9 +32,10 @@ public class JoinRandomTeamCommandExecutor implements CommandExecutor {
                         return ManHuntUtilities.addHunter(player);
                     }
                 } else {
-                    ManHuntUtilities.addPlayerToRandomQueue(player);
-                    player.sendMessage("You will be randomly placed in a team when the game starts!");
-                    return true;
+                    if(ManHuntUtilities.addPlayerToRandomQueue(player)) {
+                        player.sendMessage("You will be randomly placed in a team when the game starts!");
+                        return true;
+                    }
                 }
             }
         }

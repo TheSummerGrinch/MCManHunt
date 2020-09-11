@@ -73,7 +73,7 @@ public final class ManHuntUtilities {
      * @param isFirstRun - true or false.
      */
     public static void setFirstRun(final boolean isFirstRun) {
-        ManHuntUtilities.IS_FIRST_RUN.set(true);
+        ManHuntUtilities.IS_FIRST_RUN.set(isFirstRun);
     }
 
     /**
@@ -153,21 +153,6 @@ public final class ManHuntUtilities {
      */
     public static synchronized void setMaxHunters(final int maxHunters) {
         ManHuntUtilities.maxHunters = maxHunters;
-    }
-
-    /**
-     * Reads the config.yml, or saves the default included with the JAR. Returns the FileConfiguration of the
-     * config.yml.
-     *
-     * @return fileConfiguration - The FileConfiguration read from the config.yml.
-     */
-    @Deprecated
-    public static FileConfiguration getConfig() {
-        if (!MANHUNT_PLUGIN.getDataFolder().exists()) {
-            MANHUNT_PLUGIN.saveDefaultConfig();
-            ManHuntUtilities.IS_FIRST_RUN.set(true);
-        }
-        return MANHUNT_PLUGIN.getConfig();
     }
 
     /**

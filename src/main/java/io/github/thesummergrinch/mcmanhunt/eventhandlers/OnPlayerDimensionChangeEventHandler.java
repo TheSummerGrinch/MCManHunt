@@ -26,7 +26,7 @@ public class OnPlayerDimensionChangeEventHandler implements Listener {
             return;
         }
         final Player player = (Player) event.getEntity();
-        if (ManHuntUtilities.isHunter(player)) {
+        if (ManHuntUtilities.isHunter(player.getUniqueId())) {
             if (player.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
                 player.getInventory().forEach((item) -> {
                     if (item.getType().equals(Material.COMPASS) && item.getItemMeta().getDisplayName().split(" ").length > 1) {

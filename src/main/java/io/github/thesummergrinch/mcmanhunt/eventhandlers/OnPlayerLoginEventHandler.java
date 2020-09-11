@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import java.util.UUID;
+
 public class OnPlayerLoginEventHandler implements Listener {
 
     /**
@@ -18,8 +20,9 @@ public class OnPlayerLoginEventHandler implements Listener {
     @EventHandler
     public void onPlayerLoginEvent(final PlayerLoginEvent event) {
         final Player player = event.getPlayer();
+        final UUID playerUUID = player.getUniqueId();
         if (!GameFlowUtilities.isGameInProgress()) {
-            if (ManHuntUtilities.isRunner(player) || ManHuntUtilities.isHunter(player)) {
+            if (ManHuntUtilities.isRunner(playerUUID) || ManHuntUtilities.isHunter(playerUUID)) {
                 ManHuntUtilities.resetplayerroles();
                 PlayerInventoryUtilities.clearPlayerInventory(player);
             }

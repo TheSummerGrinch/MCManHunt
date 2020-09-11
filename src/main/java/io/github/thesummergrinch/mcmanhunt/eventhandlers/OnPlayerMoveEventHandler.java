@@ -9,6 +9,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.UUID;
+
 public class OnPlayerMoveEventHandler implements Listener {
 
     /**
@@ -21,10 +23,11 @@ public class OnPlayerMoveEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         final Player player = event.getPlayer();
+        final UUID playerUUID = player.getUniqueId();
         if (!GameFlowUtilities.isGameInProgress()) return;
-        if (ManHuntUtilities.isRunner(player) && PlayerMovementUtilities.isRunnerMovementRestricted()) {
+        if (ManHuntUtilities.isRunner(playerUUID) && PlayerMovementUtilities.isRunnerMovementRestricted()) {
             event.setCancelled(true);
-        } else if (ManHuntUtilities.isHunter(player) && PlayerMovementUtilities.isHunterMovementRestricted()) {
+        } else if (ManHuntUtilities.isHunter(playerUUID) && PlayerMovementUtilities.isHunterMovementRestricted()) {
             event.setCancelled(true);
         }
     }

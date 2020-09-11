@@ -22,10 +22,10 @@ public class OnCompassInteractEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractEvent(final PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (ManHuntUtilities.isHunter(player) && GameFlowUtilities.isGameInProgress()) {
+        if (ManHuntUtilities.isHunter(player.getUniqueId()) && GameFlowUtilities.isGameInProgress()) {
             if (player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)
                     && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().split(" ").length == 2) {
-                if (!ManHuntUtilities.isRunner(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0])) {
+                if (!ManHuntUtilities.isRunner(ManHuntUtilities.getPlayerUUID(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0]))) {
                     player.getInventory().setItemInMainHand(null);
                     return;
                 }
@@ -35,7 +35,7 @@ public class OnCompassInteractEventHandler implements Listener {
             } else if (player.getInventory().getItemInOffHand().getType().equals(Material.COMPASS)
                     && player.getInventory().getItemInOffHand()
                     .getItemMeta().getDisplayName().split(" ").length == 2) {
-                if (!ManHuntUtilities.isRunner(player.getInventory().getItemInOffHand().getItemMeta().getDisplayName().split(" ")[0])) {
+                if (!ManHuntUtilities.isRunner(ManHuntUtilities.getPlayerUUID(player.getInventory().getItemInOffHand().getItemMeta().getDisplayName().split(" ")[0]))) {
                     player.getInventory().setItemInOffHand(null);
                     return;
                 }

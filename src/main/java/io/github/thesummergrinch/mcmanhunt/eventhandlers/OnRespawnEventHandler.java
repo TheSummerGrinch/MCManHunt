@@ -19,8 +19,8 @@ public class OnRespawnEventHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawnEvent(final PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        if (ManHuntUtilities.isHunter(player) && GameFlowUtilities.isGameInProgress()) {
+        final Player player = event.getPlayer();
+        if (ManHuntUtilities.isHunter(player.getUniqueId()) && GameFlowUtilities.isGameInProgress()) {
             PlayerInventoryUtilities.givePlayerHunterCompasses(player);
         }
     }
