@@ -28,14 +28,14 @@ public final class PlayerMovementUtilities {
     /**
      * Sets the HUNTER_MOVEMENT_RESTRICTED-flag to true.
      */
-    public static void restrictHunterMovement() {
+    static void restrictHunterMovement() {
         PlayerMovementUtilities.HUNTER_MOVEMENT_RESTRICTED.set(true);
     }
 
     /**
      * Sets the RUNNER_MOVEMENT_RESTRICTED-flag to true;
      */
-    public static void restrictRunnerMovement() {
+    static void restrictRunnerMovement() {
         PlayerMovementUtilities.RUNNER_MOVEMENT_RESTRICTED.set(true);
     }
 
