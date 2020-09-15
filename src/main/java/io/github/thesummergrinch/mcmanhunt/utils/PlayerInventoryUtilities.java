@@ -1,36 +1,29 @@
 package io.github.thesummergrinch.mcmanhunt.utils;
 
+
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public final class PlayerInventoryUtilities {
 
-    /**
-     * Clears the inventory of the given Player.
-     *
-     * @param player - Player whose inventory will be cleared.
-     */
-    public static void clearPlayerInventory(final Player player) {
-        if (player.isOnline()) player.getInventory().clear();
+    private static final HashMap<UUID, ItemStack> COMPASS_MAP = new HashMap<>();
+
+    private static boolean storeCompass(final UUID playerUUID, final ItemStack compass) {
+        if (!compass.getType().equals(Material.COMPASS)) return false;
+        COMPASS_MAP.put(playerUUID, compass);
+        return true;
     }
 
-    /**
-     * Clears the inventory of the Runners. Typically used when the game ends, or the game is terminated before its
-     * natural conclusion.
-     */
-    public static void clearRunnersInventory() {
-        ManHuntUtilities.getRunners().forEach(PlayerInventoryUtilities::clearPlayerInventory);
-    }
-
-    /**
-     * Clears the inventory of the Hunters. Typically used when the game ends, or the game is terminated before its
-     * natural conclusion.
-     */
-    public static void clearHuntersInventory() {
-        ManHuntUtilities.getHunters().forEach(PlayerInventoryUtilities::clearPlayerInventory);
+    private static ItemStack getCompass(final UUID playerUUID) {
+        if (COMPASS_MAP.containsKey(playerUUID)) return COMPASS_MAP.get(playerUUID);
+        return null;
     }
 
     /**
@@ -41,7 +34,7 @@ public final class PlayerInventoryUtilities {
      * @param compassMeta - The CompassMeta-object that will be updated.
      * @return CompassMeta - The updated CompassMeta-object.
      */
-    public static synchronized CompassMeta updateCompassMeta(final CompassMeta compassMeta) {
+    public static CompassMeta updateCompassMeta(final CompassMeta compassMeta) {
         final String playerName = compassMeta.getDisplayName().split(" ")[0];
         final Player player = ManHuntUtilities.getPlayer(playerName);
         if (player != null && player.isOnline() && !player.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
@@ -50,35 +43,39 @@ public final class PlayerInventoryUtilities {
         return compassMeta;
     }
 
-    /**
-     * Creates an ItemStack of a Compass, with a quantity of 1. Also creates a CompassMeta with the correct parameters
-     * to follow a player, and assigns it to said Compass.
-     *
-     * @param playerTrackedCompassMeta - The username of the player that will be tracked by the compass.
-     * @return compass - The compass made to track the specified player.
-     */
-    public static synchronized ItemStack createTrackingCompass(final String playerTrackedCompassMeta) {
-        final CompassMeta compassMeta = (CompassMeta) new ItemStack(Material.COMPASS).getItemMeta();
-        final Player player = ManHuntUtilities.getPlayer(playerTrackedCompassMeta);
-        compassMeta.setDisplayName(playerTrackedCompassMeta + " Tracker");
-        if (player != null && player.isOnline()) {
-            compassMeta.setLodestone(ManHuntUtilities.getPlayer(playerTrackedCompassMeta).getLocation());
-            compassMeta.setLodestoneTracked(false);
+    private static ItemStack createTrackingCompass(final UUID playerUUID) {
+        final Player player = ManHuntUtilities.getPlayer(playerUUID).getPlayer();
+        if (player != null) {
+            if (COMPASS_MAP.containsKey(playerUUID)) {
+                final ItemStack compass = getCompass(playerUUID);
+                compass.setItemMeta(updateCompassMeta((CompassMeta) compass.getItemMeta()));
+                return compass;
+            }
+            final ItemStack compass = new ItemStack(Material.COMPASS);
+            final CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
+            if ((!player.getWorld().getEnvironment().equals(World.Environment.NETHER) &&
+                    !player.getWorld().getEnvironment().equals(World.Environment.THE_END))) {
+                compassMeta.setLodestone(player.getLocation());
+            } else {
+                compassMeta.setLodestoneTracked(true);
+            }
+            compass.addEnchantment(Enchantment.VANISHING_CURSE, 1);
+            compass.setItemMeta(compassMeta);
+            storeCompass(playerUUID, compass);
+            return compass;
         }
-        final ItemStack trackingCompass = new ItemStack(Material.COMPASS);
-        trackingCompass.setItemMeta(compassMeta);
-        return trackingCompass;
+        return null;
     }
 
     /**
      * Distributes one compass per Runner to every Hunter. Used at the start of a game.
      */
-    public static synchronized void distributeTrackers() {
+    static synchronized void distributeTrackers() {
         final Player[] hunters = ManHuntUtilities.getHunters().toArray(new Player[0]);
         final Player[] runners = ManHuntUtilities.getRunners().toArray(new Player[0]);
         for (int x = 0; x < runners.length; x++) {
             for (Player hunter : hunters) {
-                hunter.getInventory().setItem(x, createTrackingCompass(runners[x].getName()));
+                hunter.getInventory().setItem(x, createTrackingCompass(runners[x].getUniqueId()));
             }
         }
     }
@@ -92,7 +89,7 @@ public final class PlayerInventoryUtilities {
     public static void givePlayerHunterCompasses(final Player player) {
         final Player[] runners = ManHuntUtilities.getRunners().toArray(new Player[0]);
         for (int x = 0; x < runners.length; x++) {
-            player.getInventory().setItem(x, createTrackingCompass(runners[x].getName()));
+            player.getInventory().setItem(x, createTrackingCompass(runners[x].getUniqueId()));
         }
     }
 
