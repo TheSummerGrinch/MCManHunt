@@ -41,15 +41,20 @@ public final class GameFlowUtilities {
     }
 
     /**
-     * Sets the relevant gameflow-flags, allows player-movement, clears the inventories of the participating players,
-     * and resets the teams.
+     * Sets the relevant gameflow-flags, allows player-movement and resets the teams.
      */
     public static synchronized void stopGame() {
-        GAME_IN_PROGRESS.set(false);
+        setGameInProgress(false);
         GAME_PAUSED.set(false);
         PlayerMovementUtilities.allowHunterMovement();
         PlayerMovementUtilities.allowRunnerMovement();
         ManHuntUtilities.resetplayerroles();
+    }
+
+    static synchronized void pauseGame() {
+        GAME_PAUSED.set(true);
+        PlayerMovementUtilities.restrictHunterMovement();
+        PlayerMovementUtilities.restrictRunnerMovement();
     }
 
     /**
@@ -58,9 +63,7 @@ public final class GameFlowUtilities {
      * @param player - Player-object of the player who issued the pausegame-command.
      */
     public static synchronized void pauseGame(final Player player) {
-        GAME_PAUSED.set(true);
-        PlayerMovementUtilities.restrictHunterMovement();
-        PlayerMovementUtilities.restrictRunnerMovement();
+        pauseGame();
         ManHuntUtilities.broadcastMessage("The game was paused by " + player.getName() + ".");
     }
 
@@ -86,6 +89,10 @@ public final class GameFlowUtilities {
      */
     public static synchronized boolean isGameInProgress() {
         return GAME_IN_PROGRESS.get();
+    }
+
+    static synchronized void setGameInProgress(final boolean gameInProgress) {
+        GAME_IN_PROGRESS.set(gameInProgress);
     }
 
     /**
@@ -122,6 +129,10 @@ public final class GameFlowUtilities {
         ManHuntUtilities.clearRandomTeamQueue();
         TEAMS_ARE_RANDOMIZED.set(false);
         startGame();
+    }
+
+    public static void setTeamsAreRandomized(final boolean teamsAreRandomized) {
+        TEAMS_ARE_RANDOMIZED.set(teamsAreRandomized);
     }
 
 }
