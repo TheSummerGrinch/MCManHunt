@@ -24,6 +24,7 @@ public class OnPlayerMoveEventHandler implements Listener {
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         final Player player = event.getPlayer();
         final UUID playerUUID = player.getUniqueId();
+        if (event.getTo().getY() < event.getFrom().getY()) return;
         if (!GameFlowUtilities.isGameInProgress()) return;
         if (ManHuntUtilities.isRunner(playerUUID) && PlayerMovementUtilities.isRunnerMovementRestricted()) {
             event.setCancelled(true);
