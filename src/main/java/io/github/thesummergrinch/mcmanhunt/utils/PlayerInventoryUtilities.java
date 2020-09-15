@@ -39,6 +39,7 @@ public final class PlayerInventoryUtilities {
         final Player player = ManHuntUtilities.getPlayer(playerName);
         if (player != null && player.isOnline() && !player.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
             compassMeta.setLodestone(ManHuntUtilities.getPlayer(playerName).getLocation());
+            compassMeta.setLodestoneTracked(false);
         }
         return compassMeta;
     }
@@ -56,10 +57,12 @@ public final class PlayerInventoryUtilities {
             if ((!player.getWorld().getEnvironment().equals(World.Environment.NETHER) &&
                     !player.getWorld().getEnvironment().equals(World.Environment.THE_END))) {
                 compassMeta.setLodestone(player.getLocation());
+                compassMeta.setLodestoneTracked(false);
             } else {
                 compassMeta.setLodestoneTracked(true);
             }
-            compass.addEnchantment(Enchantment.VANISHING_CURSE, 1);
+            compassMeta.addEnchant(Enchantment.VANISHING_CURSE, 1, false);
+            compassMeta.setDisplayName(player.getName() + " Tracker");
             compass.setItemMeta(compassMeta);
             storeCompass(playerUUID, compass);
             return compass;
