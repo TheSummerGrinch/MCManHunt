@@ -6,6 +6,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.gamestate.PauseGameCommandEx
 import io.github.thesummergrinch.mcmanhunt.commands.gamestate.ResumeGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.gamestate.StartGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.gamestate.StopGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.gamestate.*;
 import io.github.thesummergrinch.mcmanhunt.commands.info.ListHuntersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.info.ListRunnersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.roles.AddHunterCommandExecutor;
@@ -47,6 +48,7 @@ public final class MCManhunt extends JavaPlugin {
         this.getCommand("setmaxhunters").setExecutor(new SetMaxHuntersCommandExecutor());
         this.getCommand("setmaxrunners").setExecutor(new SetMaxRunnersCommandExecutor());
         this.getCommand("joinrandomteam").setExecutor(new JoinRandomTeamCommandExecutor());
+        this.getCommand("setrandomgame").setExecutor(new SetRandomGameCommandExecutor());
         ManHuntUtilities.updateFromConfig();
         if (ConfigurationUtilities.getBoolean(this, "allow-metrics") && !ManHuntUtilities.isFirstRun()) {
             getLogger().log(Level.CONFIG, "Metrics are enabled.");

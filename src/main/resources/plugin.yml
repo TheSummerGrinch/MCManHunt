@@ -70,6 +70,10 @@ commands:
     description: Join a random team.
     usage: /joinrandom
     permission: mcmanhunt.roles.player
+  setrandomgame:
+    description: Set the gamemode to Random, which forces randomized teams.
+    usage: /setrandomgame [true | false]
+    permission: mcmanhunt.gamestate
 permissions:
   mcmanhunt.*:
     description: Gives access to all MCManHunt commands.
