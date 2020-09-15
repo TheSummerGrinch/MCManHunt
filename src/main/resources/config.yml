@@ -1,3 +1,4 @@
 max-runners: 8
 max-hunters: 8
 allow-metrics: true
+game-ongoing: false
