@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -14,9 +15,12 @@ public final class ManHuntUtilities {
     private static final AtomicBoolean IS_FIRST_RUN = new AtomicBoolean(false);
     private static final Server SERVER = Bukkit.getServer();
     private static final Plugin MANHUNT_PLUGIN = SERVER.getPluginManager().getPlugin("MCManHunt");
-    private static final Map<UUID, Player> HUNTER_MAP;
-    private static final Map<UUID, Player> RUNNER_MAP;
-    private static final Set<Player> RANDOM_TEAM_QUEUE;
+    private static final HashMap<UUID, Player> HUNTER_MAP;
+    private static final HashMap<UUID, Player> RUNNER_MAP;
+    private static final HashSet<Player> RANDOM_TEAM_QUEUE;
+
+    private static final HashSet<UUID> SAVED_GAME_HUNTERS;
+    private static final HashSet<UUID> SAVED_GAME_RUNNERS;
 
     private static int maxRunners;
     private static int maxHunters;
@@ -25,6 +29,68 @@ public final class ManHuntUtilities {
         HUNTER_MAP = new HashMap<>();
         RUNNER_MAP = new HashMap<>();
         RANDOM_TEAM_QUEUE = new HashSet<>();
+        SAVED_GAME_HUNTERS = new HashSet<>();
+        SAVED_GAME_RUNNERS = new HashSet<>();
+    }
+
+    public static OfflinePlayer getPlayer(final UUID playerUUID) {
+        return SERVER.getOfflinePlayer(playerUUID);
+    }
+
+    static int getMaxHunters() {
+        return maxHunters;
+    }
+
+    /**
+     * Sets the maximum number of players allowed in the Hunter-team. Only effective when set before the start of the
+     * game.
+     *
+     * @param maxHunters - The maximum value.
+     */
+    public static synchronized void setMaxHunters(final int maxHunters) {
+        ManHuntUtilities.maxHunters = maxHunters;
+    }
+
+    static int getMaxRunners() {
+        return maxRunners;
+    }
+
+    /**
+     * Sets the maximum number of players allowed in the Runner-team. Only effective when set before the start of the
+     * game.
+     *
+     * @param maxRunners - The maximum value.
+     */
+    public static synchronized void setMaxRunners(final int maxRunners) {
+        ManHuntUtilities.maxRunners = maxRunners;
+    }
+
+    static synchronized void addSavedGameHunter(final UUID playerUUID) {
+        SAVED_GAME_HUNTERS.add(playerUUID);
+    }
+
+    static synchronized void addSavedGameRunner(final UUID playerUUID) {
+        SAVED_GAME_RUNNERS.add(playerUUID);
+    }
+
+    public static synchronized boolean isPlayerInSavedGame(final UUID playerUUID) {
+        return SAVED_GAME_HUNTERS.contains(playerUUID) || SAVED_GAME_RUNNERS.contains(playerUUID);
+    }
+
+    public static synchronized boolean isPlayerSavedHunter(final UUID playerUUID) {
+        return SAVED_GAME_HUNTERS.contains(playerUUID);
+    }
+
+    public static synchronized boolean isPlayerSavedRunner(final UUID playerUUID) {
+        return SAVED_GAME_RUNNERS.contains(playerUUID);
+    }
+
+    public static void removePlayerFromSavedGameData(final UUID playerUUID) {
+        if (isPlayerSavedHunter(playerUUID)) {
+            SAVED_GAME_HUNTERS.remove(playerUUID);
+        } else if (isPlayerSavedRunner(playerUUID)) {
+            SAVED_GAME_RUNNERS.remove(playerUUID);
+        }
     }
 
     /**
@@ -42,14 +108,14 @@ public final class ManHuntUtilities {
      *
      * @return Set of Player-objects in the Random Queue.
      */
-    public static Set<Player> getPlayersInRandomQueue() {
+    static Set<Player> getPlayersInRandomQueue() {
         return RANDOM_TEAM_QUEUE;
     }
 
     /**
      * Clears the Random Queue.
      */
-    public static void clearRandomTeamQueue() {
+    static void clearRandomTeamQueue() {
         RANDOM_TEAM_QUEUE.clear();
     }
 
@@ -58,7 +124,7 @@ public final class ManHuntUtilities {
      *
      * @return Plugin-object.
      */
-    public static Plugin getManHuntPlugin() {
+    static Plugin getManHuntPlugin() {
         return ManHuntUtilities.MANHUNT_PLUGIN;
     }
 
@@ -72,12 +138,10 @@ public final class ManHuntUtilities {
     }
 
     /**
-     * Sets the value of the IS_FIRST_RUN AtomicBoolean to the value set in the method-parameter.
-     *
-     * @param isFirstRun - true or false.
+     * Sets the value of the IS_FIRST_RUN AtomicBoolean to the true.
      */
-    public static void setFirstRun(final boolean isFirstRun) {
-        ManHuntUtilities.IS_FIRST_RUN.set(isFirstRun);
+    static void setFirstRun() {
+        ManHuntUtilities.IS_FIRST_RUN.set(true);
     }
 
     /**
@@ -140,26 +204,6 @@ public final class ManHuntUtilities {
     }
 
     /**
-     * Sets the maximum number of players allowed in the Runner-team. Only effective when set before the start of the
-     * game.
-     *
-     * @param maxRunners - The maximum value.
-     */
-    public static synchronized void setMaxRunners(final int maxRunners) {
-        ManHuntUtilities.maxRunners = maxRunners;
-    }
-
-    /**
-     * Sets the maximum number of players allowed in the Hunter-team. Only effective when set before the start of the
-     * game.
-     *
-     * @param maxHunters - The maximum value.
-     */
-    public static synchronized void setMaxHunters(final int maxHunters) {
-        ManHuntUtilities.maxHunters = maxHunters;
-    }
-
-    /**
      * Updates the configurable settings read from the config.yml.
      */
     public static void updateFromConfig() {
@@ -178,6 +222,7 @@ public final class ManHuntUtilities {
         if (player.isOnline() && !ManHuntUtilities.isHunter(playerUUID)
                 && !ManHuntUtilities.isRunner(playerUUID) && !ManHuntUtilities.isHunterTeamOverCapacity()) {
             ManHuntUtilities.HUNTER_MAP.put(playerUUID, player);
+            if (GameFlowUtilities.isGameInProgress()) PlayerInventoryUtilities.givePlayerHunterCompasses(player);
             return true;
         }
         return false;
@@ -296,6 +341,7 @@ public final class ManHuntUtilities {
 
     /**
      * Gets the UUID of the player with the specified playername.
+     *
      * @param playerName - Name of the player.
      * @return UUID - The UUID of the player.
      */
