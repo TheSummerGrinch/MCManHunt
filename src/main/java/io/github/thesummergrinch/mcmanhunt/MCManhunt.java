@@ -2,10 +2,6 @@ package io.github.thesummergrinch.mcmanhunt;
 
 import io.github.thesummergrinch.mcmanhunt.commands.config.SetMaxHuntersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.config.SetMaxRunnersCommandExecutor;
-import io.github.thesummergrinch.mcmanhunt.commands.gamestate.PauseGameCommandExecutor;
-import io.github.thesummergrinch.mcmanhunt.commands.gamestate.ResumeGameCommandExecutor;
-import io.github.thesummergrinch.mcmanhunt.commands.gamestate.StartGameCommandExecutor;
-import io.github.thesummergrinch.mcmanhunt.commands.gamestate.StopGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.gamestate.*;
 import io.github.thesummergrinch.mcmanhunt.commands.info.ListHuntersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.info.ListRunnersCommandExecutor;
@@ -25,10 +21,10 @@ public final class MCManhunt extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        ConfigurationUtilities.loadConfig(this);
         this.getServer().getPluginManager().registerEvents(new OnCompassInteractEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnDeathEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnRespawnEventHandler(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerLoginEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoinEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMoveEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnEnderDragonDeathEventHandler(), this);
@@ -60,6 +56,6 @@ public final class MCManhunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // TODO Save any ongoing game, do that it can be resumed later.
+        ConfigurationUtilities.saveConfig(this);
     }
 }
