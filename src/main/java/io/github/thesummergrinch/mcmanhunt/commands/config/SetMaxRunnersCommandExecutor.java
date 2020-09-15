@@ -9,7 +9,7 @@ public class SetMaxRunnersCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args == null || ManHuntUtilities.hasLetters(args[0])) return false;
+        if (args == null || ManHuntUtilities.hasLetters(args[0]) || args.length > 1) return false;
         ManHuntUtilities.setMaxRunners(Integer.parseInt(args[0]));
         return true;
     }
