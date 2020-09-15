@@ -31,7 +31,7 @@ public class OnPlayerJoinEventHandler implements Listener {
                 if (ManHuntUtilities.isPlayerSavedRunner(playerUUID)) {
                     ManHuntUtilities.addRunner(player);
                 } else if (ManHuntUtilities.isPlayerSavedHunter(playerUUID)) {
-                    ManHuntUtilities.addRunner(player);
+                    ManHuntUtilities.addHunter(player);
                 }
                 ManHuntUtilities.removePlayerFromSavedGameData(playerUUID);
             }
