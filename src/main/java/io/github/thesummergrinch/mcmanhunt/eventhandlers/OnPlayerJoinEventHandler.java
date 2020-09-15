@@ -26,6 +26,14 @@ public class OnPlayerJoinEventHandler implements Listener {
             if (ManHuntUtilities.isRunner(playerUUID) || ManHuntUtilities.isHunter(playerUUID)) {
                 ManHuntUtilities.resetplayerroles();
             }
+        } else {
+            if (ManHuntUtilities.isPlayerInSavedGame(playerUUID)) {
+                if (ManHuntUtilities.isPlayerSavedRunner(playerUUID)) {
+                    ManHuntUtilities.addRunner(player);
+                } else if (ManHuntUtilities.isPlayerSavedHunter(playerUUID)) {
+                    ManHuntUtilities.addRunner(player);
+                }
+                ManHuntUtilities.removePlayerFromSavedGameData(playerUUID);
             }
         }
     }
