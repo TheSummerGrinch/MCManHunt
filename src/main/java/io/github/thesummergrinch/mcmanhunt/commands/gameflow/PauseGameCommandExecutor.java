@@ -1,15 +1,15 @@
-package io.github.thesummergrinch.mcmanhunt.commands.config;
+package io.github.thesummergrinch.mcmanhunt.commands.gameflow;
 
 import io.github.thesummergrinch.mcmanhunt.game.GameController;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class SetMaxRunnersCommandExecutor implements CommandExecutor {
+public class PauseGameCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender.isOp() && args.length != 0 && args[0].matches("[0-9]+")) {
-            GameController.getInstance().setMaxRunners(Integer.parseInt(args[0]));
+        if (sender.isOp() && GameController.getInstance().getGameState().equals(GameController.GameState.RUNNING)) {
+            GameController.getInstance().pauseGame();
             return true;
         }
         return false;

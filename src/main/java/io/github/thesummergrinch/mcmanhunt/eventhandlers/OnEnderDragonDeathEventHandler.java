@@ -1,7 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
-import io.github.thesummergrinch.mcmanhunt.utils.GameFlowUtilities;
-import io.github.thesummergrinch.mcmanhunt.utils.ManHuntUtilities;
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
+import io.github.thesummergrinch.mcmanhunt.game.GameController;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -20,9 +20,10 @@ public class OnEnderDragonDeathEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDragonDeathEvent(EntityDeathEvent event) {
         final LivingEntity entity = event.getEntity();
-        if (GameFlowUtilities.isGameInProgress() && entity instanceof EnderDragon) {
-            ManHuntUtilities.broadcastMessage("The Runners have won the Game!");
-            GameFlowUtilities.stopGame();
+        if (GameController.getInstance().getGameState().equals(GameController.GameState.RUNNING)
+                && entity instanceof EnderDragon) {
+            MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The Runners have won the Game!");
+            GameController.getInstance().stopGame();
         }
     }
 
