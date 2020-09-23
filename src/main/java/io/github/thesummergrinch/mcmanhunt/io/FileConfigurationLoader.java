@@ -64,11 +64,13 @@ public class FileConfigurationLoader {
     }
 
     private void saveOngoingGame() {
-        final ArrayList<String> hunterUUIDs = new ArrayList<>();
-        final ArrayList<String> runnerUUIDs = new ArrayList<>();
-        UserCache.getInstance().getHunters().forEach(playerState -> hunterUUIDs.add(playerState.getUUID().toString()));
-        UserCache.getInstance().getRunners().forEach(playerState -> runnerUUIDs.add(playerState.getUUID().toString()));
+        final HashSet<String> hunterUUIDs = new HashSet<>();
+        final HashSet<String> runnerUUIDs = new HashSet<>();
         final HashSet<String> spectatorUUIDs = new HashSet<>();
+        UserCache.getInstance().getHunters()
+                .forEach(playerState -> hunterUUIDs.add(playerState.getUUID().toString()));
+        UserCache.getInstance().getRunners()
+                .forEach(playerState -> runnerUUIDs.add(playerState.getUUID().toString()));
         UserCache.getInstance().getSpectators()
                 .forEach(playerState -> spectatorUUIDs.add(playerState.getUUID().toString()));
         fileConfiguration.set("game-ongoing", true);
