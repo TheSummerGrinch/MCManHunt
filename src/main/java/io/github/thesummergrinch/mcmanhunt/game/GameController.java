@@ -12,9 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
 import java.util.*;
 
 public final class GameController {
@@ -30,22 +27,16 @@ public final class GameController {
         FileConfigurationLoader fileConfigurationLoader = FileConfigurationLoader.getInstance();
         if (fileConfigurationLoader.getBoolean("game-ongoing")) {
             this.gameState = GameState.PAUSED;
-            ArrayList<String> runnerUUIDStrings = fileConfigurationLoader.getObject("current-runners",ArrayList.class);
-            ArrayList<String> hunterUUIDStrings = fileConfigurationLoader.getObject("current-hunters",ArrayList.class);
-            runnerUUIDStrings.forEach(uuidString -> {
-                PlayerState playerState = new PlayerState(UUID.fromString(uuidString));
-                playerState.setPlayerRole(PlayerRole.RUNNER);
-                UserCache.getInstance().addPlayer(playerState);
-            });
-            hunterUUIDStrings.forEach(uuidString -> {
-                PlayerState playerState = new PlayerState(UUID.fromString(uuidString));
-                playerState.setPlayerRole(PlayerRole.HUNTER);
-                UserCache.getInstance().addPlayer(playerState);
-            });
+            final HashMap<PlayerRole, HashSet<String>> playersInPreviousGame = new HashMap<>();
+            playersInPreviousGame.put(PlayerRole.RUNNER, fileConfigurationLoader.getObject("current-runners", HashSet.class));
+            playersInPreviousGame.put(PlayerRole.HUNTER, fileConfigurationLoader.getObject("current-hunters", HashSet.class));
+            playersInPreviousGame.put(PlayerRole.SPECTATOR, fileConfigurationLoader.getObject("current-spectators", HashSet.class));
+            intializeOngoingGamePlayerRoles(playersInPreviousGame);
         } else this.gameState = GameState.DEFAULT;
         this.maxHunters = fileConfigurationLoader.getInt("max-hunters");
         this.maxRunners = fileConfigurationLoader.getInt("max-runners");
         this.defaultGameDifficulty = MCManHunt.getPlugin(MCManHunt.class).getServer().getWorlds().get(0).getDifficulty();
+        this.gameMode = GameMode.NORMAL;
     }
 
     public static GameController getInstance() {
@@ -152,6 +143,16 @@ public final class GameController {
 
     public enum GameMode {
         NORMAL, RANDOM
+    }
+
+    private void intializeOngoingGamePlayerRoles(final HashMap<PlayerRole, HashSet<String>> playersInPreviousGame) {
+        playersInPreviousGame.forEach((playerrole, playerSet) -> {
+            playerSet.forEach(playerUUIDString -> {
+                PlayerState playerState = new PlayerState(UUID.fromString(playerUUIDString));
+                playerState.setPlayerRole(playerrole);
+                UserCache.getInstance().addPlayer(playerState);
+            });
+        });
     }
 
     public GameMode getManHuntGameMode() {
