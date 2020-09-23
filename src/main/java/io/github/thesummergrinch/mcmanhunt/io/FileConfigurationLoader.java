@@ -8,6 +8,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class FileConfigurationLoader {
 
@@ -67,9 +68,13 @@ public class FileConfigurationLoader {
         final ArrayList<String> runnerUUIDs = new ArrayList<>();
         UserCache.getInstance().getHunters().forEach(playerState -> hunterUUIDs.add(playerState.getUUID().toString()));
         UserCache.getInstance().getRunners().forEach(playerState -> runnerUUIDs.add(playerState.getUUID().toString()));
+        final HashSet<String> spectatorUUIDs = new HashSet<>();
+        UserCache.getInstance().getSpectators()
+                .forEach(playerState -> spectatorUUIDs.add(playerState.getUUID().toString()));
         fileConfiguration.set("game-ongoing", true);
         fileConfiguration.set("current-hunters", hunterUUIDs);
         fileConfiguration.set("current-runners", runnerUUIDs);
+        fileConfiguration.set("current-spectators", spectatorUUIDs);
     }
 
 }
