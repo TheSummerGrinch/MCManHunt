@@ -1,5 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
+import io.github.thesummergrinch.mcmanhunt.game.GameController;
 import io.github.thesummergrinch.mcmanhunt.game.cache.UserCache;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerState;
@@ -17,6 +19,10 @@ public class OnPlayerDeathEventHandler implements Listener {
         if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
             playerState.setPlayerRole(PlayerRole.SPECTATOR);
             event.getEntity().setGameMode(GameMode.SPECTATOR);
+        }
+        if (UserCache.getInstance().getNumberOfRunners() == 0) {
+            MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The Hunters have won the game!");
+            GameController.getInstance().stopGame();
         }
     }
 
