@@ -59,6 +59,14 @@ commands:
     description: Stops an ongoing game.
     usage: /stopgame
     permission: mcmanhunt.gameflow
+  setforcerandomteam:
+    description: Sets the ManHunt gamemode to either Random or Normal.
+    usage: /setforcerandomteam [true|false]
+    permission: mcmanhunt.config
+  joinrandomteam:
+    description: Allows the user to join a random team.
+    usage: /joinrandomteam
+    permission: mcmanhunt.player.team
 permissions:
   mcmanhunt.config:
     description: Gives access to configuration-options.

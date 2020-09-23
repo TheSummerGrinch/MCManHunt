@@ -77,4 +77,9 @@ public final class UserCache {
         return playerCache.values();
     }
 
+    public List<PlayerState> getPlayersToRandomlyAllocate() {
+        return this.playerCache.values().stream().filter(playerState -> playerState.getPlayerRole()
+                .equals(PlayerRole.RANDOM)).collect(Collectors.toList());
+    }
+
 }

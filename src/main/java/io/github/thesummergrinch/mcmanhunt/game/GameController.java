@@ -15,12 +15,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.*;
 
 public final class GameController {
 
     private static volatile GameController instance;
     private final Difficulty defaultGameDifficulty;
     private GameState gameState;
+    private GameMode gameMode;
     private int maxRunners;
     private int maxHunters;
 
@@ -146,6 +148,46 @@ public final class GameController {
 
     public enum GameState {
         RUNNING, PAUSED, DEFAULT
+    }
+
+    public enum GameMode {
+        NORMAL, RANDOM
+    }
+
+    public GameMode getManHuntGameMode() {
+        return this.gameMode;
+    }
+
+    public void setManHuntGameMode(final GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    private void randomlyAllocatePlayersToTeam(final ArrayList<PlayerState> players) {
+        long maxNumberOfHunters = this.maxHunters - UserCache.getInstance().getNumberOfHunters();
+        long maxNumberOfRunners = this.maxRunners - UserCache.getInstance().getNumberOfRunners();
+        for (PlayerState playerState : players) {
+            if (Math.random() < 0.5) {
+                if (maxNumberOfRunners > 0) {
+                    playerState.setPlayerRole(PlayerRole.RUNNER);
+                    maxNumberOfRunners -= 1;
+                } else if (maxNumberOfHunters > 0){
+                    playerState.setPlayerRole(PlayerRole.HUNTER);
+                    maxNumberOfHunters -= 1;
+                } else {
+                    playerState.setPlayerRole(PlayerRole.RUNNER);
+                }
+            } else if (maxNumberOfHunters != 0){
+                if (maxNumberOfHunters > 0) {
+                    playerState.setPlayerRole(PlayerRole.HUNTER);
+                    maxNumberOfHunters -= 1;
+                } else if (maxNumberOfRunners > 0){
+                    playerState.setPlayerRole(PlayerRole.RUNNER);
+                    maxNumberOfRunners -= 1;
+                } else {
+                    playerState.setPlayerRole(PlayerRole.HUNTER);
+                }
+            }
+        }
     }
 
 }

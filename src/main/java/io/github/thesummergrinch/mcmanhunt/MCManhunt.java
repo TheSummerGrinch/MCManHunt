@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt;
 
+import io.github.thesummergrinch.mcmanhunt.commands.config.SetForceRandomTeamCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.config.SetMaxHuntersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.config.SetMaxRunnersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.gameflow.PauseGameCommandExecutor;
@@ -11,6 +12,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.player.admin.AddRunnerComman
 import io.github.thesummergrinch.mcmanhunt.commands.player.info.ListHuntersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.player.info.ListRunnersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.player.team.JoinHuntersCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.player.team.JoinRandomTeamCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.player.team.JoinRunnersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.player.team.LeaveTeamCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.*;
@@ -48,6 +50,8 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("joinhunters").setExecutor(new JoinHuntersCommandExecutor());
         this.getCommand("joinrunners").setExecutor(new JoinRunnersCommandExecutor());
         this.getCommand("leaveteam").setExecutor(new LeaveTeamCommandExecutor());
+        this.getCommand("setforcerandomteam").setExecutor(new SetForceRandomTeamCommandExecutor());
+        this.getCommand("joinrandomteam").setExecutor(new JoinRandomTeamCommandExecutor());
     }
 
     private void registerEvents() {
