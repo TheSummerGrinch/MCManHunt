@@ -37,13 +37,13 @@ public final class UserCache {
         return this.playerCache.get(uuid);
     }
 
-    public ArrayList<PlayerState> getHunters() {
-        return (ArrayList<PlayerState>) this.playerCache.values().stream()
+    public List<PlayerState> getHunters() {
+        return this.playerCache.values().stream()
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.HUNTER)).collect(Collectors.toList());
     }
 
-    public ArrayList<PlayerState> getRunners() {
-        return (ArrayList<PlayerState>) this.playerCache.values().stream()
+    public List<PlayerState> getRunners() {
+        return this.playerCache.values().stream()
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.RUNNER)).collect(Collectors.toList());
     }
 
