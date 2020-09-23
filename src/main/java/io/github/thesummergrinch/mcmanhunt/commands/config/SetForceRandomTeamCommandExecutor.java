@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.commands.config;
 
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.game.GameController;
 import io.github.thesummergrinch.mcmanhunt.game.cache.UserCache;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerRole;
@@ -16,9 +17,13 @@ public class SetForceRandomTeamCommandExecutor implements CommandExecutor {
                 case "true":
                     GameController.getInstance().setManHuntGameMode(GameController.GameMode.RANDOM);
                     UserCache.getInstance().getAllPlayers().forEach(playerState -> playerState.setPlayerRole(PlayerRole.DEFAULT));
+                    MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The ManHunt-Gamemode has been " +
+                            "set to Random. You can only join using /joinrandomteam.");
                     return true;
                 case "false":
                     GameController.getInstance().setManHuntGameMode(GameController.GameMode.NORMAL);
+                    MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The ManHunt-Gamemode has been set" +
+                            "to Normal. You can join a team using /joinhunters, /joinrunners and /joinrandomteam.");
                     return true;
                 default:
                     sender.sendMessage("The argument entered is invalid. Please only use \"true\", or \"false\".");

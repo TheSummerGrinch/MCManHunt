@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.game.cache.UserCache;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.io.FileConfigurationLoader;
+import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -144,6 +145,7 @@ public final class GameController {
         this.setGameState(GameState.RUNNING);
         MCManHunt.getPlugin(MCManHunt.class).getServer().getWorlds()
                 .forEach(world -> world.setDifficulty(this.defaultGameDifficulty));
+        MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage(ChatColor.GREEN + "The Game has resumed!");
     }
 
     public enum GameState {

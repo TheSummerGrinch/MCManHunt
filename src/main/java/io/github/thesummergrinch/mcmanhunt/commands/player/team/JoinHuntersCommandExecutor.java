@@ -18,7 +18,6 @@ public class JoinHuntersCommandExecutor implements CommandExecutor {
                 return true;
             }
             UserCache.getInstance().getPlayerState(((Player) sender).getUniqueId()).setPlayerRole(PlayerRole.HUNTER);
-            sender.sendMessage("You have joined the Hunter-Team!");
             return true;
         }
         return false;

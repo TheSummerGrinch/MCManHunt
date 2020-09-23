@@ -36,6 +36,7 @@ public class PlayerState {
     }
 
     public void setPlayerRole(final PlayerRole playerRole) {
+        if (isOnline()) ((Player) getPlayerObject()).sendMessage("Your Role has been set to: " + playerRole.toString());
         this.playerRole = playerRole;
     }
 

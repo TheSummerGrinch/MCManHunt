@@ -18,7 +18,6 @@ public class JoinRunnersCommandExecutor implements CommandExecutor {
                 return true;
             }
             UserCache.getInstance().getPlayerState(((Player) sender).getUniqueId()).setPlayerRole(PlayerRole.RUNNER);
-            sender.sendMessage("You have joined the Runner-Team!");
             return true;
         }
         return false;
