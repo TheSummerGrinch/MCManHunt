@@ -51,8 +51,14 @@ public final class GameController {
     }
 
     public void startGame() {
+        this.setGameState(GameState.RUNNING);
+        final ArrayList<PlayerState> playersToAllocate = (ArrayList<PlayerState>) UserCache.getInstance().getPlayersToRandomlyAllocate();
+        if (!playersToAllocate.isEmpty()) {
+            randomlyAllocatePlayersToTeam(playersToAllocate);
+        }
         restrictPlayerMovement();
         distributeCompasses();
+        MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The Game will start in 10 seconds! The Runners will get a 30 second head-start!");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -69,8 +75,11 @@ public final class GameController {
     }
 
     private void restrictPlayerMovement() {
-        Arrays.asList(UserCache.getInstance().getHunters(), UserCache.getInstance().getRunners())
-                .forEach(playerStates -> playerStates.forEach(playerState -> playerState.setIsMovementRestricted(true)));
+        UserCache.getInstance().getAllPlayers().forEach(playerState -> {
+            if (!playerState.getPlayerRole().equals(PlayerRole.DEFAULT)) {
+                playerState.setIsMovementRestricted(true);
+            }
+        });
     }
 
     private void allowRunnerMovement() {
