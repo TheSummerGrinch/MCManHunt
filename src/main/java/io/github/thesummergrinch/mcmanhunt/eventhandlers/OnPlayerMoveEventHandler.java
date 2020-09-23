@@ -14,7 +14,7 @@ public class OnPlayerMoveEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMoveEvent(final PlayerMoveEvent event) {
         final PlayerState playerState = UserCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
-        if (event.getFrom().getY() < event.getTo().getY()) return;
+        if (event.getFrom().getY() > event.getTo().getY()) return;
         if (GameController.getInstance().getGameState().equals(GameController.GameState.PAUSED)
                 && (playerState.getPlayerRole().equals(PlayerRole.RUNNER)
                 || playerState.getPlayerRole().equals(PlayerRole.HUNTER))) {
