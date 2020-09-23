@@ -13,7 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.UUID;
 
 public final class GameController {
 
@@ -148,14 +151,6 @@ public final class GameController {
         MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage(ChatColor.GREEN + "The Game has resumed!");
     }
 
-    public enum GameState {
-        RUNNING, PAUSED, DEFAULT
-    }
-
-    public enum GameMode {
-        NORMAL, RANDOM
-    }
-
     private void intializeOngoingGamePlayerRoles(final HashMap<PlayerRole, HashSet<String>> playersInPreviousGame) {
         playersInPreviousGame.forEach((playerrole, playerSet) -> {
             playerSet.forEach(playerUUIDString -> {
@@ -182,17 +177,17 @@ public final class GameController {
                 if (maxNumberOfRunners > 0) {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                     maxNumberOfRunners -= 1;
-                } else if (maxNumberOfHunters > 0){
+                } else if (maxNumberOfHunters > 0) {
                     playerState.setPlayerRole(PlayerRole.HUNTER);
                     maxNumberOfHunters -= 1;
                 } else {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                 }
-            } else if (maxNumberOfHunters != 0){
+            } else if (maxNumberOfHunters != 0) {
                 if (maxNumberOfHunters > 0) {
                     playerState.setPlayerRole(PlayerRole.HUNTER);
                     maxNumberOfHunters -= 1;
-                } else if (maxNumberOfRunners > 0){
+                } else if (maxNumberOfRunners > 0) {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                     maxNumberOfRunners -= 1;
                 } else {
@@ -200,6 +195,14 @@ public final class GameController {
                 }
             }
         }
+    }
+
+    public enum GameState {
+        RUNNING, PAUSED, DEFAULT
+    }
+
+    public enum GameMode {
+        NORMAL, RANDOM
     }
 
 }
