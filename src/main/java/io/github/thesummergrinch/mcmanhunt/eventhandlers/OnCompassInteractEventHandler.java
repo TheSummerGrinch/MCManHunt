@@ -36,7 +36,7 @@ public class OnCompassInteractEventHandler implements Listener {
     }
 
     private PlayerState getTargetPlayerState(final String targetName) {
-        return UserCache.getInstance().getPlayerState(UserCache.getInstance().getUniqueIDByName(targetName));
+        return UserCache.getInstance().getPlayerState(UserCache.getInstance().getUniqueIDByPlayerName(targetName));
     }
 
 }

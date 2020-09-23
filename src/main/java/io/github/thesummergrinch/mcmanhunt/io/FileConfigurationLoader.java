@@ -67,11 +67,11 @@ public class FileConfigurationLoader {
         final HashSet<String> hunterUUIDs = new HashSet<>();
         final HashSet<String> runnerUUIDs = new HashSet<>();
         final HashSet<String> spectatorUUIDs = new HashSet<>();
-        UserCache.getInstance().getHunters()
+        UserCache.getInstance().getHunterPlayerStates()
                 .forEach(playerState -> hunterUUIDs.add(playerState.getUUID().toString()));
-        UserCache.getInstance().getRunners()
+        UserCache.getInstance().getRunnerPlayerStates()
                 .forEach(playerState -> runnerUUIDs.add(playerState.getUUID().toString()));
-        UserCache.getInstance().getSpectators()
+        UserCache.getInstance().getSpectatorPlayerStates()
                 .forEach(playerState -> spectatorUUIDs.add(playerState.getUUID().toString()));
         fileConfiguration.set("game-ongoing", true);
         fileConfiguration.set("current-hunters", hunterUUIDs);

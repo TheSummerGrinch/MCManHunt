@@ -16,7 +16,7 @@ public class SetForceRandomTeamCommandExecutor implements CommandExecutor {
             switch (args[0].toLowerCase()) {
                 case "true":
                     GameController.getInstance().setManHuntGameMode(GameController.GameMode.RANDOM);
-                    UserCache.getInstance().getAllPlayers().forEach(playerState -> playerState.setPlayerRole(PlayerRole.DEFAULT));
+                    UserCache.getInstance().getAllPlayerStates().forEach(playerState -> playerState.setPlayerRole(PlayerRole.DEFAULT));
                     MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The ManHunt-Gamemode has been " +
                             "set to Random. You can only join using /joinrandomteam.");
                     return true;

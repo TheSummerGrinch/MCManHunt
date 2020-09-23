@@ -13,8 +13,8 @@ public class OnPlayerJoinEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoinEvent(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        if (UserCache.getInstance().userHasEntry(player.getUniqueId())) return;
-        UserCache.getInstance().addPlayer(new PlayerState(player.getUniqueId()));
+        if (UserCache.getInstance().entryExists(player.getUniqueId())) return;
+        UserCache.getInstance().addPlayerState(new PlayerState(player.getUniqueId()));
     }
 
 }

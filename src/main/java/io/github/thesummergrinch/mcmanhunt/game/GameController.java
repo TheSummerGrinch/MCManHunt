@@ -76,7 +76,7 @@ public final class GameController {
     }
 
     private void restrictPlayerMovement() {
-        UserCache.getInstance().getAllPlayers().forEach(playerState -> {
+        UserCache.getInstance().getAllPlayerStates().forEach(playerState -> {
             if (!playerState.getPlayerRole().equals(PlayerRole.DEFAULT)) {
                 playerState.setIsMovementRestricted(true);
             }
@@ -84,17 +84,17 @@ public final class GameController {
     }
 
     private void allowRunnerMovement() {
-        UserCache.getInstance().getRunners().forEach(playerState -> playerState.setIsMovementRestricted(false));
+        UserCache.getInstance().getRunnerPlayerStates().forEach(playerState -> playerState.setIsMovementRestricted(false));
     }
 
     private void allowHunterMovement() {
-        UserCache.getInstance().getHunters().forEach(playerState -> playerState.setIsMovementRestricted(false));
+        UserCache.getInstance().getHunterPlayerStates().forEach(playerState -> playerState.setIsMovementRestricted(false));
     }
 
     private void distributeCompasses() {
         final ArrayList<CompassMeta> compassMetas = new ArrayList<>();
-        UserCache.getInstance().getRunners().forEach(playerState -> compassMetas.add(playerState.getCompassMeta()));
-        UserCache.getInstance().getHunters().forEach(playerState -> {
+        UserCache.getInstance().getRunnerPlayerStates().forEach(playerState -> compassMetas.add(playerState.getCompassMeta()));
+        UserCache.getInstance().getHunterPlayerStates().forEach(playerState -> {
             if (playerState.isOnline()) {
                 Player player = (Player) playerState.getPlayerObject();
                 for (int x = 0; x < compassMetas.size(); x++) {
@@ -132,7 +132,7 @@ public final class GameController {
 
     public void stopGame() {
         this.setGameState(GameState.DEFAULT);
-        UserCache.getInstance().getAllPlayers().forEach(playerState -> playerState.setPlayerRole(PlayerRole.DEFAULT));
+        UserCache.getInstance().getAllPlayerStates().forEach(playerState -> playerState.setPlayerRole(PlayerRole.DEFAULT));
     }
 
     public void pauseGame() {
@@ -161,7 +161,7 @@ public final class GameController {
             playerSet.forEach(playerUUIDString -> {
                 PlayerState playerState = new PlayerState(UUID.fromString(playerUUIDString));
                 playerState.setPlayerRole(playerrole);
-                UserCache.getInstance().addPlayer(playerState);
+                UserCache.getInstance().addPlayerState(playerState);
             });
         });
     }

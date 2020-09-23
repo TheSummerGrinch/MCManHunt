@@ -29,7 +29,7 @@ public final class UserCache {
         }
     }
 
-    public void addPlayer(final PlayerState playerState) {
+    public void addPlayerState(final PlayerState playerState) {
         this.playerCache.put(playerState.getUUID(), playerState);
     }
 
@@ -37,17 +37,17 @@ public final class UserCache {
         return this.playerCache.get(uuid);
     }
 
-    public List<PlayerState> getHunters() {
+    public List<PlayerState> getHunterPlayerStates() {
         return this.playerCache.values().stream()
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.HUNTER)).collect(Collectors.toList());
     }
 
-    public List<PlayerState> getRunners() {
+    public List<PlayerState> getRunnerPlayerStates() {
         return this.playerCache.values().stream()
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.RUNNER)).collect(Collectors.toList());
     }
 
-    public UUID getUniqueIDByName(final String playerName) {
+    public UUID getUniqueIDByPlayerName(final String playerName) {
         Optional<Player> found = Optional.empty();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getName().equals(playerName)) {
@@ -69,15 +69,15 @@ public final class UserCache {
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.HUNTER)).count();
     }
 
-    public boolean userHasEntry(final UUID playerUUID) {
+    public boolean entryExists(final UUID playerUUID) {
         return this.playerCache.containsKey(playerUUID);
     }
 
-    public Collection<PlayerState> getAllPlayers() {
+    public Collection<PlayerState> getAllPlayerStates() {
         return playerCache.values();
     }
 
-    public List<PlayerState> getSpectators() {
+    public List<PlayerState> getSpectatorPlayerStates() {
         return this.playerCache.values().stream().filter(playerState -> playerState.getPlayerRole()
                 .equals(PlayerRole.SPECTATOR)).collect(Collectors.toList());
     }

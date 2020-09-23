@@ -12,7 +12,7 @@ public class AddHunterCommandExecutor implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.isOp() && args.length > 0) {
             PlayerState playerState = UserCache.getInstance().getPlayerState(UserCache.getInstance()
-                    .getUniqueIDByName(args[0]));
+                    .getUniqueIDByPlayerName(args[0]));
             if (playerState == null) {
                 sender.sendMessage("Could not find the specified player. Please check the spelling.");
                 return true;

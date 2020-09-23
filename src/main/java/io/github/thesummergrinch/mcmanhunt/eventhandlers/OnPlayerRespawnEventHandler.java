@@ -21,7 +21,7 @@ public class OnPlayerRespawnEventHandler implements Listener {
         final PlayerState playerState = UserCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
         if (playerState.getPlayerRole().equals(PlayerRole.HUNTER)) {
             ArrayList<CompassMeta> compassMetas = new ArrayList<>();
-            UserCache.getInstance().getRunners().forEach(playerState1 -> compassMetas.add(playerState.getCompassMeta()));
+            UserCache.getInstance().getRunnerPlayerStates().forEach(playerState1 -> compassMetas.add(playerState.getCompassMeta()));
             Player player = (Player) playerState.getPlayerObject();
             for (int x = 0; x < compassMetas.size(); x++) {
                 ItemStack compass = new ItemStack(Material.COMPASS);
