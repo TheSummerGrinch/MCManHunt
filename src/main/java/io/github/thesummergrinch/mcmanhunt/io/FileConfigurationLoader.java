@@ -57,8 +57,9 @@ public class FileConfigurationLoader {
             saveOngoingGame();
         } else {
             fileConfiguration.set("game-ongoing", false);
-            fileConfiguration.set("current-hunters", new ArrayList<String>());
-            fileConfiguration.set("current-runners", new ArrayList<String>());
+            fileConfiguration.set("current-hunters", new HashSet<String>());
+            fileConfiguration.set("current-runners", new HashSet<String>());
+            fileConfiguration.set("current-spectators", new HashSet<String>());
         }
         MCManHunt.getPlugin(MCManHunt.class).saveConfig();
     }

@@ -136,6 +136,7 @@ public final class GameController {
     public void stopGame() {
         this.setGameState(GameState.DEFAULT);
         UserCache.getInstance().getAllPlayerStates().forEach(playerState -> playerState.setPlayerRole(PlayerRole.DEFAULT));
+        FileConfigurationLoader.getInstance().saveConfig();
     }
 
     public void pauseGame() {
