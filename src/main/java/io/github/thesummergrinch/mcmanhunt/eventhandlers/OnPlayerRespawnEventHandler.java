@@ -4,6 +4,7 @@ import io.github.thesummergrinch.mcmanhunt.game.cache.UserCache;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerState;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,15 +19,16 @@ public class OnPlayerRespawnEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawnEvent(final PlayerRespawnEvent event) {
-        final PlayerState playerState = UserCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
+        final Player player = event.getPlayer();
+        final PlayerState playerState = UserCache.getInstance().getPlayerState(player.getUniqueId());
         if (playerState.getPlayerRole().equals(PlayerRole.HUNTER)) {
-            ArrayList<CompassMeta> compassMetas = new ArrayList<>();
-            UserCache.getInstance().getRunnerPlayerStates().forEach(playerState1 -> compassMetas.add(playerState.getCompassMeta()));
-            Player player = (Player) playerState.getPlayerObject();
-            for (int x = 0; x < compassMetas.size(); x++) {
+            int index = 0;
+            for (PlayerState runner : UserCache.getInstance().getRunnerPlayerStates()) {
                 ItemStack compass = new ItemStack(Material.COMPASS);
-                compass.setItemMeta(compassMetas.get(x));
-                player.getInventory().setItem(x, compass);
+                runner.updateCompassMeta();
+                compass.setItemMeta(runner.getCompassMeta());
+                player.getInventory().setItem(index, compass);
+                index += 1;
             }
         }
     }
