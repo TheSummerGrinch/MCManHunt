@@ -8,15 +8,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.awt.event.MouseEvent;
 import java.util.UUID;
 
 public class OnCompassInteractEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCompassInteractEvent(final PlayerInteractEvent event) {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+            return;
+        }
         final Player player = event.getPlayer();
         final UUID playerUUID = player.getUniqueId();
         if (!UserCache.getInstance().getPlayerState(playerUUID).getPlayerRole().equals(PlayerRole.HUNTER)) return;
