@@ -16,13 +16,15 @@ public class OnPlayerDeathEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeathEvent(final PlayerDeathEvent event) {
         final PlayerState playerState = UserCache.getInstance().getPlayerState(event.getEntity().getUniqueId());
-        if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
-            playerState.setPlayerRole(PlayerRole.SPECTATOR);
-            event.getEntity().setGameMode(GameMode.SPECTATOR);
-        }
-        if (UserCache.getInstance().getNumberOfRunners() == 0) {
-            MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The Hunters have won the game!");
-            GameController.getInstance().stopGame();
+        if(GameController.getInstance().getGameState().equals(GameController.GameState.RUNNING)) {
+            if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
+                playerState.setPlayerRole(PlayerRole.SPECTATOR);
+                event.getEntity().setGameMode(GameMode.SPECTATOR);
+            }
+            if (UserCache.getInstance().getNumberOfRunners() == 0) {
+                MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The Hunters have won the game!");
+                GameController.getInstance().stopGame();
+            }
         }
     }
 
