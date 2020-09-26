@@ -26,7 +26,8 @@ public class OnPlayerRespawnEventHandler implements Listener {
             for (PlayerState runner : UserCache.getInstance().getRunnerPlayerStates()) {
                 ItemStack compass = new ItemStack(Material.COMPASS);
                 runner.updateCompassMeta();
-                compass.setItemMeta(runner.getCompassMeta());
+                CompassMeta compassMeta = runner.getCompassMeta();
+                compass.setItemMeta(compassMeta);
                 player.getInventory().setItem(index, compass);
                 index += 1;
             }
