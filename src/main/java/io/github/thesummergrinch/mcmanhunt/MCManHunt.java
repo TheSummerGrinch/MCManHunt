@@ -32,6 +32,7 @@ public final class MCManHunt extends JavaPlugin {
         ConfigurationSerialization.registerClass(Universe.class);
         ConfigurationSerialization.registerClass(GameCache.class);
         ConfigurationSerialization.registerClass(MCManHuntStringCache.class);
+        ConfigurationSerialization.registerClass(GameState.class);
     }
 
 
