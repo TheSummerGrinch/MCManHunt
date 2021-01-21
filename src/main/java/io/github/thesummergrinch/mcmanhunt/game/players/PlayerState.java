@@ -1,8 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.game.players;
 
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
-import io.github.thesummergrinch.mcmanhunt.game.Game;
-import io.github.thesummergrinch.mcmanhunt.game.GameState;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
