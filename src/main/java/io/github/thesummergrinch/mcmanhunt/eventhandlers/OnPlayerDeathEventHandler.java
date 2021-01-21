@@ -24,7 +24,7 @@ public class OnPlayerDeathEventHandler implements Listener {
         if (playerState.isInGame() && playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
             final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
             final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
-            if (game.getGameState().equals(GameFlowState.RUNNING)) {
+            if (game.getGameFlowState().equals(GameFlowState.RUNNING)) {
                 playerState.setPlayerRole(PlayerRole.SPECTATOR);
                 player.setGameMode(GameMode.SPECTATOR);
                 if (game.getNumberOfRunners() == 0L) {

@@ -20,7 +20,7 @@ public class OnEnderDragonDeathEventHandler implements @NotNull Listener {
         if (event.getEntity() instanceof EnderDragon) {
             @Nullable final Game game = GameCache.getInstance()
                     .getGameFromCache(event.getEntity().getLocation().getWorld().getName().split("_")[0]);
-            if (game != null && game.getGameState().equals(GameFlowState.RUNNING)) {
+            if (game != null && game.getGameFlowState().equals(GameFlowState.RUNNING)) {
                 Bukkit.getServer().getPluginManager()
                         .callEvent(new ManHuntWinEvent(game.getName(), game.getRunnerUUIDs()));
             }

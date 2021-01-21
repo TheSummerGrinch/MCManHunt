@@ -18,7 +18,7 @@ public class OnBlockDamageEventHandler implements Listener {
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
         final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
         if (game == null) return;
-        if ((!game.getGameState().equals(GameFlowState.RUNNING) && playerState.isInGame()) || playerState.isMovementRestricted())
+        if ((!game.getGameFlowState().equals(GameFlowState.RUNNING) && playerState.isInGame()) || playerState.isMovementRestricted())
             event.setCancelled(true);
     }
 
