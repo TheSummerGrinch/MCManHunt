@@ -22,7 +22,7 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
             if (sender instanceof Player) {
                 if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                     game = GameCache.getInstance().getGameFromCache(args[0]);
-                    if (game.getGameState().equals(GameState.PAUSED)) {
+                    if (game.getGameState().equals(GameFlowState.PAUSED)) {
                         game.resume();
                         game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
                     } else {
@@ -34,7 +34,7 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
                         .getPlayerState(((Player) sender).getUniqueId());
                 if (playerState.isInGame()) {
                     game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
-                    if (game.getGameState().equals(GameState.PAUSED)) {
+                    if (game.getGameState().equals(GameFlowState.PAUSED)) {
                         game.resume();
                         game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
                     } else {
@@ -46,7 +46,7 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
                 return true;
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
-                if (game.getGameState().equals(GameState.PAUSED)) {
+                if (game.getGameState().equals(GameFlowState.PAUSED)) {
                     game.resume();
                     game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
                 }
