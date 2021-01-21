@@ -3,7 +3,7 @@ package io.github.thesummergrinch.mcmanhunt.commands.game.player;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
-import io.github.thesummergrinch.mcmanhunt.game.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
