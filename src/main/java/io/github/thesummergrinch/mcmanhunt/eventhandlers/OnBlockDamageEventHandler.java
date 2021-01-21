@@ -1,24 +1,25 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
-import io.github.thesummergrinch.mcmanhunt.game.GameController;
-import io.github.thesummergrinch.mcmanhunt.game.cache.UserCache;
-import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerRole;
-import io.github.thesummergrinch.mcmanhunt.game.entity.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
+import io.github.thesummergrinch.mcmanhunt.game.Game;
+import io.github.thesummergrinch.mcmanhunt.game.GameState;
+import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class OnBlockDamageEventHandler implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockDamageEvent(final BlockDamageEvent event) {
-        final PlayerState playerState = UserCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
-        if (!playerState.getPlayerRole().equals(PlayerRole.DEFAULT)
-                && (playerState.isMovementRestricted()
-                || GameController.getInstance().getGameState().equals(GameController.GameState.PAUSED))) {
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockDamageEventHandler(@NotNull final BlockDamageEvent event) {
+        final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
+        final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+        if (game == null) return;
+        if ((!game.getGameState().equals(GameState.RUNNING) && playerState.isInGame()) || playerState.isMovementRestricted())
             event.setCancelled(true);
-        }
     }
 
 }
