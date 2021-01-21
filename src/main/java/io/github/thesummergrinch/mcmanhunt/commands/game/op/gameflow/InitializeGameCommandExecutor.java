@@ -1,7 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow;
 
 import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
-import io.github.thesummergrinch.mcmanhunt.game.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
