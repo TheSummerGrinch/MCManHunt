@@ -94,8 +94,6 @@ public final class PlayerState implements ConfigurationSerializable {
         objects.put("uuid", this.playerUUID.toString());
         objects.put("is-movement-restricted", this.isMovementRestricted.get());
         objects.put("player-role", this.playerRole.toString());
-        objects.put("game-name", this.game.getName());
-        objects.put("location", null);
         return objects;
     }
 
