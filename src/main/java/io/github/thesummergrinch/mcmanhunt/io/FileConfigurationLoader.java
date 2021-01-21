@@ -1,83 +1,40 @@
 package io.github.thesummergrinch.mcmanhunt.io;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
-import io.github.thesummergrinch.mcmanhunt.game.GameController;
-import io.github.thesummergrinch.mcmanhunt.game.cache.UserCache;
+import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-
-public class FileConfigurationLoader {
+public final class FileConfigurationLoader {
 
     private static volatile FileConfigurationLoader instance;
 
     private FileConfiguration fileConfiguration;
 
     private FileConfigurationLoader() {
-        this.fileConfiguration = getFileConfiguration();
+        fileConfiguration = MCManHunt.getPlugin(MCManHunt.class).getConfig();
     }
 
     public static FileConfigurationLoader getInstance() {
-        FileConfigurationLoader fileConfigurationLoader = instance;
-        if (fileConfigurationLoader != null) return fileConfigurationLoader;
+        FileConfigurationLoader loader = instance;
+        if (loader != null) return loader;
         synchronized (FileConfigurationLoader.class) {
-            if (instance == null) {
-                instance = new FileConfigurationLoader();
-            }
+            if (instance == null) instance = new FileConfigurationLoader();
             return instance;
         }
     }
 
-    private synchronized FileConfiguration getFileConfiguration() {
-        Plugin plugin = MCManHunt.getPlugin(MCManHunt.class);
-        if (!new File(plugin.getDataFolder(), "config.yml").exists()) plugin.saveDefaultConfig();
-        return plugin.getConfig();
-    }
-
-    public synchronized int getInt(final String path) {
-        return fileConfiguration.getInt(path);
-    }
-
-    public synchronized boolean getBoolean(final String path) {
-        return fileConfiguration.getBoolean(path);
-    }
-
-    public synchronized <T> T getObject(final String path, final Class<T> type) {
-        return fileConfiguration.getObject(path, type);
-    }
-
-    public synchronized void saveConfig() {
-        GameController gameController = GameController.getInstance();
-        fileConfiguration.set("max-hunters", gameController.getMaxHunters());
-        fileConfiguration.set("max-runners", gameController.getMaxRunners());
-        if (!gameController.getGameState().equals(GameController.GameState.DEFAULT)) {
-            saveOngoingGame();
-        } else {
-            fileConfiguration.set("game-ongoing", false);
-            fileConfiguration.set("current-hunters", new HashSet<String>());
-            fileConfiguration.set("current-runners", new HashSet<String>());
-            fileConfiguration.set("current-spectators", new HashSet<String>());
-        }
+    public void saveGames() {
+        fileConfiguration.set("game-cache", GameCache.getInstance());
         MCManHunt.getPlugin(MCManHunt.class).saveConfig();
     }
 
-    private void saveOngoingGame() {
-        final HashSet<String> hunterUUIDs = new HashSet<>();
-        final HashSet<String> runnerUUIDs = new HashSet<>();
-        final HashSet<String> spectatorUUIDs = new HashSet<>();
-        UserCache.getInstance().getHunterPlayerStates()
-                .forEach(playerState -> hunterUUIDs.add(playerState.getUUID().toString()));
-        UserCache.getInstance().getRunnerPlayerStates()
-                .forEach(playerState -> runnerUUIDs.add(playerState.getUUID().toString()));
-        UserCache.getInstance().getSpectatorPlayerStates()
-                .forEach(playerState -> spectatorUUIDs.add(playerState.getUUID().toString()));
-        fileConfiguration.set("game-ongoing", true);
-        fileConfiguration.set("current-hunters", hunterUUIDs);
-        fileConfiguration.set("current-runners", runnerUUIDs);
-        fileConfiguration.set("current-spectators", spectatorUUIDs);
+    public FileConfiguration getFileConfiguration() {
+        return this.fileConfiguration;
+    }
+
+    public GameCache loadGames() {
+        GameCache gameCache = fileConfiguration.getObject("game-cache", GameCache.class);
+        return gameCache;
     }
 
 }
