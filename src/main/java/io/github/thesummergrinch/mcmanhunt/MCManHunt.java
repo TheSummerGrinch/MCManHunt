@@ -6,6 +6,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListHuntersCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRunnersCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.op.ManHuntRuleCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.*;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.DestroyUniverseCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.SetDestroyUniverseOnStopCommandExecutor;
@@ -65,6 +66,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("destroyuniverse").setExecutor(new DestroyUniverseCommandExecutor());
         this.getCommand("setdestroyuniverseonstop").setExecutor(new SetDestroyUniverseOnStopCommandExecutor());
         this.getCommand("manhuntversion").setExecutor(new ManHuntVersionCommandExecutor());
+        this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
     }
 
     private void registerEventHandlers() {

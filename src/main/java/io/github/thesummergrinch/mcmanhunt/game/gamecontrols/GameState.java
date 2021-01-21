@@ -4,6 +4,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -20,6 +21,8 @@ public final class GameState implements ConfigurationSerializable {
     @NotNull
     private final Map<UUID, PlayerState> playersInGame;
     @NotNull
+    private final Map<String, String> gameConfigOptions;
+    @NotNull
     private final Universe gameUniverse;
     @NotNull
     private final String gameName;
@@ -35,6 +38,7 @@ public final class GameState implements ConfigurationSerializable {
         this.gameUniverse = gameUniverse;
         this.gameFlowState = GameFlowState.DEFAULT;
         this.gameName = this.gameUniverse.getName();
+        this.gameConfigOptions = FileConfigurationLoader.getInstance().getConfigOptions();
         this.playersInGame = new HashMap<>();
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
@@ -165,6 +169,10 @@ public final class GameState implements ConfigurationSerializable {
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.HUNTER)).count();
     }
 
+    protected boolean isCompassEnabledInNether() {
+        return Boolean.parseBoolean(this.gameConfigOptions.get("compass-enabled-in-nether"));
+    }
+
     protected HashSet<UUID> getHunterUUIDs() {
         final HashSet<UUID> hunterUUIDs = new HashSet<>();
         this.playersInGame.values().stream().filter(playerState -> playerState.getPlayerRole()
@@ -177,6 +185,14 @@ public final class GameState implements ConfigurationSerializable {
         this.playersInGame.values().stream().filter(playerState -> playerState.getPlayerRole()
                 .equals(PlayerRole.RUNNER)).forEach(playerState -> runnerUUIDs.add(playerState.getPlayerUUID()));
         return runnerUUIDs;
+    }
+
+    protected String getConfigurableOption(final String key) {
+        return this.gameConfigOptions.get(key);
+    }
+
+    protected void setManHuntRule(final String key, final String value) {
+        this.gameConfigOptions.put(key, value);
     }
 
     protected void linkPlayerStatesToGameObject(final Game game) {

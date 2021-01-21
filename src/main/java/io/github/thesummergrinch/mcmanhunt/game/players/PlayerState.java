@@ -60,8 +60,13 @@ public final class PlayerState implements ConfigurationSerializable {
     public Location getLastKnownLocation() {
         if (this.isOnline()) {
             final Location currentLocation = Bukkit.getPlayer(playerUUID).getLocation();
-            this.lastKnownLocation = (currentLocation.getWorld().getEnvironment().equals(World.Environment.NORMAL))
-                    ? currentLocation : this.lastKnownLocation;
+            if (this.game.isCompassEnabledInNether()) {
+                this.lastKnownLocation = currentLocation;
+            } else {
+                this.lastKnownLocation = (currentLocation.getWorld().getEnvironment().equals(World.Environment.NORMAL)
+                        || currentLocation.getWorld().getEnvironment().equals(World.Environment.THE_END))
+                        ? currentLocation : this.lastKnownLocation;
+            }
         }
         return this.lastKnownLocation;
     }

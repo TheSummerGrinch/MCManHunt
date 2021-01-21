@@ -223,4 +223,12 @@ public final class Game implements ConfigurationSerializable {
         return this.gameState.getWorldSpawn();
     }
 
+    public boolean isCompassEnabledInNether() {
+        return this.gameState.isCompassEnabledInNether();
+    }
+
+    public void setManHuntRule(final String key, final String value) {
+        this.gameState.setManHuntRule(key, value);
+    }
+
 }

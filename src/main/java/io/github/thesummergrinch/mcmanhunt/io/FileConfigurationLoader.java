@@ -6,6 +6,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public final class FileConfigurationLoader {
 
@@ -24,6 +25,21 @@ public final class FileConfigurationLoader {
             if (instance == null) instance = new FileConfigurationLoader();
             return instance;
         }
+    }
+
+    public void saveConfigOptions(final Map<String, String> configOptions) {
+        fileConfiguration.set("configurable-options", configOptions);
+    }
+
+    public HashMap<String, String> getConfigOptions() {
+        if (fileConfiguration.getObject("configurable-options", HashMap.class) == null) {
+            fileConfiguration.set("configurable-options", new HashMap<String, String>() {
+                {
+                    put("compass-enabled-in-nether", "false");
+                }
+            });
+        }
+        return (HashMap<String, String>) fileConfiguration.getObject("configurable-options", HashMap.class);
     }
 
     public void loadStrings() {
@@ -68,6 +84,7 @@ public final class FileConfigurationLoader {
                 put("game-resuming", "The game will resume in 5 seconds!");
                 put("game-has-resumed", "The game has resumed!");
                 put("game-has-stopped", "The game has stopped!");
+                put("rule-change-failed", "The specified game does not exist. Could not change rule.");
             }
         });
         fileConfiguration.set("string-cache", MCManHuntStringCache.getInstance());
