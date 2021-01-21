@@ -2,85 +2,72 @@ name: MCManHunt
 version: ${project.version}
 main: io.github.thesummergrinch.mcmanhunt.MCManHunt
 api-version: 1.16
-load: STARTUP
-authors: [ TheSummerGrinch ]
-description: ManHunt-plugin to be used for the ManHunt-minigame, as seen in Dream and GeorgeNotFound's videos.
-website: https://github.com/TheSummerGrinch/MCManHunt
 commands:
-  joinhunters:
-    description: Places the user in the Hunter-team.
-    usage: /joinhunters
-    permission: mcmanhunt.player.team
-  joinrunners:
-    description: Places the user in the Runner-team.
-    usage: /joinrunners
-    permission: mcmanhunt.player.team
-  leaveteam:
-    description: Removes the user from their team.
-    usage: /leaveteam
-    permission: mcmanhunt.player.team
-  addhunter:
-    description: Forcibly adds a player to the Hunter-team.
-    usage: /addhunter [playername]
-    permission: mcmanhunt.player.admin
-  addrunner:
-    description: Forcibly adds a player to the Runner-team.
-    usage: /addrunner [playername]
-    permission: mcmanhunt.player.admin
-  listrunners:
-    description: Lists the names of all the players on the Runner-team.
-    usage: /listrunners
-    permission: mcmanhunt.player.info
-  listhunters:
-    description: Lists the names of all the players on the Hunter-team.
-    usage: /listhunters
-    permission: mcmanhunt.player.info
-  setmaxrunners:
-    description: Sets the maximum amount of players allowed on the Runner-team.
-    usage: /setmaxrunners [Integer]
-    permission: mcmanhunt.config
-  setmaxhunters:
-    description: Sets the maximum amount of players allowed on the Hunter-team.
-    usage: /setmaxhunters [Integer]
-    permission: mcmanhunt.config
-  pausegame:
-    description: Pauses the game.
-    usage: /pausegame
-    permission: mcmanhunt.gameflow
-  resumegame:
-    description: Resumes a paused game.
-    usage: /resumegame
-    permission: mcmanhunt.gameflow
+  initializegame:
+    description: Initializes a game.
+    usage: /intializegame [gamename]
+    permission: mcmanhunt.game.op
+  joingame:
+    description: The user joins the specified game.
+    usage: /joingame [gamename]
+    permission: mcmanhunt.game.join
   startgame:
-    description: Starts a game.
-    usage: /startgame
-    permission: mcmanhunt.gameflow
+    description: Starts the specified game.
+    usage: /startgame [gamename]
+    permission: mcmanhunt.game.op
+  listhunters:
+    description: Lists the hunters registered to the specified game, or the game the user is currently registered to.
+    usage: /listhunters [Optional Gamename]
+    permission: mcmanhunt.game.info
+  listrunners:
+    description: Lists the runners registered to the specified game, or the game the user is currently registered to.
+    usage: /listrunners [Optional Gamename]
+    permission: mcmanhunt.game.info
+  listgames:
+    description: Lists all initialized games.
+    usage: /listgames
+    permission: mcmanhunt.game.info
+  jointeam:
+    description: The user joins the specified team.
+    usage: /jointeam [runners|hunters]
+    permission: mcmanhunt.game.join
+    aliases: [ joinhunters, joinrunners ]
+  pausegame:
+    description: The specified game is paused, or the game the user is currently in is paused.
+    usage: /pausegame [Optional Gamename]
+    permission: mcmanhunt.game.op
+  resumegame:
+    description: The specified game is resumed, or the game the user is currently in is resumed.
+    usage: /resumegame [Optional Gamename]
+    permission: mcmanhunt.game.op
   stopgame:
-    description: Stops an ongoing game.
-    usage: /stopgame
-    permission: mcmanhunt.gameflow
-  setforcerandomteam:
-    description: Sets the ManHunt gamemode to either Random or Normal.
-    usage: /setforcerandomteam [true|false]
-    permission: mcmanhunt.config
-  joinrandomteam:
-    description: Allows the user to join a random team.
-    usage: /joinrandomteam
-    permission: mcmanhunt.player.team
+    description: The specified game is stopped, or the game the user is currently in is stopped.
+    usage: /stopgame [Optional Gamename]
+    permission: mcmanhunt.game.op
+  destroyuniverse:
+    description: Marks the specified Universe for destruction.
+    usage: /destroyuniverse [Universename]
+    permission: mcmanhunt.game.op
+  setdestroyuniverseonstop:
+    description: Marks the specified Universe to be either destroyed or preserved when the game stops.
+    usage: /setdestroyuniverseonstop [Universename] [true|false]
+    permission: mcmanhunt.game.op
+    aliases: [ sdos ]
+  manhuntversion:
+    description: Echos the version of the plugin.
+    usage: /manhuntversion
+    permission: mcmanhunt.plugin.info
+    aliases: [ mhv ]
 permissions:
-  mcmanhunt.config:
-    description: Gives access to configuration-options.
+  mcmanhunt.game.op:
+    description: Allows the user access to op-commands related to the MCManHunt-plugin.
     default: op
-  mcmanhunt.gameflow:
-    description: Gives access to Gameflow-commands.
-    default: op
-  mcmanhunt.player.admin:
-    description: Gives access to Admin-commands.
-    default: op
-  mcmanhunt.player.info:
-    description: Gives access to basic information.
+  mcmanhunt.game.join:
+    description: Allows the user to access the /joingame-command and /jointeam-command.
     default: true
-  mcmanhunt.player.team:
-    description: Gives access to basic team-commands.
+  mcmanhunt.game.info:
+    description: Allows the user access to various informative commands.
     default: true
-
+  mcmanhunt.plugin.info:
+    description: Allows access to informative commands.
+    default: op
