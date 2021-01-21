@@ -129,6 +129,10 @@ public final class Game implements ConfigurationSerializable {
         return this.gameState;
     }
 
+    public @NotNull GameFlowState getGameFlowState() {
+        return this.gameState.getGameFlowState();
+    }
+
     public synchronized Set<PlayerState> getRunners() {
         return gameState.getRunners();
     }
