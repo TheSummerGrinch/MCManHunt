@@ -20,7 +20,7 @@ public class OnPlayerRespawnEventHandler implements Listener {
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
         final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
         if (playerState.isInGame())
-            if (game.getGameState().equals(GameState.RUNNING))
+            if (game.getGameState().equals(GameFlowState.RUNNING))
                 if (playerState.getPlayerRole().equals(PlayerRole.HUNTER)) {
                     game.giveHunterCompasses(playerState.getPlayerUUID());
                 }
