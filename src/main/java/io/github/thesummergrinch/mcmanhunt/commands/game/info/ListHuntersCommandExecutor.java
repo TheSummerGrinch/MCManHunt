@@ -28,9 +28,7 @@ public class ListHuntersCommandExecutor implements CommandExecutor {
             } else {
                 final StringBuilder stringBuilder = new StringBuilder(MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
                 HashSet<PlayerState> hunters = (HashSet<PlayerState>) game.getHunters();
-                hunters.forEach(hunter -> {
-                    stringBuilder.append(hunter.getPlayerName()).append(", ");
-                });
+                hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
                 sender.sendMessage(stringBuilder.toString());
             }
