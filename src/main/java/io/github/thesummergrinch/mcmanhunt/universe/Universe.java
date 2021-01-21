@@ -5,7 +5,6 @@ import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.io.WorldDirectoryFileVisitor;
 import org.bukkit.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,26 +86,24 @@ public final class Universe implements ConfigurationSerializable {
         });
     }
 
-    public @NotNull boolean getDestroyWhenGameIsStopped() {
+    public boolean getDestroyWhenGameIsStopped() {
         return this.destroyWhenGameIsStopped;
     }
 
-    public void setDestroyWhenGameIsStopped(@NotNull final boolean destroyWhenGameIsStopped) {
+    public void setDestroyWhenGameIsStopped(final boolean destroyWhenGameIsStopped) {
         this.destroyWhenGameIsStopped = destroyWhenGameIsStopped;
     }
 
-    public @NotNull boolean getMarkedForDestruction() {
+    public boolean getMarkedForDestruction() {
         return this.markedForDestruction;
     }
 
-    public void setMarkedForDestruction(@NotNull final boolean markedForDestruction) {
+    public void setMarkedForDestruction(final boolean markedForDestruction) {
         this.markedForDestruction = true;
     }
 
     public <T> void setGameRule(GameRule<T> gameRule, T value) {
-        this.worldHashMap.values().forEach(world -> {
-            world.setGameRule(gameRule, value);
-        });
+        this.worldHashMap.values().forEach(world -> world.setGameRule(gameRule, value));
     }
 
 }
