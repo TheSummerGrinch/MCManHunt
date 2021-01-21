@@ -1,0 +1,49 @@
+string-cache:
+  ==: io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache
+  hunters: hunters
+  win-message: Congratulations! You won the MCManHunt-game!
+  game-resuming: The game will resume in 5 seconds!
+  no-games-initialized: No games have been initialized.
+  rule-change-failed: The specified game does not exist. Could not change rule.
+  list-hunters: 'The Hunter-team consists of: '
+  game-stopping: The ManHunt-game will be stopped...
+  worlds-ready: World initialized.
+  join-team-incorrect-argument: The command-argument is incorrect. Please use "/jointeam
+    hunters" or "/jointeam runners".
+  universe-destroy-failed: Could not destroy the specified Universe. The Universe
+    may still be in use.
+  specified-game-not-exist: The specified game does not exist.
+  joined-runners-message: ' has joined the Runners!'
+  init-game: Initializing Game...
+  game-has-stopped: The game has stopped!
+  version-message-part-two: ' of the MCManHunt-plugin.'
+  runners-started: The Runner-team has started!
+  list-runners: 'The Runner-team consists of: '
+  join-hunters: joinhunters
+  tracker: ' Tracker'
+  game-resumed: The game has been resumed.
+  game-start-intro: The game will start in 5 seconds! The Runner-team gets a 30-second
+    head-start!
+  hunters-started: The Hunter-team has started!
+  game-paused: The game has been paused and the difficulty has been set to peaceful.
+  list-initialized-games: 'The following games have been initialized: '
+  game-has-resumed: The game has resumed!
+  not-in-game-no-game-specified: You are not in a game, and the specified game does
+    not exist.
+  join-runners: joinrunners
+  game-ready: Game initialized.
+  joined-hunters-message: ' has joined the Hunters!'
+  'false': 'false'
+  runners: runners
+  init-worlds: Initializing worlds...
+  game-not-paused: The specified game is not paused.
+  join-team-failed: You are not in registered to a game. Please join a game before
+    using this command!
+  joined-game: You've been added to the game!
+  'true': 'true'
+  version-message-part-one: '[MCManHunt] You are running version '
+configurable-options:
+  compass-enabled-in-nether: 'false'
+game-cache:
+  ==: io.github.thesummergrinch.mcmanhunt.cache.GameCache
+  game-cache: {}
