@@ -3,16 +3,14 @@ package io.github.thesummergrinch.mcmanhunt.game;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.CompassStateCache;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassMetaBuilder;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -34,7 +32,7 @@ public final class Game implements ConfigurationSerializable {
     @NotNull
     private final String gameName;
     @NotNull
-    private Difficulty defaultGameDifficulty;
+    private final Difficulty defaultGameDifficulty;
 
     @NotNull
     private GameState gameState;
@@ -130,6 +128,7 @@ public final class Game implements ConfigurationSerializable {
                 player.setBedSpawnLocation(gameUniverse.getWorld(gameName).getSpawnLocation(), true);
                 player.teleport(gameUniverse.getWorld(gameName)
                         .getSpawnLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
+                player.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache(ChatColor.GREEN + "game-start-intro"));
             }
         });
         new BukkitRunnable() {
@@ -152,6 +151,12 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
+                broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("runners-started"));
+            }
+        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
                 playersInGame.values().forEach(playerState -> {
                     if (!playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
                         playerState.setIsMovementRestricted(false);
@@ -159,6 +164,12 @@ public final class Game implements ConfigurationSerializable {
                 });
             }
         }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 700);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                broadcastToPlayers(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("hunters-started"));
+            }
+        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 700);
     }
 
     public void broadcastToPlayers(@NotNull final String message) {
@@ -215,11 +226,21 @@ public final class Game implements ConfigurationSerializable {
     public void pause() {
         this.setGameState(GameState.PAUSED);
         this.gameUniverse.setDifficulty(Difficulty.PEACEFUL);
+        this.gameUniverse.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-paused"));
     }
 
     public void resume() {
-        this.setGameState(GameState.RUNNING);
-        this.gameUniverse.setDifficulty(this.defaultGameDifficulty);
+        broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resuming"));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                setGameState(GameState.RUNNING);
+                gameUniverse.setDifficulty(defaultGameDifficulty);
+                gameUniverse.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+                broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-has-resumed"));
+            }
+        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100L);
     }
 
     public void stop() {
@@ -227,6 +248,7 @@ public final class Game implements ConfigurationSerializable {
             this.gameUniverse.setMarkedForDestruction(true);
         }
         teleportPlayersToDefaultWorld();
+        broadcastToPlayers(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("game-has-stopped"));
         this.removeAllPlayersFromGame();
         GameCache.getInstance().removeGame(this.getName());
     }
@@ -258,7 +280,7 @@ public final class Game implements ConfigurationSerializable {
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.HUNTER)).count();
     }
 
-    public HashSet<UUID> getHunterUUIDs () {
+    public HashSet<UUID> getHunterUUIDs() {
         final HashSet<UUID> hunterUUIDs = new HashSet<>();
         this.playersInGame.values().stream().filter(playerState -> playerState.getPlayerRole()
                 .equals(PlayerRole.HUNTER)).forEach(playerState -> hunterUUIDs.add(playerState.getPlayerUUID()));

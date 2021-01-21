@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import org.bukkit.ChatColor;
@@ -25,14 +26,14 @@ public class PauseGameCommandExecutor implements CommandExecutor {
                 if (playerState.isInGame()) {
                     GameCache.getInstance().getGameFromCache(playerState.getGameName()).pause();
                 } else {
-                    sender.sendMessage(ChatColor.RED + "The specified game does not exist, and you are not in a game.");
+                    sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
                 }
                 return true;
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 GameCache.getInstance().getGameFromCache(args[0]).pause();
                 return true;
             } else {
-                sender.sendMessage("The specified game does not exist.");
+                sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
             }
         }
         return false;

@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
 import io.github.thesummergrinch.mcmanhunt.cache.CompassStateCache;
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,13 +26,13 @@ public class OnPlayerInteractEventHandler implements Listener {
             ItemStack compass;
             if (sender.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)) {
                 compass = sender.getInventory().getItemInMainHand();
-                if (compass.getItemMeta().getDisplayName().contains(" Tracker")) {
+                if (compass.getItemMeta().getDisplayName().contains(MCManHuntStringCache.getInstance().getStringFromCache("tracker"))) {
                     updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0]);
                 }
             }
             if (sender.getInventory().getItemInOffHand().getType().equals(Material.COMPASS)) {
                 compass = sender.getInventory().getItemInOffHand();
-                if (compass.getItemMeta().getDisplayName().contains(" Tracker")) {
+                if (compass.getItemMeta().getDisplayName().contains(MCManHuntStringCache.getInstance().getStringFromCache("tracker"))) {
                     updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0]);
                 }
             }

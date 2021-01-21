@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.player;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
@@ -19,20 +20,23 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
         if (sender instanceof Player) {
             playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
             if (!playerState.isInGame()) {
-                sender.sendMessage("You are not in registered to a game. Please join a game before using this command!");
+                sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("join-team-failed"));
                 return true;
             }
-            if (label.equals("joinhunters") || args.length >= 1 && args[0].equals("hunters")) {
+            if (label.equals(MCManHuntStringCache.getInstance().getStringFromCache("join-hunters"))
+                    || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("hunters"))) {
                 playerState.setPlayerRole(PlayerRole.HUNTER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(ChatColor.RED + sender.getName() + " has joined the Hunters!");
-            } else if (label.equals("joinrunners") || args.length >= 1 && args[0].equals("runners")) {
+                        .broadcastToPlayers(ChatColor.RED + sender.getName() + MCManHuntStringCache.getInstance()
+                                .getStringFromCache("joined-hunters-message"));
+            } else if (label.equals(MCManHuntStringCache.getInstance().getStringFromCache("join-runners"))
+                    || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("runners"))) {
                 playerState.setPlayerRole(PlayerRole.RUNNER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(ChatColor.GREEN + sender.getName() + " has joined the Runners!");
+                        .broadcastToPlayers(ChatColor.GREEN + sender.getName() + MCManHuntStringCache.getInstance()
+                                .getStringFromCache("joined-runners-message"));
             } else {
-                sender.sendMessage(ChatColor.RED + "The command-argument is incorrect. " +
-                        "Please use \"/jointeam hunters\" or \"/jointeam runners\".");
+                sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("join-team-incorrect-argument"));
             }
             return true;
         }

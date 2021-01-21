@@ -39,22 +39,22 @@ public final class GameCache implements ConfigurationSerializable {
     }
 
     public void cacheGame(final String gameName, final Game game) {
-        this.gameCache.put(gameName, game);
+        gameCache.put(gameName, game);
     }
 
     @Nullable
     public Game getGameFromCache(final String gameName) {
-        return this.gameCache.get(gameName);
+        return gameCache.get(gameName);
     }
 
     public Set<Map.Entry<String, Game>> getAllGames() {
-        return this.gameCache.entrySet();
+        return gameCache.entrySet();
     }
 
     @Override
     public @NotNull Map<String, Object> serialize() {
         HashMap<String, Object> gameCache = new HashMap<>();
-        gameCache.put("game-cache", this.gameCache);
+        gameCache.put("game-cache", GameCache.gameCache);
         return gameCache;
     }
 

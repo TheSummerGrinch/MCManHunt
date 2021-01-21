@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.info;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,9 +15,9 @@ public class ListGamesCommandExecutor implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Set<String> gameNames = GameCache.getGameNames();
         if (gameNames.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "No games have been initialized.");
+            sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("no-games-initialized"));
         } else {
-            final StringBuilder stringBuilder = new StringBuilder(ChatColor.GREEN + "The following games have been initialized: ");
+            final StringBuilder stringBuilder = new StringBuilder(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-initialized-games"));
             gameNames.forEach(gameName -> stringBuilder.append(gameName).append(", "));
             sender.sendMessage(stringBuilder.substring(0, stringBuilder.length() - 2));
         }

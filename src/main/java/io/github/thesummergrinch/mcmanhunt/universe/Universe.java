@@ -30,7 +30,7 @@ public final class Universe implements ConfigurationSerializable {
         this.universeName = universeName;
         populateUniverse();
         UniverseCache.getInstance().cacheUniverse(this.universeName, this);
-        this.destroyWhenGameIsStopped = (universeName.equals("world")) ? false : true;
+        this.destroyWhenGameIsStopped = !universeName.equals("world");
         this.markedForDestruction = false;
     }
 
@@ -101,6 +101,12 @@ public final class Universe implements ConfigurationSerializable {
 
     public void setMarkedForDestruction(@NotNull final boolean markedForDestruction) {
         this.markedForDestruction = true;
+    }
+
+    public <T> void setGameRule(GameRule<T> gameRule, T value) {
+        this.worldHashMap.values().forEach(world -> {
+            world.setGameRule(gameRule, value);
+        });
     }
 
 }

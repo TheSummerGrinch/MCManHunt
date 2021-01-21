@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.info;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.Game;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
@@ -23,9 +24,9 @@ public class ListHuntersCommandExecutor implements CommandExecutor {
                     ? GameCache.getInstance().getGameFromCache(args[0])
                     : GameCache.getInstance().getGameFromCache(playerState.getGameName());
             if (game == null) {
-                sender.sendMessage(ChatColor.RED + "You are not in a game, and the specified game does not exist.");
+                sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
             } else {
-                final StringBuilder stringBuilder = new StringBuilder("The Hunter-team consists of: ");
+                final StringBuilder stringBuilder = new StringBuilder(MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
                 HashSet<PlayerState> hunters = (HashSet<PlayerState>) game.getHunters();
                 hunters.forEach(hunter -> {
                     stringBuilder.append(hunter.getPlayerName()).append(", ");
