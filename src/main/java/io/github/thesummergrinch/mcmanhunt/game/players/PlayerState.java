@@ -76,7 +76,7 @@ public final class PlayerState implements ConfigurationSerializable {
     }
 
     public boolean isInGame() {
-        return (this.game != null && !game.getGameState().equals(GameState.DEFAULT));
+        return (this.game != null);
     }
 
     public void setGame(@Nullable final Game game) {
