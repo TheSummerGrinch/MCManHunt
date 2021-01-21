@@ -1,6 +1,5 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
-import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +11,8 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
     private static final Map<String, String> stringCache = new HashMap<>();
     private static volatile MCManHuntStringCache instance;
 
-    private MCManHuntStringCache() {}
+    private MCManHuntStringCache() {
+    }
 
     public static MCManHuntStringCache getInstance() {
         MCManHuntStringCache mcManHuntStringCache = instance;
@@ -26,20 +26,15 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
         return mcManHuntStringCache;
     }
 
+    public static MCManHuntStringCache deserialize(Map<String, Object> objects) {
+        instance = getInstance();
+        objects.forEach((key, value) -> MCManHuntStringCache.stringCache.put(key, (String) value));
+        return getInstance();
+    }
 
     @Override
     public @NotNull Map<String, Object> serialize() {
-        Map<String, Object> serializedObjects = new HashMap<>();
-        serializedObjects.putAll(stringCache);
-        return serializedObjects;
-    }
-
-    public static MCManHuntStringCache deserialize(Map<String, Object> objects) {
-        instance = getInstance();
-        objects.forEach((key, value) -> {
-            MCManHuntStringCache.stringCache.put(key, (String) value);
-        });
-        return getInstance();
+        return new HashMap<>(stringCache);
     }
 
     public void addStringsToCache(final Map<String, String> strings) {
