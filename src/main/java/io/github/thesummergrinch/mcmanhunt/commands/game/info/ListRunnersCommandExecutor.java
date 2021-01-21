@@ -29,9 +29,7 @@ public class ListRunnersCommandExecutor implements CommandExecutor {
             } else {
                 final StringBuilder stringBuilder = new StringBuilder(MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
                 HashSet<PlayerState> runners = (HashSet<PlayerState>) game.getRunners();
-                runners.forEach(runner -> {
-                    stringBuilder.append(runner.getPlayerName()).append(", ");
-                });
+                runners.forEach(runner -> stringBuilder.append(runner.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
                 sender.sendMessage(stringBuilder.toString());
             }
