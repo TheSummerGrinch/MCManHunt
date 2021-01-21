@@ -2,8 +2,8 @@ package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
-import io.github.thesummergrinch.mcmanhunt.game.Game;
-import io.github.thesummergrinch.mcmanhunt.game.GameState;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import org.bukkit.event.EventHandler;
