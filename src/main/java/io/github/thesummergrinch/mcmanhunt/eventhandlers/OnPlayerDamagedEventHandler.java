@@ -19,7 +19,7 @@ public class OnPlayerDamagedEventHandler implements Listener {
         if (event.getEntity() instanceof Player) {
             playerState = PlayerStateCache.getInstance().getPlayerState(event.getEntity().getUniqueId());
             if ((playerState.isInGame() && !GameCache.getInstance()
-                    .getGameFromCache(playerState.getGameName()).getGameState().equals(GameState.RUNNING))
+                    .getGameFromCache(playerState.getGameName()).getGameState().equals(GameFlowState.RUNNING))
                     || playerState.isMovementRestricted()) {
                 event.setCancelled(true);
             }
