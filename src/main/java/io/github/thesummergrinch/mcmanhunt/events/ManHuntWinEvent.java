@@ -21,12 +21,12 @@ public class ManHuntWinEvent extends Event {
         this.gameName = gameName;
     }
 
-    @Override
-    public @NotNull HandlerList getHandlers() {
+    public static @NotNull HandlerList getHandlerList() {
         return handlers;
     }
 
-    public static @NotNull HandlerList getHandlerList() {
+    @Override
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 
