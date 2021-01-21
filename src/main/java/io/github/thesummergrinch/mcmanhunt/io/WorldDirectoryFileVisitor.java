@@ -10,7 +10,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class WorldDirectoryFileVisitor implements FileVisitor<Path> {
 
     @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
         return FileVisitResult.CONTINUE;
     }
 
@@ -23,7 +23,7 @@ public class WorldDirectoryFileVisitor implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+    public FileVisitResult visitFileFailed(Path file, IOException exc) {
         return FileVisitResult.TERMINATE;
     }
 
