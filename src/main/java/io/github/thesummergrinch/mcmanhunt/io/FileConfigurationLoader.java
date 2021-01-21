@@ -26,9 +26,9 @@ public final class FileConfigurationLoader {
         }
     }
 
-    public MCManHuntStringCache loadStrings() {
+    public void loadStrings() {
         MCManHuntStringCache stringCache = fileConfiguration.getObject("string-cache", MCManHuntStringCache.class);
-        if (stringCache != null) return stringCache;
+        if (stringCache != null) return;
         MCManHuntStringCache.getInstance().addStringsToCache(new HashMap<String, String>() {
             {
                 put("no-games-initialized", "No games have been initialized.");
@@ -71,7 +71,6 @@ public final class FileConfigurationLoader {
             }
         });
         fileConfiguration.set("string-cache", MCManHuntStringCache.getInstance());
-        return MCManHuntStringCache.getInstance();
     }
 
     public void saveGames() {
@@ -84,8 +83,7 @@ public final class FileConfigurationLoader {
     }
 
     public GameCache loadGames() {
-        GameCache gameCache = fileConfiguration.getObject("game-cache", GameCache.class);
-        return gameCache;
+        return fileConfiguration.getObject("game-cache", GameCache.class);
     }
 
 }
