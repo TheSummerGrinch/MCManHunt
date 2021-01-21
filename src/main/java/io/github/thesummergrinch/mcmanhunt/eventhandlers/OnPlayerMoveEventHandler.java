@@ -20,7 +20,7 @@ public class OnPlayerMoveEventHandler implements Listener {
         Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
         if (event.getFrom().getY() > event.getTo().getY() || game == null) return;
         if (playerState.isMovementRestricted() || (!playerState.getPlayerRole().equals(PlayerRole.DEFAULT)
-                && game.getGameState().equals(GameState.PAUSED))) event.setCancelled(true);
+                && game.getGameState().equals(GameFlowState.PAUSED))) event.setCancelled(true);
     }
 
 }
