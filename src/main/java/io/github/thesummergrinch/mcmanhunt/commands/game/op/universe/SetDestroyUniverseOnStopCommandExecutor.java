@@ -15,7 +15,6 @@ public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor 
                 || args[1].equalsIgnoreCase(MCManHuntStringCache.getInstance().getStringFromCache("false")))) {
             UniverseCache.getInstance().getUniverse(args[0]).setDestroyWhenGameIsStopped(Boolean.parseBoolean(args[1]));
             return true;
-        }
-        else return false;
+        } else return false;
     }
 }
