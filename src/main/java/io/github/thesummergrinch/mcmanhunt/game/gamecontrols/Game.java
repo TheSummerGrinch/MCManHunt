@@ -38,6 +38,7 @@ public final class Game implements ConfigurationSerializable {
 
     private Game(@NotNull GameState gameState) {
         this.gameState = gameState;
+        this.gameState.linkPlayerStatesToGameObject(this);
         GameCache.getInstance().cacheGame(gameState.getGameName(), this);
     }
 
