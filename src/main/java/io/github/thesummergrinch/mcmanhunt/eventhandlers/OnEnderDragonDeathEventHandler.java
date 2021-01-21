@@ -1,29 +1,29 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
-import io.github.thesummergrinch.mcmanhunt.MCManHunt;
-import io.github.thesummergrinch.mcmanhunt.game.GameController;
+import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
+import io.github.thesummergrinch.mcmanhunt.game.Game;
+import io.github.thesummergrinch.mcmanhunt.game.GameState;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class OnEnderDragonDeathEventHandler implements Listener {
+public class OnEnderDragonDeathEventHandler implements @NotNull Listener {
 
-    /**
-     * Checks whether an EntityDeathsEvent corresponds to the death of the Enderdragon, which would fulfill the win-
-     * condition of the Runner-team.
-     *
-     * @param event - The EntityDeathEvent passed by the Server.
-     */
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onDragonDeathEvent(EntityDeathEvent event) {
-        final LivingEntity entity = event.getEntity();
-        if (GameController.getInstance().getGameState().equals(GameController.GameState.RUNNING)
-                && entity instanceof EnderDragon) {
-            MCManHunt.getPlugin(MCManHunt.class).getServer().broadcastMessage("The Runners have won the Game!");
-            GameController.getInstance().stopGame();
+    public void onEnderDragonDeathEvent(@NotNull final EntityDeathEvent event) {
+        if (event.getEntity() instanceof EnderDragon) {
+            @Nullable final Game game = GameCache.getInstance()
+                    .getGameFromCache(event.getEntity().getLocation().getWorld().getName().split("_")[0]);
+            if (game != null && game.getGameState().equals(GameState.RUNNING)) {
+                Bukkit.getServer().getPluginManager()
+                        .callEvent(new ManHuntWinEvent(game.getName(), game.getRunnerUUIDs()));
+            }
         }
     }
 
