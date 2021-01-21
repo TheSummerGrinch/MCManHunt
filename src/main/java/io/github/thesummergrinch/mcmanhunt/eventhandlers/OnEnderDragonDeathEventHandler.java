@@ -2,8 +2,8 @@ package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
-import io.github.thesummergrinch.mcmanhunt.game.Game;
-import io.github.thesummergrinch.mcmanhunt.game.GameState;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.event.EventHandler;
