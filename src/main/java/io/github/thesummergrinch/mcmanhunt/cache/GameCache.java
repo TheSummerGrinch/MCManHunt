@@ -1,7 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
-import io.github.thesummergrinch.mcmanhunt.io.FileConfigurationLoader;
+import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

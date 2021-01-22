@@ -1,4 +1,4 @@
-package io.github.thesummergrinch.mcmanhunt.io;
+package io.github.thesummergrinch.mcmanhunt.io.settings;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
