@@ -42,6 +42,11 @@ public final class Game implements ConfigurationSerializable {
         GameCache.getInstance().cacheGame(gameState.getGameName(), this);
     }
 
+    /**
+     * Reconstructs a {@link Game}-object from a yml-representation, as specified by {@link #serialize()}.
+     * @param objects - {@link Map} constructed from the yml-representation of the {@link Game}-object.
+     * @return the reconstructed {@link Game}-object.
+     */
     @SuppressWarnings("unused")
     public static @NotNull Game deserialize(final Map<String, Object> objects) {
         return new Game((GameState) objects.get("game-state"));
@@ -66,6 +71,15 @@ public final class Game implements ConfigurationSerializable {
         return gameState.getGameName();
     }
 
+    /**
+     * Starts a ManHunt-game in the following sequence:
+     * 1. Set the {@link GameFlowState} within the {@link GameState} to RUNNING.
+     * 2. Reset the time of the Gameworld, to ensure a decent start.
+     * 3. Teleport players to ManHunt-overworld.
+     * 4. Restrict player movement and damage.
+     * 5. Allow runners to move, and give them a 30 second headstart.
+     * 6. Allow hunters to move.
+     */
     public void start() {
         gameState.setGameFlowState(GameFlowState.RUNNING);
         gameState.setGameUniverseTime(1000L);
@@ -142,6 +156,11 @@ public final class Game implements ConfigurationSerializable {
         return gameState.getHunters();
     }
 
+    /**
+     * Gives each hunter one compass per runner. Each compass can be updated by right-clicking the air with the compass
+     * in hand.
+     * @param hunterUUID
+     */
     public void giveHunterCompasses(@NotNull final UUID hunterUUID) {
         final PlayerState[] runners = this.getRunners().toArray(new PlayerState[0]);
         Player player = Bukkit.getPlayer(hunterUUID);
@@ -165,6 +184,10 @@ public final class Game implements ConfigurationSerializable {
         }
     }
 
+    /**
+     * Pauses the game, sets the difficulty of each game-world to peaceful and stops the daylight-cycle, to prevent any
+     * unfair advantages. Players are notified when the game is paused.
+     */
     public void pause() {
         this.gameState.setGameFlowState(GameFlowState.PAUSED);
         this.gameState.setUniverseDifficulty(Difficulty.PEACEFUL);
@@ -172,6 +195,11 @@ public final class Game implements ConfigurationSerializable {
         broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-paused"));
     }
 
+    /**
+     * Informs the players that the game will resume in 5 seconds.
+     * Resumes a paused game, sets the difficulty of each game-world to the value it was at before pausing, and starts
+     * the daylight-cycle again.
+     */
     public void resume() {
         broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resuming"));
         new BukkitRunnable() {
@@ -185,6 +213,11 @@ public final class Game implements ConfigurationSerializable {
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100L);
     }
 
+    /**
+     * Stops an ongoing game. If {@link Universe#getDestroyWhenGameIsStopped()} returns true, the {@link Universe} will
+     * be marked for destruction. All players are moved to the default world, and will be informed of the game being
+     * stopped.
+     */
     public void stop() {
         if (this.gameState.getGameUniverse().getDestroyWhenGameIsStopped()) {
             this.gameState.markUniverseForDestruction(true);
