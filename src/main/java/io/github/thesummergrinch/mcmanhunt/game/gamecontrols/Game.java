@@ -88,9 +88,9 @@ public final class Game implements ConfigurationSerializable {
                 final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
                 player.setBedSpawnLocation(gameState.getWorldSpawn(), true);
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
-                player.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache(ChatColor.GREEN + "game-start-intro"));
             }
         });
+        broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache(ChatColor.GREEN + "game-start-intro"));
         new BukkitRunnable() {
             @Override
             public void run() {
