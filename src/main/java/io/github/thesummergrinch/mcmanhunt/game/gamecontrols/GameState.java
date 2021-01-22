@@ -21,14 +21,12 @@ public final class GameState implements ConfigurationSerializable {
     @NotNull
     private final Map<UUID, PlayerState> playersInGame;
     @NotNull
-    private final Map<String, String> gameConfigOptions;
-    @NotNull
     private final Universe gameUniverse;
     @NotNull
     private final String gameName;
     @NotNull
     private final Location worldSpawn;
-
+    private boolean isCompassEnabledInNether;
     @NotNull
     private GameFlowState gameFlowState;
     @NotNull
@@ -38,8 +36,8 @@ public final class GameState implements ConfigurationSerializable {
         this.gameUniverse = gameUniverse;
         this.gameFlowState = GameFlowState.DEFAULT;
         this.gameName = this.gameUniverse.getName();
-        this.gameConfigOptions = FileConfigurationLoader.getInstance().getConfigOptions();
         this.playersInGame = new HashMap<>();
+        this.isCompassEnabledInNether = FileConfigurationLoader.getInstance().getFileConfiguration().getBoolean("compass-enabled-in-nether");
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
     }
@@ -170,7 +168,7 @@ public final class GameState implements ConfigurationSerializable {
     }
 
     protected boolean isCompassEnabledInNether() {
-        return Boolean.parseBoolean(this.gameConfigOptions.get("compass-enabled-in-nether"));
+        return this.isCompassEnabledInNether;
     }
 
     protected HashSet<UUID> getHunterUUIDs() {
@@ -185,14 +183,6 @@ public final class GameState implements ConfigurationSerializable {
         this.playersInGame.values().stream().filter(playerState -> playerState.getPlayerRole()
                 .equals(PlayerRole.RUNNER)).forEach(playerState -> runnerUUIDs.add(playerState.getPlayerUUID()));
         return runnerUUIDs;
-    }
-
-    protected String getConfigurableOption(final String key) {
-        return this.gameConfigOptions.get(key);
-    }
-
-    protected void setManHuntRule(final String key, final String value) {
-        this.gameConfigOptions.put(key, value);
     }
 
     protected void linkPlayerStatesToGameObject(final Game game) {
@@ -216,4 +206,13 @@ public final class GameState implements ConfigurationSerializable {
     }
 
 
+    public void setManHuntRule(String key, String value) {
+        switch (key) {
+            case "compass-enabled-in-nether":
+                this.isCompassEnabledInNether = Boolean.parseBoolean(value);
+                break;
+            default:
+                return;
+        }
+    }
 }

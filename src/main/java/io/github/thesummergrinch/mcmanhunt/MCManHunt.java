@@ -85,17 +85,17 @@ public final class MCManHunt extends JavaPlugin {
     }
 
     private void enableMetrics() {
-        final String allowMetrics = FileConfigurationLoader.getInstance().getConfigOptions().get("allow-metrics");
-        if (allowMetrics != null) {
-            if (Boolean.parseBoolean(allowMetrics)) {
+        try {
+            Boolean allowMetrics = FileConfigurationLoader.getInstance().getFileConfiguration().getObject("allow-metrics", Boolean.class);
+            if (allowMetrics.booleanValue()) {
                 final int pluginID = 8784;
                 new Metrics(this, pluginID);
                 getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled"));
             } else {
                 getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
             }
-        } else {
-            FileConfigurationLoader.getInstance().saveConfigOption("allow-metrics", "true");
+        } catch (NullPointerException exception) {
+            FileConfigurationLoader.getInstance().getFileConfiguration().set("allow-metrics", true);
             getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled-on-next-launch"));
         }
     }

@@ -27,23 +27,8 @@ public final class FileConfigurationLoader {
         }
     }
 
-    public void saveConfigOptions(final Map<String, String> configOptions) {
-        fileConfiguration.set("configurable-options", configOptions);
-    }
-
     public void saveConfigOption(final String key, final String value) {
-        instance.getConfigOptions().put(key, value);
-    }
-
-    public HashMap<String, String> getConfigOptions() {
-        if (fileConfiguration.getObject("configurable-options", HashMap.class) == null) {
-            fileConfiguration.set("configurable-options", new HashMap<String, String>() {
-                {
-                    put("compass-enabled-in-nether", "false");
-                }
-            });
-        }
-        return (HashMap<String, String>) fileConfiguration.getObject("configurable-options", HashMap.class);
+        instance.getFileConfiguration().set(key, value);
     }
 
     public void loadStrings() {
@@ -95,6 +80,7 @@ public final class FileConfigurationLoader {
                 put("metrics-disabled", "Metrics are disabled.");
             }
         });
+        fileConfiguration.set("compass-enabled-in-nether", false);
         fileConfiguration.set("string-cache", MCManHuntStringCache.getInstance());
         MCManHunt.getPlugin(MCManHunt.class).saveConfig();
     }
