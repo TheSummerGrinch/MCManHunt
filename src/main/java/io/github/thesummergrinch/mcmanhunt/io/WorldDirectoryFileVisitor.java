@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
-public class WorldDirectoryFileVisitor implements FileVisitor<Path> {
+public final class WorldDirectoryFileVisitor implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
