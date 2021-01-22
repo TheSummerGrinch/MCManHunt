@@ -89,6 +89,9 @@ public final class FileConfigurationLoader {
                 put("game-has-resumed", "The game has resumed!");
                 put("game-has-stopped", "The game has stopped!");
                 put("rule-change-failed", "The specified game does not exist. Could not change rule.");
+                put("metrics-enabled", "Metrics are enabled.");
+                put("metrics-enabled-on-next-launch", "Metrics will be enabled on next start-up. You can disable " +
+                        "Metrics in the config-file, or by disabling bStats-metrics altogether.");
             }
         });
         fileConfiguration.set("string-cache", MCManHuntStringCache.getInstance());
