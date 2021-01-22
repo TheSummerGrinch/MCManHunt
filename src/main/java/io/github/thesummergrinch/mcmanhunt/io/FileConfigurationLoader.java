@@ -6,7 +6,6 @@ import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public final class FileConfigurationLoader {
 

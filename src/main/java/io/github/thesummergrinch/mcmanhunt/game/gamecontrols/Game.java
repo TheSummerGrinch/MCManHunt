@@ -44,6 +44,7 @@ public final class Game implements ConfigurationSerializable {
 
     /**
      * Reconstructs a {@link Game}-object from a yml-representation, as specified by {@link #serialize()}.
+     *
      * @param objects - {@link Map} constructed from the yml-representation of the {@link Game}-object.
      * @return the reconstructed {@link Game}-object.
      */
@@ -159,6 +160,7 @@ public final class Game implements ConfigurationSerializable {
     /**
      * Gives each hunter one compass per runner. Each compass can be updated by right-clicking the air with the compass
      * in hand.
+     *
      * @param hunterUUID
      */
     public void giveHunterCompasses(@NotNull final UUID hunterUUID) {
