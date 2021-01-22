@@ -31,7 +31,7 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <!-- Replace this with your package! -->
-                            <shadedPattern>io.github.thesummergrinch</shadedPattern>
+                            <shadedPattern>io.github.thesummergrinch.mcmanhunt</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
