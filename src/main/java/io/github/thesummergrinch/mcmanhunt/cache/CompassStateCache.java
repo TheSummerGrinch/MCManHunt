@@ -1,23 +1,27 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Cache for {@link CompassState}-objects, intended to make existing {@link CompassState} and their corresponding
+ * {@link org.bukkit.inventory.meta.CompassMeta}-objects more accessible and reusable.
+ */
 public final class CompassStateCache {
 
     private static volatile CompassStateCache instance;
 
+    //The HashMap<UUID, CompassState> that is effectively the internal cache.
     private final HashMap<UUID, CompassState> cacheMap;
 
     private CompassStateCache() {
         this.cacheMap = new HashMap<>();
     }
 
+    // Singleton-pattern
     public static CompassStateCache getInstance() {
         CompassStateCache compassStateCache = instance;
         if (compassStateCache != null) return compassStateCache;
