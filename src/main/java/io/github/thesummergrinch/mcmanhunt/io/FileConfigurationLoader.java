@@ -31,6 +31,10 @@ public final class FileConfigurationLoader {
         fileConfiguration.set("configurable-options", configOptions);
     }
 
+    public void saveConfigOption(final String key, final String value) {
+        instance.getConfigOptions().put(key, value);
+    }
+
     public HashMap<String, String> getConfigOptions() {
         if (fileConfiguration.getObject("configurable-options", HashMap.class) == null) {
             fileConfiguration.set("configurable-options", new HashMap<String, String>() {
