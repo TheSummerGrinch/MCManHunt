@@ -92,9 +92,11 @@ public final class FileConfigurationLoader {
                 put("metrics-enabled", "Metrics are enabled.");
                 put("metrics-enabled-on-next-launch", "Metrics will be enabled on next start-up. You can disable " +
                         "Metrics in the config-file, or by disabling bStats-metrics altogether.");
+                put("metrics-disabled", "Metrics are disabled.");
             }
         });
         fileConfiguration.set("string-cache", MCManHuntStringCache.getInstance());
+        MCManHunt.getPlugin(MCManHunt.class).saveConfig();
     }
 
     public void saveGames() {
