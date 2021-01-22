@@ -14,9 +14,9 @@ public class ListGamesCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Set<String> gameNames = GameCache.getGameNames();
-        if (gameNames.isEmpty()) {
+        if (gameNames.isEmpty()) { // If no games have been initialized, we simply tell the user as much.
             sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("no-games-initialized"));
-        } else {
+        } else { // Otherwise, we list the initialized games by name, in order of initialization.
             final StringBuilder stringBuilder = new StringBuilder(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-initialized-games"));
             gameNames.forEach(gameName -> stringBuilder.append(gameName).append(", "));
             sender.sendMessage(stringBuilder.substring(0, stringBuilder.length() - 2));
