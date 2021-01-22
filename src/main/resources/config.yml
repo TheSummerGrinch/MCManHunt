@@ -46,4 +46,4 @@ configurable-options:
   compass-enabled-in-nether: 'false'
 game-cache:
   ==: io.github.thesummergrinch.mcmanhunt.cache.GameCache
-  game-cache: {}
+  game-cache: { }
