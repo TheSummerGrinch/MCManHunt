@@ -40,6 +40,7 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        FileConfigurationLoader.getInstance().loadStrings();
         registerEventHandlers();
         registerCommands();
         GameCache.getInstance().getGameCacheFromSave();
