@@ -4,6 +4,7 @@ import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 
@@ -79,6 +80,7 @@ public final class FileConfigurationLoader {
                 put("metrics-disabled", "Metrics are disabled.");
             }
         });
+        fileConfiguration.set(key, MCManHuntStringCache.getInstance());
     }
 
     public void saveGames(final JavaPlugin plugin, final String key, final GameCache gameCache) {
