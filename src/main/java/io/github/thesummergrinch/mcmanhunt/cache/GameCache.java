@@ -63,8 +63,8 @@ public final class GameCache implements ConfigurationSerializable {
         return gameCache;
     }
 
-    public void getGameCacheFromSave() {
-        instance = FileConfigurationLoader.getInstance().loadGames();
+    public void getGameCacheFromSave(final String key) {
+        instance = FileConfigurationLoader.getInstance().loadGames(key);
         GameCache.getInstance().getAllGames().forEach(entry -> gameCache.put(entry.getKey(), entry.getValue()));
     }
 

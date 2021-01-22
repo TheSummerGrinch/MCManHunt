@@ -30,8 +30,8 @@ public final class FileConfigurationLoader {
         instance.getFileConfiguration().set(key, value);
     }
 
-    public void loadStrings() {
-        MCManHuntStringCache stringCache = fileConfiguration.getObject("string-cache", MCManHuntStringCache.class);
+    public void loadStrings(final String key) {
+        MCManHuntStringCache stringCache = fileConfiguration.getObject(key, MCManHuntStringCache.class);
         if (stringCache != null) return;
         MCManHuntStringCache.getInstance().addStringsToCache(new HashMap<String, String>() {
             {
@@ -84,17 +84,18 @@ public final class FileConfigurationLoader {
         MCManHunt.getPlugin(MCManHunt.class).saveConfig();
     }
 
-    public void saveGames() {
-        fileConfiguration.set("game-cache", GameCache.getInstance());
-        MCManHunt.getPlugin(MCManHunt.class).saveConfig();
+    public void saveGames(final JavaPlugin plugin, final String key, final GameCache gameCache) {
+        fileConfiguration.set(key, gameCache);
+        plugin.saveConfig();
     }
 
     public FileConfiguration getFileConfiguration() {
         return this.fileConfiguration;
     }
 
-    public GameCache loadGames() {
-        return fileConfiguration.getObject("game-cache", GameCache.class);
+    public GameCache loadGames(final String key) {
+        return fileConfiguration.getObject(key, GameCache.class);
+    }
     }
 
 }
