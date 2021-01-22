@@ -19,9 +19,11 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {
             final Game game;
+            // If the sender is a player and in an active game, they may forego the command argument.
             if (sender instanceof Player) {
                 if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                     game = GameCache.getInstance().getGameFromCache(args[0]);
+                    // If a game is found and it is currently paused, the game will be resumed and the players notified.
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();
                         game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
