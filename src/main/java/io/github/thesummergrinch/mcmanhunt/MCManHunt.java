@@ -44,6 +44,7 @@ public final class MCManHunt extends JavaPlugin {
         registerCommands();
         GameCache.getInstance().getGameCacheFromSave();
         FileConfigurationLoader.getInstance().loadStrings();
+        enableMetrics();
     }
 
     @Override
@@ -83,9 +84,19 @@ public final class MCManHunt extends JavaPlugin {
     }
 
     private void enableMetrics() {
-        final int pluginID = 8784;
-        new Metrics(this, pluginID);
-        getLogger().log(Level.INFO, "Metrics are enabled.");
+        final String allowMetrics = FileConfigurationLoader.getInstance().getConfigOptions().get("allow-metrics");
+        if (allowMetrics != null) {
+            if (Boolean.parseBoolean(allowMetrics)) {
+                final int pluginID = 8784;
+                new Metrics(this, pluginID);
+                getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled"));
+            } else {
+                getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
+            }
+        } else {
+            FileConfigurationLoader.getInstance().saveConfigOption("allow-metrics", "true");
+            getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled-on-next-launch"));
+        }
     }
 
 }
