@@ -16,7 +16,8 @@ public class PauseGameCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {
-            if (sender instanceof Player) {
+            // If the sender is a player and in an active game, they may forego specifying the game
+            if (sender instanceof Player) { // However, specifying the game name is preferred.
                 if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                     GameCache.getInstance().getGameFromCache(args[0]).pause();
                     return true;
@@ -26,13 +27,17 @@ public class PauseGameCommandExecutor implements CommandExecutor {
                 if (playerState.isInGame()) {
                     GameCache.getInstance().getGameFromCache(playerState.getGameName()).pause();
                 } else {
-                    sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
+                    // If neither options return a game, the sender will be notified of this.
+                    sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance()
+                            .getStringFromCache("not-in-game-no-game-specified"));
                 }
                 return true;
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+                // If the sender is not a player, the sender must specify the game name in the command argument.
                 GameCache.getInstance().getGameFromCache(args[0]).pause();
                 return true;
             } else {
+                // If the game name does not link to an existing game, the sender is notified.
                 sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
             }
         }
