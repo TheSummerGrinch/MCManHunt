@@ -13,6 +13,7 @@ public class InitializeGameCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        // If the sender is OP, and specified the name of the game, they will be allowed to initialize a game.
         if (sender.isOp() && args.length >= 1) {
             sender.sendMessage(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("init-worlds"));
             Universe universe = new Universe(args[0]);
