@@ -48,6 +48,7 @@ public final class Universe implements ConfigurationSerializable {
     /**
      * Method solely used to deserialize a yml-representation of a {@link Universe}, as specified in the
      * {@link #serialize}-method.
+     *
      * @param objects - Map of key-value pairs, representing the {@link Universe}-object.
      * @return universe - a reconstruction of the saved {@link Universe}.
      */
@@ -75,6 +76,7 @@ public final class Universe implements ConfigurationSerializable {
 
     /**
      * Gets the {@link org.bukkit.World} stored with the given key.
+     *
      * @param worldName - key to the {@link org.bukkit.World}-object.
      * @return {@link org.bukkit.World}
      */
@@ -85,6 +87,7 @@ public final class Universe implements ConfigurationSerializable {
 
     /**
      * Serializes the {@link Universe}-object into a yml-representation.
+     *
      * @return {@link Map} containing key-value pairs representing the {@link Universe}.
      */
     @Override
@@ -97,6 +100,7 @@ public final class Universe implements ConfigurationSerializable {
 
     /**
      * Gets the name of the {@link Universe}.
+     *
      * @return
      */
     public @NotNull String getName() {
@@ -105,6 +109,7 @@ public final class Universe implements ConfigurationSerializable {
 
     /**
      * Sets the {@link Difficulty} for each of the {@link World}-objects stored in the {@link Universe}.
+     *
      * @param difficulty - target difficulty
      */
     public void setDifficulty(@NotNull final Difficulty difficulty) {
@@ -152,9 +157,10 @@ public final class Universe implements ConfigurationSerializable {
      * Sets the specified {@link GameRule} to the specified value. E.g.
      * {@code setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)} disables the daylight-cycle of the Worlds stored in this
      * {@link Universe}.
+     *
      * @param gameRule - The {@link GameRule} to be changed/set.
-     * @param value - The new value.
-     * @param <T> - Generic type
+     * @param value    - The new value.
+     * @param <T>      - Generic type
      */
     public <T> void setGameRule(GameRule<T> gameRule, T value) {
         this.worldHashMap.values().forEach(world -> world.setGameRule(gameRule, value));
