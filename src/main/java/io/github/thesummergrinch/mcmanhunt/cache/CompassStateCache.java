@@ -1,7 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class CompassStateCache implements ConfigurationSerializable {
+public final class CompassStateCache {
 
     private static volatile CompassStateCache instance;
 
@@ -26,11 +25,6 @@ public final class CompassStateCache implements ConfigurationSerializable {
             if (instance == null) instance = new CompassStateCache();
             return instance;
         }
-    }
-
-    @Override
-    public @NotNull Map<String, Object> serialize() {
-        return null;
     }
 
     public void cacheCompassState(final UUID playerTrackedUUID, final CompassState compassState) {
