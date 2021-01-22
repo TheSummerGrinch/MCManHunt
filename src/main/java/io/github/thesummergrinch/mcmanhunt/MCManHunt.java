@@ -21,6 +21,7 @@ import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -88,18 +89,15 @@ public final class MCManHunt extends JavaPlugin {
     }
 
     private void enableMetrics() {
-        try {
-            Boolean allowMetrics = FileConfigurationLoader.getInstance().getFileConfiguration().getObject("allow-metrics", Boolean.class);
-            if (allowMetrics.booleanValue()) {
-                final int pluginID = 8784;
-                new Metrics(this, pluginID);
-                getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled"));
-            } else {
-                getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
-            }
-        } catch (NullPointerException exception) {
-            FileConfigurationLoader.getInstance().getFileConfiguration().set("allow-metrics", true);
+        if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
+            DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
             getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled-on-next-launch"));
+        } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
+            final int pluginID = 8784;
+            new Metrics(this, pluginID);
+            getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled"));
+        } else {
+                getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
         }
     }
 

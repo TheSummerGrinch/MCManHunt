@@ -79,9 +79,6 @@ public final class FileConfigurationLoader {
                 put("metrics-disabled", "Metrics are disabled.");
             }
         });
-        fileConfiguration.set("compass-enabled-in-nether", false);
-        fileConfiguration.set("string-cache", MCManHuntStringCache.getInstance());
-        MCManHunt.getPlugin(MCManHunt.class).saveConfig();
     }
 
     public void saveGames(final JavaPlugin plugin, final String key, final GameCache gameCache) {
@@ -96,6 +93,19 @@ public final class FileConfigurationLoader {
     public GameCache loadGames(final String key) {
         return fileConfiguration.getObject(key, GameCache.class);
     }
+
+    public DefaultSettingsContainer loadDefaultSettings(final String key) {
+        DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
+        if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
+        DefaultSettingsContainer.getInstance().setSettings(new HashMap<String, String>(){
+            {
+                put("first-run", "true");
+                put("allow-metrics", "true");
+                put("compass-enabled-in-nether", "false");
+            }
+        });
+        this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
+        return DefaultSettingsContainer.getInstance();
     }
 
 }

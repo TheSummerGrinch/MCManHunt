@@ -4,6 +4,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
@@ -37,7 +38,8 @@ public final class GameState implements ConfigurationSerializable {
         this.gameFlowState = GameFlowState.DEFAULT;
         this.gameName = this.gameUniverse.getName();
         this.playersInGame = new HashMap<>();
-        this.isCompassEnabledInNether = FileConfigurationLoader.getInstance().getFileConfiguration().getBoolean("compass-enabled-in-nether");
+        this.isCompassEnabledInNether = Boolean.parseBoolean(DefaultSettingsContainer.getInstance()
+                .getSetting("compass-enabled-in-nether"));
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
     }
@@ -212,7 +214,7 @@ public final class GameState implements ConfigurationSerializable {
                 this.isCompassEnabledInNether = Boolean.parseBoolean(value);
                 break;
             default:
-                return;
+                break;
         }
     }
 }
