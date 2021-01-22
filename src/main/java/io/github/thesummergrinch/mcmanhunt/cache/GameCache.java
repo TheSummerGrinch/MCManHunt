@@ -10,6 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Cache for {@link Game}-objects, used to make {@link Game}-objects and their corresponding
+ * {@link io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameState}-objects more accessible and reusable.
+ */
 public final class GameCache implements ConfigurationSerializable {
 
     private static final HashMap<String, Game> gameCache = new HashMap<>();
@@ -18,6 +22,7 @@ public final class GameCache implements ConfigurationSerializable {
     private GameCache() {
     }
 
+    // Singleton-pattern
     public static GameCache getInstance() {
         GameCache gameCache = instance;
         if (gameCache != null) return gameCache;
