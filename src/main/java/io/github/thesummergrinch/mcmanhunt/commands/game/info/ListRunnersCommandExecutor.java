@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
+// Referring to ListHunterCommandExecutor.java for the relevant documentation, as these classes are nearly the same.
+// In fact, they are so similar, that I should probably merge them into a more flexible class.
 public class ListRunnersCommandExecutor implements CommandExecutor {
 
     @Override
@@ -37,7 +39,7 @@ public class ListRunnersCommandExecutor implements CommandExecutor {
         } else {
             if (args.length >= 1) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
-                if (game != null) sender.sendMessage(""); //TODO gamelist
+                if (game != null) sender.sendMessage(""); //TODO runner-list
             }
         }
         return false;
