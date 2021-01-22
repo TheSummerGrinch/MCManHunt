@@ -18,14 +18,18 @@ public class ListHuntersCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         final Game game;
+        // If the sender is a player, we allow them to forego the command argument if they are in a game themselves.
         if (sender instanceof Player) {
             final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
+            // However, if an argument is specified, the argument takes precedence.
             game = (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null)
                     ? GameCache.getInstance().getGameFromCache(args[0])
                     : GameCache.getInstance().getGameFromCache(playerState.getGameName());
             if (game == null) {
+                // If neither options returned a game, we tell the user as much.
                 sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
             } else {
+                // If a game was found, we echo a list of the registered hunters to the sender.
                 final StringBuilder stringBuilder = new StringBuilder(MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
                 HashSet<PlayerState> hunters = (HashSet<PlayerState>) game.getHunters();
                 hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
@@ -34,10 +38,12 @@ public class ListHuntersCommandExecutor implements CommandExecutor {
             }
             return true;
         } else {
+            // If the command sender is not a player, they will only have the option of specifying a game through the
+            // command arguments.
             if (args.length >= 1) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
                 if (game != null) {
-                    sender.sendMessage(""); //TODO add gamelist
+                    sender.sendMessage(""); //TODO add hunter-list
                 }
             }
         }
