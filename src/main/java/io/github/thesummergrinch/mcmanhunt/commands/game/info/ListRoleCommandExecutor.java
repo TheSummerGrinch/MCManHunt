@@ -6,6 +6,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,19 +66,27 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         final HashSet<PlayerState> hunters;
         final HashSet<PlayerState> runners;
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
-            stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
             hunters = (HashSet<PlayerState>) game.getHunters();
-            hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-            stringBuilder.substring(0, stringBuilder.length() - 2);
-            if (roleToList.equals(PlayerRole.DEFAULT)) {
-                stringBuilder.append("\n\n");
-                stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
-                runners = (HashSet<PlayerState>) game.getRunners();
-                runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
+            if (hunters.isEmpty()) {
+                stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("hunter-team-no-members"));
+            } else {
+                stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
+                hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
             }
+            if (roleToList.equals(PlayerRole.DEFAULT)) {
+                stringBuilder.append("\n\n");
+                runners = (HashSet<PlayerState>) game.getRunners();
+                if (runners.isEmpty()) {
+                    stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
+                } else {
+                    stringBuilder.append(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+                    runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
+                    stringBuilder.substring(0, stringBuilder.length() - 2);
+                }
+            }
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
-            stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+            stringBuilder.append(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
             runners = (HashSet<PlayerState>) game.getRunners();
             runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
             stringBuilder.substring(0, stringBuilder.length() - 2);
