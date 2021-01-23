@@ -85,10 +85,14 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 }
             }
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
-            stringBuilder.append(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
             runners = (HashSet<PlayerState>) game.getRunners();
-            runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-            stringBuilder.substring(0, stringBuilder.length() - 2);
+            if (runners.isEmpty()) {
+                stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
+            } else {
+                stringBuilder.append(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+                runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
+                stringBuilder.substring(0, stringBuilder.length() - 2);
+            }
         }
         sender.sendMessage(stringBuilder.toString());
     }
