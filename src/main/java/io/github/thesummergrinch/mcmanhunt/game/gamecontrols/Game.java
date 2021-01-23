@@ -91,7 +91,12 @@ public final class Game implements ConfigurationSerializable {
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
             }
         });
-        broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache(ChatColor.GREEN + "game-start-intro"));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache(ChatColor.GOLD + "game-start-intro"));
+            }
+        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 20L);
         new BukkitRunnable() {
             @Override
             public void run() {
