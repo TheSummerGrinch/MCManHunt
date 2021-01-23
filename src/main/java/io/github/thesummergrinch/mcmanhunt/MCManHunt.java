@@ -53,7 +53,7 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onDisable() {
         UniverseCache.getInstance().onDisable();
-        FileConfigurationLoader.getInstance().saveGames(this, "game-cache", GameCache.getInstance());
+        saveConfigFile();
     }
 
     private void registerCommands() {
@@ -96,6 +96,13 @@ public final class MCManHunt extends JavaPlugin {
         } else {
             getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
         }
+    }
+
+    private void saveConfigFile() {
+        FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
+        FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
+        FileConfigurationLoader.getInstance().saveItemToConfig("string-cache", MCManHuntStringCache.getInstance());
+        this.saveConfig();
     }
 
 }

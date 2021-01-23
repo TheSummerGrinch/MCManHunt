@@ -4,7 +4,6 @@ import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 
@@ -27,14 +26,37 @@ public final class FileConfigurationLoader {
         }
     }
 
-    public void saveConfigOption(final String key, final String value) {
-        instance.getFileConfiguration().set(key, value);
-    }
-
     public void loadStrings(final String key) {
         MCManHuntStringCache stringCache = fileConfiguration.getObject(key, MCManHuntStringCache.class);
         if (stringCache != null) return;
-        MCManHuntStringCache.getInstance().addStringsToCache(new HashMap<String, String>() {
+        MCManHuntStringCache.getInstance().addStringsToCache(getStandardStringMap());
+        fileConfiguration.set(key, MCManHuntStringCache.getInstance());
+    }
+
+    public void saveItemToConfig(final String key, final Object value) {
+        FileConfigurationLoader.getInstance().fileConfiguration.set(key, value);
+    }
+
+    public GameCache loadGames(final String key) {
+        return fileConfiguration.getObject(key, GameCache.class);
+    }
+
+    public DefaultSettingsContainer loadDefaultSettings(final String key) {
+        DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
+        if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
+        DefaultSettingsContainer.getInstance().setSettings(new HashMap<String, String>() {
+            {
+                put("first-run", "true");
+                put("allow-metrics", "true");
+                put("compass-enabled-in-nether", "false");
+            }
+        });
+        this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
+        return DefaultSettingsContainer.getInstance();
+    }
+
+    public HashMap<String, String> getStandardStringMap() {
+        HashMap<String, String> standardStringMap = new HashMap<String, String>() {
             {
                 put("no-games-initialized", "No games have been initialized.");
                 put("list-initialized-games", "The following games have been initialized: ");
@@ -81,35 +103,8 @@ public final class FileConfigurationLoader {
                 put("hunter-team-no-members", "The Hunter-team doesn't have any members.");
                 put("runner-team-no-members", "The Runner-team doesn't have any members.");
             }
-        });
-        fileConfiguration.set(key, MCManHuntStringCache.getInstance());
-    }
-
-    public void saveGames(final JavaPlugin plugin, final String key, final GameCache gameCache) {
-        fileConfiguration.set(key, gameCache);
-        plugin.saveConfig();
-    }
-
-    public FileConfiguration getFileConfiguration() {
-        return this.fileConfiguration;
-    }
-
-    public GameCache loadGames(final String key) {
-        return fileConfiguration.getObject(key, GameCache.class);
-    }
-
-    public DefaultSettingsContainer loadDefaultSettings(final String key) {
-        DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
-        if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
-        DefaultSettingsContainer.getInstance().setSettings(new HashMap<String, String>() {
-            {
-                put("first-run", "true");
-                put("allow-metrics", "true");
-                put("compass-enabled-in-nether", "false");
-            }
-        });
-        this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
-        return DefaultSettingsContainer.getInstance();
+        };
+        return standardStringMap;
     }
 
 }
