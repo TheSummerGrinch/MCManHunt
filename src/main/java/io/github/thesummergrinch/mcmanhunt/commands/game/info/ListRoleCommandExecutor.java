@@ -39,7 +39,10 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 game = GameCache.getInstance().getGameFromCache(args[1]);
             } else if (playerState.isInGame()) {
                 game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
-            } else {
+            } else if (roleToList.equals(PlayerRole.DEFAULT) && args.length >= 1
+                    && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+                game = GameCache.getInstance().getGameFromCache(args[0]);
+            }else {
                 return false;
             }
 
