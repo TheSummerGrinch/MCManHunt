@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
+import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +43,15 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
     }
 
     public String getStringFromCache(final String key) {
-        return stringCache.get(key);
+        String stringFromCache = stringCache.get(key);
+        if (stringFromCache != null) return stringFromCache;
+        stringFromCache = FileConfigurationLoader.getInstance().getStandardStringMap().get(key);
+        if (stringFromCache != null) {
+            stringCache.put(key, stringFromCache);
+            return stringFromCache;
+        } else {
+            throw new NullPointerException("String with identifier: \"" + key + "\" could not be found. " +
+                    "Please contact developer at GitHub.com/TheSummerGrinch");
+        }
     }
 }
