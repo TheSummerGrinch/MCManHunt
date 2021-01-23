@@ -20,7 +20,6 @@ import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,7 +53,7 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onDisable() {
         UniverseCache.getInstance().onDisable();
-        FileConfigurationLoader.getInstance().saveGames(this, "game-cache",GameCache.getInstance());
+        FileConfigurationLoader.getInstance().saveGames(this, "game-cache", GameCache.getInstance());
     }
 
     private void registerCommands() {
@@ -95,7 +94,7 @@ public final class MCManHunt extends JavaPlugin {
             new Metrics(this, pluginID);
             getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled"));
         } else {
-                getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
+            getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
         }
     }
 
