@@ -33,6 +33,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         }
 
         final Game game;
+        boolean labelsUsed = label.equals("listrunners") || label.equals("listhunters") || label.equals("listteams");
         if (sender instanceof Player) {
             final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
 
@@ -40,8 +41,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 game = GameCache.getInstance().getGameFromCache(args[1]);
             } else if (playerState.isInGame()) {
                 game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
-            } else if (roleToList.equals(PlayerRole.DEFAULT) && args.length >= 1
-                    && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+            } else if (labelsUsed && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
             } else {
                 return false;
@@ -50,8 +50,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         } else {
             if ((args.length >= 2 && GameCache.getInstance().getGameFromCache(args[1]) != null)) {
                 game = GameCache.getInstance().getGameFromCache(args[1]);
-            } else if (roleToList.equals(PlayerRole.DEFAULT) && args.length >= 1
-                    && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+            } else if (labelsUsed && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
             } else {
                 return false;
