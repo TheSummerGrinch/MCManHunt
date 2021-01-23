@@ -15,14 +15,11 @@ commands:
     description: Starts the specified game.
     usage: /startgame [gamename]
     permission: mcmanhunt.game.op
-  listhunters:
-    description: Lists the hunters registered to the specified game, or the game the user is currently registered to.
-    usage: /listhunters [Optional Gamename]
+  listrole:
+    description: Lists the specified role, or list both teams if the /listteams label is used.
+    usage: /listrole [runners|hunters] [GameName]
     permission: mcmanhunt.game.info
-  listrunners:
-    description: Lists the runners registered to the specified game, or the game the user is currently registered to.
-    usage: /listrunners [Optional Gamename]
-    permission: mcmanhunt.game.info
+    aliases: [ listrunners, listhunters, listteams ]
   listgames:
     description: Lists all initialized games.
     usage: /listgames
