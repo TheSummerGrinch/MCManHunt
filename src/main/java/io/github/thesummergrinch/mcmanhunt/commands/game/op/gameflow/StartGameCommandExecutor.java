@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class StartGameCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender.isOp() && args.length >= 1) {
+        if (sender.isOp() && args.length >= 1) { //TODO Update it to allow for implicit game name.
             GameCache.getInstance().getGameFromCache(args[0]).start();
             return true;
         }
