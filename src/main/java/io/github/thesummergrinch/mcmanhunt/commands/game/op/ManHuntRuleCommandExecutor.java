@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class ManHuntRuleCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender.isOp() && args.length >= 2) {
+        if (sender.isOp() && args.length >= 3) {
             final Game game = GameCache.getInstance().getGameFromCache(args[0]);
             if (game != null) {
                 game.setManHuntRule(args[1], args[2]);
