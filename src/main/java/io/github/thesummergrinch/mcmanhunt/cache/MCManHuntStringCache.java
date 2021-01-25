@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,14 +45,14 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
 
     public String getStringFromCache(final String key) {
         String stringFromCache = stringCache.get(key);
-        if (stringFromCache != null) return stringFromCache;
+        if (stringFromCache != null) return ChatColor.DARK_PURPLE + "[MCManHunt] " + ChatColor.GOLD + stringFromCache;
         stringFromCache = FileConfigurationLoader.getInstance().getStandardStringMap().get(key);
         if (stringFromCache != null) {
             stringCache.put(key, stringFromCache);
-            return stringFromCache;
+            return ChatColor.DARK_PURPLE + "[MCManHunt] " + ChatColor.GOLD + stringFromCache;
         } else {
             throw new NullPointerException("String with identifier: \"" + key + "\" could not be found. " +
                     "Please contact developer at GitHub.com/TheSummerGrinch");
-        }
+        } //TODO Fix it so that Tracker in InteractEvent can be taken from the cache.
     }
 }
