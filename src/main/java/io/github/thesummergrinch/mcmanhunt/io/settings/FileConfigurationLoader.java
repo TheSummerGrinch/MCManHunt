@@ -44,15 +44,21 @@ public final class FileConfigurationLoader {
     public DefaultSettingsContainer loadDefaultSettings(final String key) {
         DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
         if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
-        DefaultSettingsContainer.getInstance().setSettings(new HashMap<String, String>() {
+        DefaultSettingsContainer.getInstance().setSettings(getDefaultSettings());
+        this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
+        return DefaultSettingsContainer.getInstance();
+    }
+
+    public HashMap<String, String> getDefaultSettings() {
+        return new HashMap<String, String>() {
             {
                 put("first-run", "true");
                 put("allow-metrics", "true");
                 put("compass-enabled-in-nether", "false");
+                put("player-roles-randomized", "false");
+                put("default-headstart", "30");
             }
-        });
-        this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
-        return DefaultSettingsContainer.getInstance();
+        };
     }
 
     public HashMap<String, String> getStandardStringMap() {
