@@ -26,9 +26,9 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
                     // If a game is found and it is currently paused, the game will be resumed and the players notified.
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();
-                        game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
+                        game.broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
                     } else {
-                        sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("game-not-paused"));
+                        sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("game-not-paused"));
                     }
                     return true;
                 }
@@ -38,19 +38,19 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
                     game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();
-                        game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
+                        game.broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
                     } else {
-                        sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("game-not-paused"));
+                        sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("game-not-paused"));
                     }
                 } else {
-                    sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
+                    sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
                 }
                 return true;
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
                 if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                     game.resume();
-                    game.broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
+                    game.broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
                 }
             } else {
                 sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));

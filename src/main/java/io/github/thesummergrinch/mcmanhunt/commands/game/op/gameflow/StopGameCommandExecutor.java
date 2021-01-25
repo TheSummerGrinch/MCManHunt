@@ -27,15 +27,15 @@ public class StopGameCommandExecutor implements CommandExecutor {
                     if (playerState.isInGame()) {
                         game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
                     } else {
-                        sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
+                        sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
                         return true;
                     }
                 } else {
-                    sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
+                    sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
                     return true;
                 }
             }
-            game.broadcastToPlayers(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("game-stopping"));
+            game.broadcastToPlayers(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("game-stopping"));
             game.stop();
             return true;
         }

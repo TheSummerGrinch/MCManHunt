@@ -27,16 +27,16 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
                     || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("hunters"))) {
                 playerState.setPlayerRole(PlayerRole.HUNTER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(ChatColor.RED + sender.getName() + MCManHuntStringCache.getInstance()
+                        .broadcastToPlayers(/*ChatColor.RED + */sender.getName() + MCManHuntStringCache.getInstance()
                                 .getStringFromCache("joined-hunters-message"));
             } else if (label.equals(MCManHuntStringCache.getInstance().getStringFromCache("join-runners"))
                     || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("runners"))) {
                 playerState.setPlayerRole(PlayerRole.RUNNER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(ChatColor.GREEN + sender.getName() + MCManHuntStringCache.getInstance()
+                        .broadcastToPlayers(/*ChatColor.GREEN + */sender.getName() + MCManHuntStringCache.getInstance()
                                 .getStringFromCache("joined-runners-message"));
             } else {
-                sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("join-team-incorrect-argument"));
+                sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("join-team-incorrect-argument"));
             }
             return true;
         }

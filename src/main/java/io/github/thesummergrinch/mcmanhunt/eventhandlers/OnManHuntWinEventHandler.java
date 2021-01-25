@@ -16,7 +16,7 @@ public class OnManHuntWinEventHandler implements Listener {
     public void onManHuntWinEvent(@NotNull final ManHuntWinEvent event) {
         event.getWinners().forEach(uuid -> {
             if (Bukkit.getPlayer(uuid) != null) {
-                Bukkit.getPlayer(uuid).sendMessage(ChatColor.GREEN + MCManHuntStringCache.getInstance()
+                Bukkit.getPlayer(uuid).sendMessage(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance()
                         .getStringFromCache("win-message"));
             }
         });

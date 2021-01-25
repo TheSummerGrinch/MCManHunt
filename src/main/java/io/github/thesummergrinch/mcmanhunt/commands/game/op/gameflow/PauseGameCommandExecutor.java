@@ -28,7 +28,7 @@ public class PauseGameCommandExecutor implements CommandExecutor {
                     GameCache.getInstance().getGameFromCache(playerState.getGameName()).pause();
                 } else {
                     // If neither options return a game, the sender will be notified of this.
-                    sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance()
+                    sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance()
                             .getStringFromCache("not-in-game-no-game-specified"));
                 }
                 return true;

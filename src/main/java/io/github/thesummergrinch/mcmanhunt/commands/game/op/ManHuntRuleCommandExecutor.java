@@ -17,7 +17,7 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor {
             if (game != null) {
                 game.setManHuntRule(args[1], args[2]);
             } else {
-                sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("rule-change-failed"));
+                sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("rule-change-failed"));
             }
             return true;
         }

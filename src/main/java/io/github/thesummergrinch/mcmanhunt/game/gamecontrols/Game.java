@@ -94,7 +94,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache(ChatColor.GOLD + "game-start-intro"));
+                broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache("game-start-intro"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 20L);
         new BukkitRunnable() {
@@ -199,7 +199,7 @@ public final class Game implements ConfigurationSerializable {
         this.gameState.setGameFlowState(GameFlowState.PAUSED);
         this.gameState.setUniverseDifficulty(Difficulty.PEACEFUL);
         this.gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-paused"));
+        broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("game-paused"));
     }
 
     /**

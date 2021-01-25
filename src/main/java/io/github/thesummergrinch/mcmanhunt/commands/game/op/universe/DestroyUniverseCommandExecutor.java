@@ -17,7 +17,7 @@ public class DestroyUniverseCommandExecutor implements CommandExecutor {
                 && UniverseCache.getInstance().getUniverse(args[0]) != null) {
             UniverseCache.getInstance().getUniverse(args[0]).setMarkedForDestruction(true);
         } else {
-            sender.sendMessage(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("universe-destroy-failed"));
+            sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("universe-destroy-failed"));
         }
         return true;
     }

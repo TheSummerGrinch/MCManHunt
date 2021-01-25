@@ -23,7 +23,7 @@ public class JoinGameCommandExecutor implements CommandExecutor {
             UUID playerUUID = ((Player) sender).getUniqueId();
             PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);
             game.addPlayerToGame(playerUUID);
-            sender.sendMessage(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("joined-game"));
+            sender.sendMessage(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("joined-game"));
             return true;
         }
         return false;

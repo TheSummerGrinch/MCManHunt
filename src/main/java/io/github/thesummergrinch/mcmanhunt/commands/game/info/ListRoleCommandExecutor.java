@@ -67,9 +67,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
             hunters = (HashSet<PlayerState>) game.getHunters();
             if (hunters.isEmpty()) {
-                stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("hunter-team-no-members"));
+                stringBuilder.append(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("hunter-team-no-members"));
             } else {
-                stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
+                stringBuilder.append(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
                 hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
             }
@@ -77,9 +77,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 stringBuilder.append("\n\n");
                 runners = (HashSet<PlayerState>) game.getRunners();
                 if (runners.isEmpty()) {
-                    stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
+                    stringBuilder.append(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
                 } else {
-                    stringBuilder.append(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+                    stringBuilder.append(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
                     runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                     stringBuilder.substring(0, stringBuilder.length() - 2);
                 }
@@ -87,9 +87,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
             runners = (HashSet<PlayerState>) game.getRunners();
             if (runners.isEmpty()) {
-                stringBuilder.append(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
+                stringBuilder.append(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
             } else {
-                stringBuilder.append(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+                stringBuilder.append(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
                 runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
             }
