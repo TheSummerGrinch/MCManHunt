@@ -31,6 +31,7 @@ public final class GameState implements ConfigurationSerializable {
     private GameFlowState gameFlowState;
     @NotNull
     private Difficulty defaultGameDifficulty;
+    private long headstart;
 
     protected GameState(final Universe gameUniverse) {
         this.gameUniverse = gameUniverse;
@@ -41,6 +42,7 @@ public final class GameState implements ConfigurationSerializable {
                 .getSetting("compass-enabled-in-nether"));
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
+        this.headstart = Long.parseLong(DefaultSettingsContainer.getInstance().getSetting("default-headstart"));
     }
 
     protected GameState(final Universe universe, final @NotNull Difficulty defaultGameDifficulty) {
@@ -212,8 +214,14 @@ public final class GameState implements ConfigurationSerializable {
             case "compass-enabled-in-nether":
                 this.isCompassEnabledInNether = Boolean.parseBoolean(value);
                 break;
+            case "headstart":
+                this.headstart = Long.parseLong(value);
             default:
                 break;
         }
     }
+    protected long getHeadstart() {
+        return this.headstart;
+    }
+
 }
