@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.game.players;
 
+import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import org.bukkit.Bukkit;
@@ -51,6 +52,13 @@ public final class PlayerState implements ConfigurationSerializable {
 
     public void setPlayerRole(final PlayerRole playerRole) {
         this.playerRole = playerRole;
+        if (isOnline()) {
+            Bukkit.getPlayer(this.playerUUID).sendMessage(
+                    (this.playerRole.equals(PlayerRole.RUNNER))
+                            ? MCManHuntStringCache.getInstance().getStringFromCache("added-to-runners")
+                            : MCManHuntStringCache.getInstance().getStringFromCache("added-to-hunters")
+                    );
+        }
     }
 
     public boolean isOnline() {
