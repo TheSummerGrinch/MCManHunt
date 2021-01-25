@@ -82,8 +82,14 @@ public final class Game implements ConfigurationSerializable {
      * 6. Allow hunters to move.
      */
     public void start() {
+
+        if (this.gameState.arePlayerRolesRandomized()) {
+            assignRoles();
+        }
+
         gameState.setGameFlowState(GameFlowState.RUNNING);
         gameState.setGameUniverseTime(1000L);
+
         gameState.getPlayersInGame().forEach((uuid, playerState) -> {
             if (playerState.isOnline()) {
                 final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
@@ -91,19 +97,23 @@ public final class Game implements ConfigurationSerializable {
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
             }
         });
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache("game-start-intro"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 20L);
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 gameState.getPlayersInGame().forEach((uuid, playerState) -> playerState.setIsMovementRestricted(true));
             }
         }.runTaskAsynchronously(MCManHunt.getPlugin(MCManHunt.class));
+
         getHunters().forEach(hunter -> giveHunterCompasses(hunter.getPlayerUUID()));
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -114,12 +124,14 @@ public final class Game implements ConfigurationSerializable {
                 });
             }
         }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 100);
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("runners-started"));
+                broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("runners-started"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100);
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -133,7 +145,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("hunters-started"));
+                broadcastToPlayers(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("hunters-started"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 700);
     }
@@ -274,6 +286,18 @@ public final class Game implements ConfigurationSerializable {
 
     public void setManHuntRule(final String key, final String value) {
         this.gameState.setManHuntRule(key, value);
+    }
+
+    private void assignRoles() {
+        HashMap<UUID, PlayerState> playersInGame = (HashMap<UUID, PlayerState>) this.gameState.getPlayersInGame();
+        List<UUID> keys = new ArrayList<>(playersInGame.keySet());
+        Collections.shuffle(keys);
+        for(int index = 0; index < keys.size(); index++) {
+            playersInGame.get(keys.get(index)).setPlayerRole(
+                    (index % 2 == 0)
+                            ? PlayerRole.RUNNER
+                            : PlayerRole.HUNTER);
+        }
     }
 
 }
