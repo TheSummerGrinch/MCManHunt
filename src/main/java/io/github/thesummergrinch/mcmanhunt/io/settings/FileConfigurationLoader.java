@@ -102,6 +102,8 @@ public final class FileConfigurationLoader {
                 put("metrics-disabled", "Metrics are disabled.");
                 put("hunter-team-no-members", "The Hunter-team doesn't have any members.");
                 put("runner-team-no-members", "The Runner-team doesn't have any members.");
+                put("added-to-runners", "You have been added to the Runner-team!");
+                put("added-to-hunters", "You have been added to the Hunter-team!");
             }
         };
         return standardStringMap;
