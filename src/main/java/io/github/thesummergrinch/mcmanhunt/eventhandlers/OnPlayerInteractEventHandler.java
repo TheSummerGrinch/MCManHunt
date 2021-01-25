@@ -21,18 +21,18 @@ public class OnPlayerInteractEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteractEvent(@NotNull final PlayerInteractEvent event) {
-        if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_AIR)) {
             final Player sender = event.getPlayer();
             ItemStack compass;
             if (sender.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)) {
                 compass = sender.getInventory().getItemInMainHand();
-                if (compass.getItemMeta().getDisplayName().contains(MCManHuntStringCache.getInstance().getStringFromCache("tracker"))) {
+                if (compass.getItemMeta().getDisplayName().contains(" Tracker")) {
                     updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0]);
                 }
             }
             if (sender.getInventory().getItemInOffHand().getType().equals(Material.COMPASS)) {
                 compass = sender.getInventory().getItemInOffHand();
-                if (compass.getItemMeta().getDisplayName().contains(MCManHuntStringCache.getInstance().getStringFromCache("tracker"))) {
+                if (compass.getItemMeta().getDisplayName().contains(" Tracker")) {
                     updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0]);
                 }
             }
