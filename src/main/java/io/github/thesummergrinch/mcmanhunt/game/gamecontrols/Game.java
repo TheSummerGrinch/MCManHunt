@@ -141,13 +141,14 @@ public final class Game implements ConfigurationSerializable {
                     }
                 });
             }
-        }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 700);
+        }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), (100L + this.gameState.getHeadstart() * 20L));
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 broadcastToPlayers(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("hunters-started"));
             }
-        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 700);
+        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), (100L + this.gameState.getHeadstart() * 20L));
     }
 
     public void broadcastToPlayers(@NotNull final String message) {
