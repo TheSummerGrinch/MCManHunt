@@ -40,7 +40,10 @@ public final class DefaultSettingsContainer implements ConfigurationSerializable
     }
 
     public String getSetting(final String key) {
-        return this.defaultSettings.get(key);
+        String value = this.defaultSettings.get(key);
+        if (value != null) return value;
+        value = FileConfigurationLoader.getInstance().getDefaultSettings().get(key);
+        return value;
     }
 
     public void setSetting(final String key, final String value) {
