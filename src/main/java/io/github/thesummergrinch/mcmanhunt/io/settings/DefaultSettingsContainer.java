@@ -43,6 +43,7 @@ public final class DefaultSettingsContainer implements ConfigurationSerializable
         String value = this.defaultSettings.get(key);
         if (value != null) return value;
         value = FileConfigurationLoader.getInstance().getDefaultSettings().get(key);
+        if (value != null) setSetting(key, value);
         return value;
     }
 
