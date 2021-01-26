@@ -41,6 +41,7 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        checkForUpdate();
         registerEventHandlers();
         registerCommands();
         FileConfigurationLoader.getInstance().loadStrings("string-cache");
@@ -103,6 +104,16 @@ public final class MCManHunt extends JavaPlugin {
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("string-cache", MCManHuntStringCache.getInstance());
         this.saveConfig();
+    }
+
+    private void checkForUpdate() {
+        new UpdateChecker(this, 83665).getVersion(version -> {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                this.getLogger().info("There is not a new update available.");
+            } else {
+                this.getLogger().info("There is a new update available.");
+            }
+        });
     }
 
 }
