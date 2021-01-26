@@ -43,9 +43,9 @@ public final class MCManHunt extends JavaPlugin {
         // Plugin startup logic
         registerEventHandlers();
         registerCommands();
-        GameCache.getInstance().getGameCacheFromSave("game-cache");
         FileConfigurationLoader.getInstance().loadStrings("string-cache");
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
+        GameCache.getInstance().getGameCacheFromSave("game-cache");
         enableMetrics();
         this.saveConfig();
     }
