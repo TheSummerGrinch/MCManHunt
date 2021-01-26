@@ -108,7 +108,7 @@ public final class MCManHunt extends JavaPlugin {
 
     private void checkForUpdate() {
         new UpdateChecker(this, 83665).getVersion(version -> {
-            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version.substring(1).trim().toString())) {
                 this.getLogger().info("There is not a new update available.");
             } else {
                 this.getLogger().info("There is a new update available.");
