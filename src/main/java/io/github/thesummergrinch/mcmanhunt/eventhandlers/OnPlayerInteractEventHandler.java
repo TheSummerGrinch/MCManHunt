@@ -27,26 +27,30 @@ public class OnPlayerInteractEventHandler implements Listener {
             if (sender.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)) {
                 compass = sender.getInventory().getItemInMainHand();
                 if (compass.getItemMeta().getDisplayName().contains(" Tracker")) {
-                    updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0]);
+                    updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0], (CompassMeta) compass.getItemMeta());
                 }
             }
             if (sender.getInventory().getItemInOffHand().getType().equals(Material.COMPASS)) {
                 compass = sender.getInventory().getItemInOffHand();
                 if (compass.getItemMeta().getDisplayName().contains(" Tracker")) {
-                    updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0]);
+                    updateCompassMeta(sender, compass.getItemMeta().getDisplayName().split(" ")[0], (CompassMeta) compass.getItemMeta());
                 }
             }
         }
     }
 
-    private @NotNull CompassState getUpdatedCompassMeta(@NotNull final UUID targetUUID) {
-        return CompassStateCache.getInstance().getCompassState(targetUUID);
+    private @NotNull CompassState getUpdatedCompassMeta(@NotNull final UUID targetUUID, @NotNull CompassMeta compassMeta) {
+        CompassState compassState = CompassStateCache.getInstance().getCompassState(targetUUID);
+        if (compassState == null) {
+            compassState = new CompassState(targetUUID, compassMeta);
+        }
+        return compassState;
     }
 
-    private void updateCompassMeta(@NotNull final Player sender, @NotNull final String targetName) {
+    private void updateCompassMeta(@NotNull final Player sender, @NotNull final String targetName, @NotNull CompassMeta playerCompassMeta) {
         final Player target = Bukkit.getPlayer(targetName);
         if (target != null) {
-            CompassState compassState = getUpdatedCompassMeta(target.getUniqueId());
+            CompassState compassState = getUpdatedCompassMeta(target.getUniqueId(), playerCompassMeta);
             CompassMeta compassMeta = compassState.getCompassMeta();
             sender.getInventory().getItemInMainHand().setItemMeta(compassMeta);
         }
