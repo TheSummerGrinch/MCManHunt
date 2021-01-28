@@ -95,6 +95,8 @@ public final class Game implements ConfigurationSerializable {
                 final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
                 player.setBedSpawnLocation(gameState.getWorldSpawn(), true);
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
+                player.setHealth(20);
+                player.setFoodLevel(20);
             }
         });
 
