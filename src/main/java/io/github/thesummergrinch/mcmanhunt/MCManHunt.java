@@ -13,11 +13,9 @@ import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinGameCommandE
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinTeamCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.plugin.info.ManHuntVersionCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.*;
-import io.github.thesummergrinch.mcmanhunt.exceptions.ManHuntStringNotFoundException;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
-import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
@@ -51,7 +49,6 @@ public final class MCManHunt extends JavaPlugin {
         registerCommands();
         enableMetrics();
         this.saveConfig();
-        //getLogger().info(LanguageFileLoader.getInstance().getString("true"));
     }
 
     @Override
