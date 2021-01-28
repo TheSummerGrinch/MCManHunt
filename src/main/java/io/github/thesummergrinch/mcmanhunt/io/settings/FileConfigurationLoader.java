@@ -58,6 +58,7 @@ public final class FileConfigurationLoader {
                 put("player-roles-randomized", "false");
                 put("default-headstart", "30");
                 put("enable-update-checking", "true");
+                put("locale", "enGB");
             }
         };
     }
