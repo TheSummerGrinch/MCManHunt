@@ -24,8 +24,10 @@ public class StartGameCommandExecutor implements CommandExecutor {
                     Game game = GameCache.getInstance().getGameFromCache(player.getGameName());
                     if (game.getGameFlowState().equals(GameFlowState.DEFAULT)) {
                         game.start();
+                        return true;
                     } else if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();
+                        return true;
                     }
                 } else {
                     return false;

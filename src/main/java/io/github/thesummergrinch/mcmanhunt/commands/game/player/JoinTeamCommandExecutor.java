@@ -30,27 +30,30 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
                         .broadcastToPlayers(/*ChatColor.RED + */sender.getName() + MCManHuntStringCache.getInstance()
                                 .getStringFromCache("joined-hunters-message"));
+                return true;
             } else if (label.equals(MCManHuntStringCache.getInstance().getStringFromCache("join-runners"))
                     || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("runners"))) {
                 playerState.setPlayerRole(PlayerRole.RUNNER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
                         .broadcastToPlayers(/*ChatColor.GREEN + */sender.getName() + MCManHuntStringCache.getInstance()
                                 .getStringFromCache("joined-runners-message"));
+                return true;
             } else if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("runners")) {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
                             .broadcastToPlayers(/*ChatColor.GREEN + */sender.getName() + MCManHuntStringCache.getInstance()
                                     .getStringFromCache("joined-runners-message"));
+                    return true;
                 } else if (args[0].equalsIgnoreCase("hunters")) {
                     playerState.setPlayerRole(PlayerRole.HUNTER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
                             .broadcastToPlayers(/*ChatColor.RED + */sender.getName() + MCManHuntStringCache.getInstance()
                                     .getStringFromCache("joined-hunters-message"));
+                    return true;
                 } else {
                     return false;
                 }
-                return true;
             } else {
                 sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("join-team-incorrect-argument"));
             }
