@@ -4,7 +4,6 @@ import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,7 +15,7 @@ public class OnManHuntWinEventHandler implements Listener {
     public void onManHuntWinEvent(@NotNull final ManHuntWinEvent event) {
         event.getWinners().forEach(uuid -> {
             if (Bukkit.getPlayer(uuid) != null) {
-                Bukkit.getPlayer(uuid).sendMessage(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance()
+                Bukkit.getPlayer(uuid).sendMessage(MCManHuntStringCache.getInstance()
                         .getStringFromCache("win-message"));
             }
         });

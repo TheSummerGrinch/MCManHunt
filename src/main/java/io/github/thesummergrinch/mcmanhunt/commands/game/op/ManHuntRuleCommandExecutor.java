@@ -3,7 +3,6 @@ package io.github.thesummergrinch.mcmanhunt.commands.game.op;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +16,7 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor {
             if (game != null) {
                 game.setManHuntRule(args[1], args[2]);
             } else {
-                sender.sendMessage(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("rule-change-failed"));
+                sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("rule-change-failed"));
             }
             return true;
         }
