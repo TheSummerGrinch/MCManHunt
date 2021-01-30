@@ -16,9 +16,9 @@ public class InitializeGameCommandExecutor implements CommandExecutor {
         if (sender.isOp() && args.length >= 1) {
             sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("init-worlds"));
             Universe universe = new Universe(args[0]);
-            Game game = new Game(universe);
             sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("worlds-ready"));
             sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("init-game"));
+            new Game(universe);
             sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("game-ready"));
             return true;
         }
