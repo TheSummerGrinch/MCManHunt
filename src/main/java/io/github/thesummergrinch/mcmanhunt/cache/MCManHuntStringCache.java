@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public final class MCManHuntStringCache implements ConfigurationSerializable {
 
     private static final Map<String, String> stringCache = new HashMap<>();
@@ -39,10 +40,12 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
         return new HashMap<>(stringCache);
     }
 
+    @Deprecated
     public void addStringsToCache(final Map<String, String> strings) {
         stringCache.putAll(strings);
     }
 
+    @Deprecated
     public String getStringFromCache(final String key) {
         String stringFromCache = stringCache.get(key);
         if (stringFromCache != null) return ChatColor.DARK_PURPLE + "[MCManHunt] " + ChatColor.GOLD + stringFromCache;

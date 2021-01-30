@@ -6,6 +6,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -66,9 +67,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
             hunters = (HashSet<PlayerState>) game.getHunters();
             if (hunters.isEmpty()) {
-                stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("hunter-team-no-members"));
+                stringBuilder.append(LanguageFileLoader.getInstance().getString("hunter-team-no-members"));
             } else {
-                stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("list-hunters"));
+                stringBuilder.append(LanguageFileLoader.getInstance().getString("list-hunters"));
                 hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
             }
@@ -76,9 +77,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 stringBuilder.append("\n\n");
                 runners = (HashSet<PlayerState>) game.getRunners();
                 if (runners.isEmpty()) {
-                    stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
+                    stringBuilder.append(LanguageFileLoader.getInstance().getString("runner-team-no-members"));
                 } else {
-                    stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+                    stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
                     runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                     stringBuilder.substring(0, stringBuilder.length() - 2);
                 }
@@ -86,9 +87,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
             runners = (HashSet<PlayerState>) game.getRunners();
             if (runners.isEmpty()) {
-                stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("runner-team-no-members"));
+                stringBuilder.append(LanguageFileLoader.getInstance().getString("runner-team-no-members"));
             } else {
-                stringBuilder.append(MCManHuntStringCache.getInstance().getStringFromCache("list-runners"));
+                stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
                 runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
                 stringBuilder.substring(0, stringBuilder.length() - 2);
             }

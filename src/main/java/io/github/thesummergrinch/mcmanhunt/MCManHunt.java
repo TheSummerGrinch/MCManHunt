@@ -29,6 +29,7 @@ import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerRespawnEventHan
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
@@ -54,7 +55,7 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        FileConfigurationLoader.getInstance().loadStrings("string-cache");
+        getLogger().warning(LanguageFileLoader.getInstance().getString("hunters"));
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
         GameCache.getInstance().getGameCacheFromSave("game-cache");
         checkForUpdate();
@@ -103,20 +104,19 @@ public final class MCManHunt extends JavaPlugin {
     private void enableMetrics() {
         if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
             DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
-            getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled-on-next-launch"));
+            getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled-on-next-launch"));
         } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
             final int pluginID = 8784;
             new Metrics(this, pluginID);
-            getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-enabled"));
+            getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled"));
         } else {
-            getLogger().log(Level.INFO, MCManHuntStringCache.getInstance().getStringFromCache("metrics-disabled"));
+            getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-disabled"));
         }
     }
 
     private void saveConfigFile() {
         FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
-        FileConfigurationLoader.getInstance().saveItemToConfig("string-cache", MCManHuntStringCache.getInstance());
         this.saveConfig();
     }
 

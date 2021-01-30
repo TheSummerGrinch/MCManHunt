@@ -1,8 +1,8 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.player;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +19,7 @@ public class JoinGameCommandExecutor implements CommandExecutor {
             if (game == null) return false;
             UUID playerUUID = ((Player) sender).getUniqueId();
             game.addPlayerToGame(playerUUID);
-            sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("joined-game"));
+            sender.sendMessage(LanguageFileLoader.getInstance().getString("joined-game"));
             return true;
         }
         return false;

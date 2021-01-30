@@ -26,6 +26,7 @@ public final class FileConfigurationLoader {
         }
     }
 
+    @Deprecated
     public void loadStrings(final String key) {
         MCManHuntStringCache stringCache = fileConfiguration.getObject(key, MCManHuntStringCache.class);
         if (stringCache != null) return;
@@ -63,6 +64,7 @@ public final class FileConfigurationLoader {
         };
     }
 
+    @Deprecated
     public HashMap<String, String> getStandardStringMap() {
         HashMap<String, String> standardStringMap = new HashMap<String, String>() {
             {

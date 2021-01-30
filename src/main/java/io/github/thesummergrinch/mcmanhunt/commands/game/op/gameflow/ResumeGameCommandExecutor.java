@@ -6,6 +6,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,9 +26,9 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
                     // If a game is found and it is currently paused, the game will be resumed and the players notified.
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();
-                        game.broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
+                        game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-resumed"));
                     } else {
-                        sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("game-not-paused"));
+                        sender.sendMessage(LanguageFileLoader.getInstance().getString("game-not-paused"));
                     }
                     return true;
                 }
@@ -37,22 +38,22 @@ public class ResumeGameCommandExecutor implements CommandExecutor {
                     game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();
-                        game.broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
+                        game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-resumed"));
                     } else {
-                        sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("game-not-paused"));
+                        sender.sendMessage(LanguageFileLoader.getInstance().getString("game-not-paused"));
                     }
                 } else {
-                    sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("not-in-game-no-game-specified"));
+                    sender.sendMessage(LanguageFileLoader.getInstance().getString("not-in-game-no-game-specified"));
                 }
                 return true;
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
                 if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                     game.resume();
-                    game.broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache("game-resumed"));
+                    game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-resumed"));
                 }
             } else {
-                sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("specified-game-not-exist"));
+                sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
             }
             return true;
         }

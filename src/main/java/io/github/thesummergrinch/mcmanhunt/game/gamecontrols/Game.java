@@ -3,11 +3,11 @@ package io.github.thesummergrinch.mcmanhunt.game.gamecontrols;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.CompassStateCache;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassMetaBuilder;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -115,7 +115,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(MCManHuntStringCache.getInstance().getStringFromCache("game-start-intro"));
+                broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-start-intro"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 20L);
 
@@ -142,7 +142,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("runners-started"));
+                broadcastToPlayers(LanguageFileLoader.getInstance().getString("runners-started"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100);
 
@@ -160,7 +160,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(/*ChatColor.RED + */MCManHuntStringCache.getInstance().getStringFromCache("hunters-started"));
+                broadcastToPlayers(LanguageFileLoader.getInstance().getString("hunters-started"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), (100L + this.gameState.getHeadstart() * 20L));
     }
@@ -226,7 +226,7 @@ public final class Game implements ConfigurationSerializable {
         this.gameState.setGameFlowState(GameFlowState.PAUSED);
         this.gameState.setUniverseDifficulty(Difficulty.PEACEFUL);
         this.gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        broadcastToPlayers(/*ChatColor.GREEN + */MCManHuntStringCache.getInstance().getStringFromCache("game-paused"));
+        broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-paused"));
     }
 
     /**
@@ -235,14 +235,14 @@ public final class Game implements ConfigurationSerializable {
      * the daylight-cycle again.
      */
     public void resume() {
-        broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-resuming"));
+        broadcastToPlayers(ChatColor.GREEN + LanguageFileLoader.getInstance().getString("game-resuming"));
         new BukkitRunnable() {
             @Override
             public void run() {
                 gameState.setGameFlowState(GameFlowState.RUNNING);
                 gameState.setUniverseDifficulty(gameState.getDefaultGameDifficulty());
                 gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-                broadcastToPlayers(ChatColor.GREEN + MCManHuntStringCache.getInstance().getStringFromCache("game-has-resumed"));
+                broadcastToPlayers(ChatColor.GREEN + LanguageFileLoader.getInstance().getString("game-has-resumed"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100L);
     }
@@ -257,7 +257,7 @@ public final class Game implements ConfigurationSerializable {
             this.gameState.markUniverseForDestruction(true);
         }
         teleportPlayersToDefaultWorld();
-        broadcastToPlayers(ChatColor.RED + MCManHuntStringCache.getInstance().getStringFromCache("game-has-stopped"));
+        broadcastToPlayers(ChatColor.RED + LanguageFileLoader.getInstance().getString("game-has-stopped"));
         this.removeAllPlayersFromGame();
         GameCache.getInstance().removeGame(this.getName());
     }

@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,18 +21,18 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
         if (sender instanceof Player) {
             playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
             if (!playerState.isInGame()) {
-                sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("join-team-failed"));
+                sender.sendMessage(LanguageFileLoader.getInstance().getString("join-team-failed"));
                 return true;
             }
-            if (label.equals(MCManHuntStringCache.getInstance().getStringFromCache("join-hunters"))
-                    || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("hunters"))) {
+            if (label.equals(LanguageFileLoader.getInstance().getString("join-hunters"))
+                    || args.length >= 1 && args[0].equals(LanguageFileLoader.getInstance().getString("hunters"))) {
                 playerState.setPlayerRole(PlayerRole.HUNTER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
                         .broadcastToPlayers(sender.getName() + MCManHuntStringCache.getInstance()
                                 .getStringFromCache("joined-hunters-message"));
                 return true;
-            } else if (label.equals(MCManHuntStringCache.getInstance().getStringFromCache("join-runners"))
-                    || args.length >= 1 && args[0].equals(MCManHuntStringCache.getInstance().getStringFromCache("runners"))) {
+            } else if (label.equals(LanguageFileLoader.getInstance().getString("join-runners"))
+                    || args.length >= 1 && args[0].equals(LanguageFileLoader.getInstance().getString("runners"))) {
                 playerState.setPlayerRole(PlayerRole.RUNNER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
                         .broadcastToPlayers(sender.getName() + MCManHuntStringCache.getInstance()
@@ -54,7 +55,7 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
                     return false;
                 }
             } else {
-                sender.sendMessage(MCManHuntStringCache.getInstance().getStringFromCache("join-team-incorrect-argument"));
+                sender.sendMessage(LanguageFileLoader.getInstance().getString("join-team-incorrect-argument"));
             }
             return true;
         }
