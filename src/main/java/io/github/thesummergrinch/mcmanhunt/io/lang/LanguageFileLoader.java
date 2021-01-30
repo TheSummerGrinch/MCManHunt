@@ -2,37 +2,34 @@ package io.github.thesummergrinch.mcmanhunt.io.lang;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public final class LanguageFileLoader {
 
     private static volatile LanguageFileLoader instance;
 
-    private YamlConfiguration languageFileYamlConfiguration;
+    private static final String RESOURCE_BASENAME = "MCManHunt";
+
+    private ResourceBundle resourceBundle;
 
     private LanguageFileLoader() {
         try {
-            loadLanguageFile(DefaultSettingsContainer.getInstance().getSetting("locale"));
-        } catch (IOException | InvalidConfigurationException | URISyntaxException exception) {
-            exception.printStackTrace();
+            loadLanguageFileFromDisk(
+                    new File(
+                            MCManHunt.getPlugin(MCManHunt.class).getDataFolder().getPath() + File.separator + "lang"
+                    ), new Locale(DefaultSettingsContainer.getInstance().getSetting("locale").substring(0,2), DefaultSettingsContainer.getInstance().getSetting("locale").substring(2,4)));
+        } catch (MalformedURLException e) {
+            MCManHunt.getPlugin(MCManHunt.class).getLogger().warning(e.toString());
         }
     }
 
@@ -45,77 +42,37 @@ public final class LanguageFileLoader {
         return instance;
     }
 
-    private void copyLanguageFilesToFilesystem(String destination) throws IOException, URISyntaxException {
-        List<Path> paths = getPathsFromResourceJAR("lang");
-        paths.forEach(path -> {
-            try {
-                String[] pathParts = path.toAbsolutePath().toString().split(File.separator);
-                int index = pathParts.length - 1;
-                Files.copy(path, Paths.get(destination, pathParts[index]), StandardCopyOption.COPY_ATTRIBUTES);
-            } catch (IOException exception) {
-                exception.printStackTrace();
+    private void loadLanguageFileFromDisk(final File directory, final Locale locale) throws MalformedURLException {
+        if (!directory.exists() || !directory.isDirectory()) {
+            directory.mkdir();
+            writeFilesToDisk(directory, locale);
+        }
+        File languageFile = new File(directory.getPath() + File.separator + LanguageFileLoader.RESOURCE_BASENAME + "_" + locale.getLanguage() + "_" + locale.getCountry() + ".properties");
+        if (languageFile.exists()) {
+            URL[] urls = {directory.toURI().toURL()};
+            ClassLoader classLoader = new URLClassLoader(urls);
+            this.resourceBundle = ResourceBundle.getBundle("MCManHunt", locale, classLoader);
+        } else {
+            writeFilesToDisk(directory, locale);
+        }
+    }
+
+    private void writeFilesToDisk(final File directory, final Locale locale) {
+        this.resourceBundle = ResourceBundle.getBundle("MCManHunt", locale);
+        File file = new File(directory.getPath() + File.separator + LanguageFileLoader.RESOURCE_BASENAME + "_" + locale.getLanguage() + "_" + locale.getCountry() + ".properties");
+        try (FileWriter writer = new FileWriter(file)) {
+            Set<String> keys = this.resourceBundle.keySet();
+            for (String key : keys) {
+                writer.write(key + " = " + this.resourceBundle.getString(key) + "\n");
             }
-        });
-    }
-
-    private void loadLanguageFile(final String localeString) throws IOException, URISyntaxException, InvalidConfigurationException {
-
-        File langDirectory = new File(MCManHunt.getPlugin(MCManHunt.class).getDataFolder().getPath() + File.separator + "lang");
-
-        if (!langDirectory.exists() || !langDirectory.isDirectory()) {
-            langDirectory.mkdir();
-            copyLanguageFilesToFilesystem(langDirectory.getPath());
+            writer.close();
+        } catch (IOException exception) {
+            MCManHunt.getPlugin(MCManHunt.class).getLogger().warning(Arrays.toString(exception.getStackTrace()));
         }
-
-        this.languageFileYamlConfiguration = YamlConfiguration.loadConfiguration(
-                new File(langDirectory.getPath() + File.separator + localeString + ".yml"));
-
-    }
-
-    private InputStream getFileFromResourceAsStream(final String fileName) {
-
-        final ClassLoader classLoader = getClass().getClassLoader();
-        final InputStream inputStream = classLoader.getResourceAsStream(fileName);
-
-        if (inputStream == null) throw new IllegalArgumentException("File not found! " + fileName);
-
-        return inputStream;
-
-    }
-
-    private List<Path> getPathsFromResourceJAR(final String folder) throws URISyntaxException, IOException {
-
-        List<Path> result;
-
-        String jarPath = getClass()
-                .getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .toURI()
-                .getPath();
-
-        URI uri = URI.create("jar:file:" + new File(jarPath).toURI().toString());
-
-        try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-            result = Files.walk(fs.getPath(folder))
-                    .filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
-        }
-
-        return result;
-
-    }
-
-    private File getFileFromPath(final Path filePath) {
-        return filePath.toFile();
     }
 
     public String getString(final String key) {
-        return this.languageFileYamlConfiguration.getString(key);
-    }
-
-    private Reader getReaderOfResource(final String resourceName) {
-        return new InputStreamReader(getClass().getClassLoader().getResourceAsStream(resourceName));
+        return this.resourceBundle.getString(key);
     }
 
 }
