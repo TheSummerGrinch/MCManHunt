@@ -123,7 +123,7 @@ public final class MCManHunt extends JavaPlugin {
     private void checkForUpdate() {
         if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
             new UpdateChecker(this, 83665).getVersion(version -> {
-                if (this.getDescription().getVersion().equalsIgnoreCase(version.substring(1).trim().toString())) {
+                if (this.getDescription().getVersion().equalsIgnoreCase(version.substring(1).trim())) {
                     return;
                 } else {
                     this.getLogger().info("There is a new update available.");
