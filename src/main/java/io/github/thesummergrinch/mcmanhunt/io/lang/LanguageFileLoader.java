@@ -77,6 +77,7 @@ public final class LanguageFileLoader {
 
     private enum SupportedLanguages {
         EN_GB("_en_GB.properties"),
+        EN_US("_en_US.properties"),
         DEFAULT(".properties");
 
         private final String correspondingFileSuffix;
