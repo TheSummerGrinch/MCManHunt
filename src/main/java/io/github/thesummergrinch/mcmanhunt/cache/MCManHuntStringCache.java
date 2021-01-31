@@ -14,9 +14,11 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
     private static final Map<String, String> stringCache = new HashMap<>();
     private static volatile MCManHuntStringCache instance;
 
+    @Deprecated
     private MCManHuntStringCache() {
     }
 
+    @Deprecated
     public static MCManHuntStringCache getInstance() {
         MCManHuntStringCache mcManHuntStringCache = instance;
         if (mcManHuntStringCache == null) {
@@ -29,12 +31,14 @@ public final class MCManHuntStringCache implements ConfigurationSerializable {
         return mcManHuntStringCache;
     }
 
+    @Deprecated
     public static MCManHuntStringCache deserialize(Map<String, Object> objects) {
         instance = getInstance();
         objects.forEach((key, value) -> MCManHuntStringCache.stringCache.put(key, (String) value));
         return getInstance();
     }
 
+    @Deprecated
     @Override
     public @NotNull Map<String, Object> serialize() {
         return new HashMap<>(stringCache);
