@@ -7,13 +7,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.MessageFormat;
+
 public class ManHuntVersionCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {
-            sender.sendMessage(LanguageFileLoader.getInstance().getString("version-message-part-one")
-                    + MCManHunt.getPlugin(MCManHunt.class).getDescription().getVersion()
-                    + LanguageFileLoader.getInstance().getString("version-message-part-two"));
+            sender.sendMessage(MessageFormat.format(LanguageFileLoader.getInstance().getString("version-message"),
+                    MCManHunt.getPlugin(MCManHunt.class).getDescription().getVersion()));
         }
         return true;
     }
