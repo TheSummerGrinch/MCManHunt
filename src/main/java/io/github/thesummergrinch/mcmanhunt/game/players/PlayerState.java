@@ -1,6 +1,5 @@
 package io.github.thesummergrinch.mcmanhunt.game.players;
 
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;

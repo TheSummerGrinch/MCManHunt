@@ -1,7 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.player;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
@@ -28,28 +27,24 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
                     || args.length >= 1 && args[0].equals(LanguageFileLoader.getInstance().getString("hunters"))) {
                 playerState.setPlayerRole(PlayerRole.HUNTER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(sender.getName() + MCManHuntStringCache.getInstance()
-                                .getStringFromCache("joined-hunters-message"));
+                        .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-hunters-message"));
                 return true;
             } else if (label.equals(LanguageFileLoader.getInstance().getString("join-runners"))
                     || args.length >= 1 && args[0].equals(LanguageFileLoader.getInstance().getString("runners"))) {
                 playerState.setPlayerRole(PlayerRole.RUNNER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(sender.getName() + MCManHuntStringCache.getInstance()
-                                .getStringFromCache("joined-runners-message"));
+                        .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-runners-message"));
                 return true;
             } else if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("runners")) {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                            .broadcastToPlayers(sender.getName() + MCManHuntStringCache.getInstance()
-                                    .getStringFromCache("joined-runners-message"));
+                            .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-runners-message"));
                     return true;
                 } else if (args[0].equalsIgnoreCase("hunters")) {
                     playerState.setPlayerRole(PlayerRole.HUNTER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                            .broadcastToPlayers(sender.getName() + MCManHuntStringCache.getInstance()
-                                    .getStringFromCache("joined-hunters-message"));
+                            .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-hunters-message"));
                     return true;
                 } else {
                     return false;

@@ -2,7 +2,6 @@ package io.github.thesummergrinch.mcmanhunt.io.settings;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
@@ -24,14 +23,6 @@ public final class FileConfigurationLoader {
             if (instance == null) instance = new FileConfigurationLoader();
             return instance;
         }
-    }
-
-    @Deprecated
-    public void loadStrings(final String key) {
-        MCManHuntStringCache stringCache = fileConfiguration.getObject(key, MCManHuntStringCache.class);
-        if (stringCache != null) return;
-        MCManHuntStringCache.getInstance().addStringsToCache(getStandardStringMap());
-        fileConfiguration.set(key, MCManHuntStringCache.getInstance());
     }
 
     public void saveItemToConfig(final String key, final Object value) {

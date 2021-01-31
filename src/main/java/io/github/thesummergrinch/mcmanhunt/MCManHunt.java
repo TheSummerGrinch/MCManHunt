@@ -1,7 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRoleCommandExecutor;
@@ -49,7 +48,6 @@ public final class MCManHunt extends JavaPlugin {
         ConfigurationSerialization.registerClass(Game.class);
         ConfigurationSerialization.registerClass(Universe.class);
         ConfigurationSerialization.registerClass(GameCache.class);
-        ConfigurationSerialization.registerClass(MCManHuntStringCache.class);
         ConfigurationSerialization.registerClass(GameState.class);
         ConfigurationSerialization.registerClass(DefaultSettingsContainer.class);
     }

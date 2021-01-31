@@ -1,7 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.commands.plugin.info;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
-import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,7 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
 import io.github.thesummergrinch.mcmanhunt.cache.CompassStateCache;
-//import io.github.thesummergrinch.mcmanhunt.cache.MCManHuntStringCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
