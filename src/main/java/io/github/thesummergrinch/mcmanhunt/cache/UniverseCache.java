@@ -5,7 +5,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class UniverseCache implements ConfigurationSerializable {
@@ -51,4 +53,9 @@ public final class UniverseCache implements ConfigurationSerializable {
             }
         });
     }
+
+    public List<String> getUniverseNamesAsList() {
+        return new ArrayList<>(universeCache.keySet());
+    }
+
 }
