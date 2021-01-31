@@ -6,9 +6,21 @@ import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class InitializeGameCommandExecutor implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class InitializeGameCommandExecutor implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
+        {
+            add("manhunt");
+            add("world");
+        }
+    };
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -25,4 +37,8 @@ public class InitializeGameCommandExecutor implements CommandExecutor {
         return false;
     }
 
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+    }
 }
