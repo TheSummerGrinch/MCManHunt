@@ -5,7 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ public class OnEnderDragonDeathEventHandler implements @NotNull Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEnderDragonDeathEvent(@NotNull final EntityDeathEvent event) {
-        if (event.getEntity() instanceof EnderDragon) {
+        if (event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
             @Nullable final Game game = GameCache.getInstance()
                     .getGameFromCache(event.getEntity().getLocation().getWorld().getName().split("_")[0]);
             if (game != null && game.getGameFlowState().equals(GameFlowState.RUNNING)) {
