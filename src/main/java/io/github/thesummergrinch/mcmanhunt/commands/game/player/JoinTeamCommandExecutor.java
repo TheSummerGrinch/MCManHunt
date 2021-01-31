@@ -8,10 +8,15 @@ import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class JoinTeamCommandExecutor implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class JoinTeamCommandExecutor implements CommandExecutor, TabCompleter {
     //TODO rewrite this to clean it.
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
@@ -36,12 +41,12 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
                         .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-runners-message"));
                 return true;
             } else if (args.length >= 1) {
-                if (args[0].equalsIgnoreCase("runners")) {
+                if (args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
                             .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-runners-message"));
                     return true;
-                } else if (args[0].equalsIgnoreCase("hunters")) {
+                } else if (args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
                     playerState.setPlayerRole(PlayerRole.HUNTER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
                             .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-hunters-message"));
@@ -55,5 +60,15 @@ public class JoinTeamCommandExecutor implements CommandExecutor {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        List<String> suggestedArgument = new ArrayList<>();
+        if (alias.equalsIgnoreCase("jointeam")) {
+            suggestedArgument.add(LanguageFileLoader.getInstance().getString("hunters"));
+            suggestedArgument.add(LanguageFileLoader.getInstance().getString("runners"));
+        }
+        return suggestedArgument;
     }
 }
