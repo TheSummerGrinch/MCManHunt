@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -115,7 +116,8 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-start-intro"));
+                broadcastToPlayers(MessageFormat.format(LanguageFileLoader.getInstance().getString("game-start-intro")
+                        ,5 ,gameState.getHeadstart()));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 20L);
 
@@ -168,7 +170,7 @@ public final class Game implements ConfigurationSerializable {
     public void broadcastToPlayers(@NotNull final String message) {
         gameState.getPlayersInGame().forEach((uuid, playerState) -> {
             if (playerState.isOnline()) {
-                Bukkit.getPlayer(uuid).sendMessage(message);
+                Bukkit.getPlayer(uuid).sendMessage(ChatColor.DARK_PURPLE + "[MCManHunt] " + ChatColor.GOLD + message);
             }
         });
     }
@@ -235,14 +237,14 @@ public final class Game implements ConfigurationSerializable {
      * the daylight-cycle again.
      */
     public void resume() {
-        broadcastToPlayers(ChatColor.GREEN + LanguageFileLoader.getInstance().getString("game-resuming"));
+        broadcastToPlayers(MessageFormat.format(LanguageFileLoader.getInstance().getString("game-resuming"), 5));
         new BukkitRunnable() {
             @Override
             public void run() {
                 gameState.setGameFlowState(GameFlowState.RUNNING);
                 gameState.setUniverseDifficulty(gameState.getDefaultGameDifficulty());
                 gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-                broadcastToPlayers(ChatColor.GREEN + LanguageFileLoader.getInstance().getString("game-has-resumed"));
+                broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-resumed"));
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100L);
     }
@@ -257,7 +259,7 @@ public final class Game implements ConfigurationSerializable {
             this.gameState.markUniverseForDestruction(true);
         }
         teleportPlayersToDefaultWorld();
-        broadcastToPlayers(ChatColor.RED + LanguageFileLoader.getInstance().getString("game-has-stopped"));
+        broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-stopped"));
         this.removeAllPlayersFromGame();
         GameCache.getInstance().removeGame(this.getName());
     }
