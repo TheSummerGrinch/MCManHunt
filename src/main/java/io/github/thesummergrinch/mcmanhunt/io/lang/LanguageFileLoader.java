@@ -6,7 +6,6 @@ import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
@@ -28,8 +27,8 @@ public final class LanguageFileLoader {
                     new File(
                             MCManHunt.getPlugin(MCManHunt.class).getDataFolder().getPath() + File.separator + "lang"
                     ), new Locale(DefaultSettingsContainer.getInstance().getSetting("locale").substring(0,2), DefaultSettingsContainer.getInstance().getSetting("locale").substring(2,4)));
-        } catch (MalformedURLException e) {
-            MCManHunt.getPlugin(MCManHunt.class).getLogger().warning(e.toString());
+        } catch (IOException e) {
+            MCManHunt.getPlugin(MCManHunt.class).getLogger().warning(e.getMessage() + " The Language-file will be created next time the plugin is loaded.");
         }
     }
 
@@ -42,7 +41,7 @@ public final class LanguageFileLoader {
         return instance;
     }
 
-    private void loadLanguageFileFromDisk(final File directory, final Locale locale) throws MalformedURLException {
+    private void loadLanguageFileFromDisk(final File directory, final Locale locale) throws IOException {
         if (!directory.exists() || !directory.isDirectory()) {
             directory.mkdir();
             writeFilesToDisk(directory, locale);
@@ -73,6 +72,10 @@ public final class LanguageFileLoader {
 
     public String getString(final String key) {
         return this.resourceBundle.getString(key);
+    }
+
+    public void loadNewLanguage(final File directory, final Locale locale) throws IOException {
+        loadLanguageFileFromDisk(directory, locale);
     }
 
 }
