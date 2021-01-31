@@ -39,6 +39,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
+/**
+ * @author Marcus Talbot (TheSummerGrinch)
+ */
 public final class MCManHunt extends JavaPlugin {
 
     static {
