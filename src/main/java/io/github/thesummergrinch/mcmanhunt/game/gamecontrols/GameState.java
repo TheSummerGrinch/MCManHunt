@@ -76,6 +76,8 @@ public final class GameState implements ConfigurationSerializable {
     public static @NotNull GameState deserialize(final Map<String, Object> objects) {
         final Difficulty defaultGameDifficulty = getDifficultyFromString((String) objects.get("difficulty"));
         final Universe universe = (Universe) objects.get("universe");
+        universe.setDifficulty(Difficulty.PEACEFUL);
+        universe.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         GameState gameState = new GameState(universe, defaultGameDifficulty);
         Map<String, PlayerState> playerStateMap = (Map<String, PlayerState>) objects.get("players");
         playerStateMap.forEach((uuidString, playerState) -> gameState.addPlayerToGame(UUID.fromString(uuidString)));
