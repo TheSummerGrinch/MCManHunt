@@ -56,15 +56,14 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getLogger().warning(LanguageFileLoader.getInstance().getString("hunters"));
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
         GameCache.getInstance().getGameCacheFromSave("game-cache");
+        //Testing only! getLogger().warning(LanguageFileLoader.getInstance().getString("hunters"));
         checkForUpdate();
         registerEventHandlers();
         registerCommands();
         enableMetrics();
         this.saveConfig();
-        //getLogger().info(LanguageFileLoader.getInstance().getString("true"));
     }
 
     @Override
