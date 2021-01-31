@@ -6,9 +6,14 @@ import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class DestroyUniverseCommandExecutor implements CommandExecutor {
+import java.util.List;
+
+public class DestroyUniverseCommandExecutor implements CommandExecutor, TabCompleter {
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                              @NotNull String[] args) {
@@ -19,5 +24,10 @@ public class DestroyUniverseCommandExecutor implements CommandExecutor {
             sender.sendMessage(LanguageFileLoader.getInstance().getString("universe-destroy-failed"));
         }
         return true;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        return UniverseCache.getInstance().getUniverseNamesAsList();
     }
 }
