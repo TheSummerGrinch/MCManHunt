@@ -21,18 +21,24 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
         final PlayerRole roleToList;
 
-        if ((args.length >= 1 && args[0].equals("runners")) || label.equals("listrunners")) {
+        if ((args.length >= 1 && args[0].equalsIgnoreCase("runners"))
+                || label.equalsIgnoreCase("listrunners")
+                || args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
             roleToList = PlayerRole.RUNNER;
-        } else if ((args.length >= 1 && args[0].equals("hunters")) || label.equals("listhunters")) {
+        } else if ((args.length >= 1 && args[0].equalsIgnoreCase("hunters"))
+                || label.equalsIgnoreCase("listhunters")
+                || args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
             roleToList = PlayerRole.HUNTER;
-        } else if (label.equals("listteams")) {
+        } else if (label.equalsIgnoreCase("listteams")) {
             roleToList = PlayerRole.DEFAULT;
         } else {
             return false;
         }
 
         final Game game;
-        boolean labelsUsed = label.equals("listrunners") || label.equals("listhunters") || label.equals("listteams");
+        boolean labelsUsed = label.equalsIgnoreCase("listrunners")
+                || label.equalsIgnoreCase("listhunters")
+                || label.equalsIgnoreCase("listteams");
         if (sender instanceof Player) {
             final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
 
