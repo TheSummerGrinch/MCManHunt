@@ -6,7 +6,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -70,6 +72,10 @@ public final class GameCache implements ConfigurationSerializable {
 
     public void removeGame(@NotNull final String gameName) {
         gameCache.remove(gameName);
+    }
+
+    public List<String> getGameNamesAsList() {
+        return new ArrayList<String>(gameCache.keySet());
     }
 
 }
