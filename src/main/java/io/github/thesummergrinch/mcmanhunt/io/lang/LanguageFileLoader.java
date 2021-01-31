@@ -75,20 +75,4 @@ public final class LanguageFileLoader {
         return this.resourceBundle.getString(key);
     }
 
-    private enum SupportedLanguages {
-        EN_GB("_en_GB.properties"),
-        EN_US("_en_US.properties"),
-        DEFAULT(".properties");
-
-        private final String correspondingFileSuffix;
-
-        private SupportedLanguages(final String correspondingFileSuffix) {
-            this.correspondingFileSuffix = correspondingFileSuffix;
-        }
-
-        public String getCorrespondingFileSuffix() {
-            return correspondingFileSuffix;
-        }
-    }
-
 }
