@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,24 +33,24 @@ public class JoinTeamCommandExecutor implements CommandExecutor, TabCompleter {
                     || args.length >= 1 && args[0].equals(LanguageFileLoader.getInstance().getString("hunters"))) {
                 playerState.setPlayerRole(PlayerRole.HUNTER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-hunters-message"));
+                        .broadcastToPlayers(MessageFormat.format(LanguageFileLoader.getInstance().getString("joined-hunters-message"), sender.getName()));
                 return true;
             } else if (label.equals(LanguageFileLoader.getInstance().getString("join-runners"))
                     || args.length >= 1 && args[0].equals(LanguageFileLoader.getInstance().getString("runners"))) {
                 playerState.setPlayerRole(PlayerRole.RUNNER);
                 GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                        .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-runners-message"));
+                        .broadcastToPlayers(MessageFormat.format(LanguageFileLoader.getInstance().getString("joined-runners-message"), sender.getName()));
                 return true;
             } else if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
                     playerState.setPlayerRole(PlayerRole.RUNNER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                            .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-runners-message"));
+                            .broadcastToPlayers(MessageFormat.format(LanguageFileLoader.getInstance().getString("joined-runners-message"), sender.getName()));
                     return true;
                 } else if (args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
                     playerState.setPlayerRole(PlayerRole.HUNTER);
                     GameCache.getInstance().getGameFromCache(playerState.getGameName())
-                            .broadcastToPlayers(sender.getName() + LanguageFileLoader.getInstance().getString("joined-hunters-message"));
+                            .broadcastToPlayers(MessageFormat.format(LanguageFileLoader.getInstance().getString("joined-hunters-message"), sender.getName()));
                     return true;
                 } else {
                     return false;
