@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -77,6 +78,12 @@ public final class Universe implements ConfigurationSerializable {
         this.worldHashMap.put(overworld.getName(), overworld);
         this.worldHashMap.put(nether.getName(), nether);
         this.worldHashMap.put(end.getName(), end);
+        if (MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager()
+                .getPlugin("Multiverse-Core") != null
+                && MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager()
+                .getPlugin("Multiverse-NetherPortals") != null) {
+            MultiverseUniverseBridge.getInstance().registerWorldsInMultiverse(Bukkit.getConsoleSender(), this);
+        }
     }
 
     /**
