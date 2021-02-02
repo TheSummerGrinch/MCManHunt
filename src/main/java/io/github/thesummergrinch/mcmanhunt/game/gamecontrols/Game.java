@@ -317,4 +317,8 @@ public final class Game implements ConfigurationSerializable {
         }
     }
 
+    public boolean isEligibleForStart() {
+        return this.gameState.isEligibleForStart();
+    }
+
 }

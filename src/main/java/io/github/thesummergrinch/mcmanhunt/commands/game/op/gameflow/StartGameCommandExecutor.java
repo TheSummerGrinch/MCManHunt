@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,18 +18,28 @@ import java.util.List;
 
 public class StartGameCommandExecutor implements CommandExecutor, TabCompleter {
 
+    //TODO make it so that the game doesn't start if there aren't at least two players.
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {
             if (args.length >= 1) {
-                GameCache.getInstance().getGameFromCache(args[0]).start();
+                Game game = GameCache.getInstance().getGameFromCache(args[0]);
+                if (game.isEligibleForStart()) {
+                    game.start();
+                } else {
+                    sender.sendMessage(LanguageFileLoader.getInstance().getString("not-enough-players"));
+                }
                 return true;
             } else if (sender instanceof Player) {
                 PlayerState player = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
                 if (player.isInGame()) {
                     Game game = GameCache.getInstance().getGameFromCache(player.getGameName());
                     if (game.getGameFlowState().equals(GameFlowState.DEFAULT)) {
-                        game.start();
+                        if (game.isEligibleForStart()) {
+                            game.start();
+                        } else {
+                            sender.sendMessage(LanguageFileLoader.getInstance().getString("not-enough-players"));
+                        }
                         return true;
                     } else if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
                         game.resume();

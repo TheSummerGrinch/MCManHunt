@@ -239,4 +239,8 @@ public final class GameState implements ConfigurationSerializable {
         return this.headstart;
     }
 
+    protected boolean isEligibleForStart() {
+        return ((getNumberOfHunters() >= 1 && getNumberOfRunners() >= 1) || (playerRolesRandomized && playersInGame.size() >= 2));
+    }
+
 }
