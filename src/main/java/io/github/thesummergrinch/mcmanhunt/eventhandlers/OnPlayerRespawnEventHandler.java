@@ -18,6 +18,7 @@ public class OnPlayerRespawnEventHandler implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerRespawnEvent(@NotNull final PlayerRespawnEvent event) {
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
+        if (!playerState.isInGame()) return;
         final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
         if (playerState.isInGame())
             if (game.getGameFlowState().equals(GameFlowState.RUNNING))
