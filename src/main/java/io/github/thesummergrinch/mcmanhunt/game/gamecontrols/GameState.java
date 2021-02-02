@@ -8,9 +8,11 @@ import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -164,7 +166,9 @@ public final class GameState implements ConfigurationSerializable {
     protected void removeAllPlayersFromGame() {
         this.playersInGame.values().forEach(playerState -> {
             playerState.setGame(null);
-            Bukkit.getPlayer(playerState.getPlayerUUID()).getInventory().clear();
+            Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
+            player.getInventory().clear();
+            player.setGameMode(GameMode.SURVIVAL);
         });
         this.playersInGame.clear();
     }
