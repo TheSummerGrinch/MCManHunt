@@ -39,4 +39,5 @@ public final class PlayerStateCache implements ConfigurationSerializable {
     public @NotNull Map<String, Object> serialize() {
         return null;
     }
+
 }
