@@ -173,6 +173,12 @@ public final class Universe implements ConfigurationSerializable {
         });
         if (!markedForDestruction) return;
 
+        if (MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager().getPlugin("Multiverse-Core") != null) {
+            MultiverseUniverseBridge.getInstance().unloadAndDestroy(Bukkit.getConsoleSender(), this);
+            UniverseCache.getInstance().removeUniverse(this.universeName);
+            return;
+        }
+
         this.worldHashMap.forEach((worldName, world) -> {
             File worldDirectory = new File(Bukkit.getWorldContainer(), "/" + worldName);
 
