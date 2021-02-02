@@ -123,12 +123,30 @@ public final class MCManHunt extends JavaPlugin {
     private void checkForUpdate() {
         if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
             new UpdateChecker(this, 83665).getVersion(version -> {
-                String currentVersion = this.getDescription().getVersion();
-                if (version.substring(1).trim().length() == currentVersion.trim().length()
-                        && version.substring(1).equals(currentVersion)) {
-                    return;
+                String[] publishedVersion = version.substring(1).split("\\.");
+                String[] currentVersion = this.getDescription().getVersion().split("\\.");
+                if (publishedVersion.length == currentVersion.length) {
+                    for (int i = 0; i < publishedVersion.length; i++) {
+                        if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+                            getLogger().warning("A new version is available: " + version);
+                            return;
+                        }
+                    }
+                } else if (publishedVersion.length < (currentVersion).length) {
+                    for (int i = 0; i < publishedVersion.length; i++) {
+                        if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+                            getLogger().warning("A new version is available: " + version);
+                            return;
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < currentVersion.length; i++) {
+                        if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+                            getLogger().warning("A new version is available: " + version);
+                            return;
+                        }
+                    }
                 }
-                this.getLogger().info("There is a new update available.");
             });
         }
     }
