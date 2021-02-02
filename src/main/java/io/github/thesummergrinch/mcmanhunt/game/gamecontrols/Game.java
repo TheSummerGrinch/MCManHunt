@@ -86,6 +86,19 @@ public final class Game implements ConfigurationSerializable {
         return gameState.getGameName();
     }
 
+    private void teleportPlayersToGameWorld() {
+        gameState.getPlayersInGame().forEach((uuid, playerState) -> {
+            if (playerState.isOnline()) {
+                final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
+                player.setBedSpawnLocation(gameState.getWorldSpawn(), true);
+                player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
+                player.setHealth(20);
+                player.setFoodLevel(20);
+                player.setGameMode(GameMode.SURVIVAL);
+            }
+        });
+    }
+
     /**
      * Starts a ManHunt-game in the following sequence:
      * 1. Set the {@link GameFlowState} within the {@link GameState} to RUNNING.
@@ -104,16 +117,7 @@ public final class Game implements ConfigurationSerializable {
         gameState.setGameFlowState(GameFlowState.RUNNING);
         gameState.setGameUniverseTime(1000L);
 
-        gameState.getPlayersInGame().forEach((uuid, playerState) -> {
-            if (playerState.isOnline()) {
-                final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
-                player.setBedSpawnLocation(gameState.getWorldSpawn(), true);
-                player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
-                player.setHealth(20);
-                player.setFoodLevel(20);
-                player.setGameMode(GameMode.SURVIVAL);
-            }
-        });
+        teleportPlayersToGameWorld();
 
         new BukkitRunnable() {
             @Override
@@ -135,11 +139,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                gameState.getPlayersInGame().values().forEach(playerState -> {
-                    if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
-                        playerState.setIsMovementRestricted(false);
-                    }
-                });
+                gameState.getRunners().forEach(playerState -> playerState.setIsMovementRestricted(false));
             }
         }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 100);
 

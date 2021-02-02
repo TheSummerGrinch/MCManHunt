@@ -66,6 +66,10 @@ commands:
     description: Allows the user to leave the game they are in.
     usage: /leavegame
     permission: mcmanhunt.game.leave
+  setlanguage:
+    description: Allows the user to set the language MCManHunt will use in its messages.
+    usage: /setlanguage [language] (e.g. /setlanguage enGB)
+    permission: mcmanhunt.game.op
 permissions:
   mcmanhunt.game.op:
     description: Allows the user access to op-commands related to the MCManHunt-plugin.

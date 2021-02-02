@@ -1,4 +1,4 @@
-package io.github.thesummergrinch.mcmanhunt.commands.game.op;
+package io.github.thesummergrinch.mcmanhunt.commands.game.op.settings;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;

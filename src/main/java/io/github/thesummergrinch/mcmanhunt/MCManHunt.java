@@ -1,15 +1,15 @@
 package io.github.thesummergrinch.mcmanhunt;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
-import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRoleCommandExecutor;
-import io.github.thesummergrinch.mcmanhunt.commands.game.op.ManHuntRuleCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.ManHuntRuleCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.InitializeGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.PauseGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.ResumeGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.StartGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.StopGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.SetManHuntLanguageCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.DestroyUniverseCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.SetDestroyUniverseOnStopCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinGameCommandExecutor;
@@ -36,6 +36,7 @@ import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.logging.Level;
 
@@ -59,12 +60,12 @@ public final class MCManHunt extends JavaPlugin {
         // Plugin startup logic
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
         GameCache.getInstance().getGameCacheFromSave("game-cache");
-        //Testing only! getLogger().warning(LanguageFileLoader.getInstance().getString("hunters"));
-        checkForUpdate();
+        this.saveConfig();
+        loadLanguageFile();
         registerEventHandlers();
         registerCommands();
         enableMetrics();
-        this.saveConfig();
+        checkForUpdate();
     }
 
     @Override
@@ -87,6 +88,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("manhuntversion").setExecutor(new ManHuntVersionCommandExecutor());
         this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
         this.getCommand("leavegame").setExecutor(new LeaveGameCommandExecutor());
+        this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
     }
 
     private void registerEventHandlers() {
@@ -150,6 +152,15 @@ public final class MCManHunt extends JavaPlugin {
                 }
             });
         }
+    }
+
+    private void loadLanguageFile() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                LanguageFileLoader.getInstance();
+            }
+        }.runTaskAsynchronously(this);
     }
 
 }

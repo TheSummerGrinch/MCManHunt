@@ -18,7 +18,6 @@ import java.util.List;
 
 public class StartGameCommandExecutor implements CommandExecutor, TabCompleter {
 
-    //TODO make it so that the game doesn't start if there aren't at least two players.
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {

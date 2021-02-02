@@ -18,6 +18,9 @@ public class OnPlayerPortalEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerPortalEvent(@NotNull final PlayerPortalEvent event) {
+        if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null && Bukkit.getPluginManager().getPlugin("Multiverse-NetherPortals") != null) {
+            return;
+        }
         final String worldName = event.getFrom().getWorld().getName();
         final UUID playerUUID = event.getPlayer().getUniqueId();
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);

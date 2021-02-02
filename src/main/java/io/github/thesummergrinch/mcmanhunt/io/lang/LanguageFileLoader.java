@@ -50,6 +50,7 @@ public final class LanguageFileLoader {
         }
         File languageFile = new File(directory.getPath() + File.separator + LanguageFileLoader.RESOURCE_BASENAME + "_" + locale.getLanguage() + "_" + locale.getCountry() + ".properties");
         if (languageFile.exists()) {
+            languageFile.createNewFile();
             URL[] urls = {directory.toURI().toURL()};
             ClassLoader classLoader = new URLClassLoader(urls);
             this.resourceBundle = ResourceBundle.getBundle("MCManHunt", locale, classLoader);
@@ -69,13 +70,15 @@ public final class LanguageFileLoader {
         ResourceBundle.clearCache();
         this.resourceBundle = ResourceBundle.getBundle("MCManHunt", locale, this.getClass().getClassLoader());
         File file = new File(directory.getPath() + File.separator + LanguageFileLoader.RESOURCE_BASENAME + "_" + locale.getLanguage() + "_" + locale.getCountry() + ".properties");
-        try (FileWriter writer = new FileWriter(file)) {
+        try {
+            FileWriter writer = new FileWriter(file);
             Set<String> keys = this.resourceBundle.keySet();
             for (String key : keys) {
                 writer.write(key + " = " + this.resourceBundle.getString(key) + "\n");
             }
+            writer.close();
         } catch (IOException exception) {
-            MCManHunt.getPlugin(MCManHunt.class).getLogger().warning(Arrays.toString(exception.getStackTrace()));
+            exception.printStackTrace();
         }
     }
 
