@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+//TODO implement properly
 public class SetManHuntLanguageCommandExecutor implements CommandExecutor, TabCompleter {
 
     private static final List<String> AVAILABLE_LANGUAGES = new ArrayList<String>() {
