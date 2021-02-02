@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -163,6 +164,36 @@ public final class Universe implements ConfigurationSerializable {
 
     public void setMarkedForDestruction(final boolean markedForDestruction) {
         this.markedForDestruction = true;
+        unloadAndDestroy();
+    }
+
+    public void unloadAndDestroy() {
+        if (this.universeName.equals("world")) return;
+        this.worldHashMap.forEach((name, world) -> {
+            Bukkit.unloadWorld(name, !markedForDestruction);
+        });
+        if (!markedForDestruction) return;
+
+        this.worldHashMap.forEach((worldName, world) -> {
+            File worldDirectory = new File(Bukkit.getWorldContainer(), "/" + worldName);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!markedForDestruction) return;
+                    try {
+                        Files.walkFileTree(worldDirectory.toPath(), new WorldDirectoryFileVisitor());
+                    } catch (IOException exception) {
+                        MCManHunt.getPlugin(MCManHunt.class).getLogger().log(Level.SEVERE, "Could not delete World "
+                                + worldName + ". Please check whether the world exists, " +
+                                "or contact the developer (GitHub: Github.com/TheSummerGrinch).");
+                    }
+                }
+            }.runTaskAsynchronously(MCManHunt.getPlugin(MCManHunt.class));
+        });
+
+        UniverseCache.getInstance().removeUniverse(this.universeName);
+
     }
 
     /**
