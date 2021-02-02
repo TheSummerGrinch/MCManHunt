@@ -30,10 +30,11 @@ public class SetManHuntLanguageCommandExecutor implements CommandExecutor, TabCo
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {
+            if (args.length < 1) return false;
             try {
                 LanguageFileLoader.getInstance().loadNewLanguage(new File(
                         MCManHunt.getPlugin(MCManHunt.class).getDataFolder().getPath() + File.separator + "lang"
-                ), new Locale(DefaultSettingsContainer.getInstance().getSetting("locale").substring(0,2), DefaultSettingsContainer.getInstance().getSetting("locale").substring(2,4)));
+                ), new Locale(args[0].substring(0,2), args[0].substring(2,4)));
                 sender.sendMessage(LanguageFileLoader.getInstance().getString("language-loaded"));
                 return true;
             } catch (IOException exception) {

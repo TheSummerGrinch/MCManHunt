@@ -10,6 +10,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.PauseGameCo
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.ResumeGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.StartGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.StopGameCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.SetManHuntLanguageCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.DestroyUniverseCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.SetDestroyUniverseOnStopCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinGameCommandExecutor;
@@ -87,6 +88,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("manhuntversion").setExecutor(new ManHuntVersionCommandExecutor());
         this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
         this.getCommand("leavegame").setExecutor(new LeaveGameCommandExecutor());
+        this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
     }
 
     private void registerEventHandlers() {
