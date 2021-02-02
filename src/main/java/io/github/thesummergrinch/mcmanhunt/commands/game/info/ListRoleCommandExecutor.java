@@ -23,11 +23,11 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
         if ((args.length >= 1 && args[0].equalsIgnoreCase("runners"))
                 || label.equalsIgnoreCase("listrunners")
-                || args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
+                || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
             roleToList = PlayerRole.RUNNER;
         } else if ((args.length >= 1 && args[0].equalsIgnoreCase("hunters"))
                 || label.equalsIgnoreCase("listhunters")
-                || args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
+                || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
             roleToList = PlayerRole.HUNTER;
         } else if (label.equalsIgnoreCase("listteams")) {
             roleToList = PlayerRole.DEFAULT;
@@ -36,9 +36,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         }
 
         final Game game;
-        boolean labelsUsed = label.equalsIgnoreCase("listrunners")
+        boolean labelsUsed = (label.equalsIgnoreCase("listrunners")
                 || label.equalsIgnoreCase("listhunters")
-                || label.equalsIgnoreCase("listteams");
+                || label.equalsIgnoreCase("listteams"));
         if (sender instanceof Player) {
             final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
 
@@ -76,7 +76,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
             } else {
                 stringBuilder.append(LanguageFileLoader.getInstance().getString("list-hunters"));
                 hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-                stringBuilder.substring(0, stringBuilder.length() - 2);
+                stringBuilder.substring(0, stringBuilder.length() - 3);
             }
             if (roleToList.equals(PlayerRole.DEFAULT)) {
                 stringBuilder.append("\n\n");
@@ -86,7 +86,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 } else {
                     stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
                     runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-                    stringBuilder.substring(0, stringBuilder.length() - 2);
+                    stringBuilder.substring(0, stringBuilder.length() - 3);
                 }
             }
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
@@ -96,7 +96,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
             } else {
                 stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
                 runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-                stringBuilder.substring(0, stringBuilder.length() - 2);
+                stringBuilder.substring(0, stringBuilder.length() - 3);
             }
         }
         sender.sendMessage(stringBuilder.toString());
