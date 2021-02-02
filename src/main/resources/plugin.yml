@@ -2,6 +2,7 @@ name: MCManHunt
 version: ${project.version}
 main: io.github.thesummergrinch.mcmanhunt.MCManHunt
 api-version: 1.16
+softdepend: [ Multiverse-Core, Multiverse-NetherPortals ]
 commands:
   initializegame:
     description: Initializes a game.
