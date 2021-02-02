@@ -228,8 +228,10 @@ public final class GameState implements ConfigurationSerializable {
                 break;
             case "player-roles-randomized":
                 this.playerRolesRandomized = Boolean.parseBoolean(value);
+                break;
             case "headstart":
                 this.headstart = Long.parseLong(value);
+                break;
             default:
                 break;
         }
