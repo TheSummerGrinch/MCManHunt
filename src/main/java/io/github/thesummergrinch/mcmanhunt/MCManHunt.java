@@ -36,6 +36,7 @@ import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.logging.Level;
 
@@ -59,11 +60,12 @@ public final class MCManHunt extends JavaPlugin {
         // Plugin startup logic
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
         GameCache.getInstance().getGameCacheFromSave("game-cache");
-        checkForUpdate();
+        this.saveConfig();
+        loadLanguageFile();
         registerEventHandlers();
         registerCommands();
         enableMetrics();
-        this.saveConfig();
+        checkForUpdate();
     }
 
     @Override
@@ -150,6 +152,15 @@ public final class MCManHunt extends JavaPlugin {
                 }
             });
         }
+    }
+
+    private void loadLanguageFile() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                LanguageFileLoader.getInstance();
+            }
+        }.runTaskAsynchronously(this);
     }
 
 }
