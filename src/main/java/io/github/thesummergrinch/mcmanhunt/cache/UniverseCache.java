@@ -49,7 +49,7 @@ public final class UniverseCache implements ConfigurationSerializable {
     @Deprecated
     public void onDisable() {
         universeCache.values().forEach(universe -> {
-            if (universe.getMarkedForDestruction() && !universe.isInUse()) {
+            if (universe.getMarkedForDestruction()) {
                 universe.destroyUniverse();
             }
         });
