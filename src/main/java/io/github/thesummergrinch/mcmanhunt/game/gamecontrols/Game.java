@@ -139,11 +139,7 @@ public final class Game implements ConfigurationSerializable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                gameState.getPlayersInGame().values().forEach(playerState -> {
-                    if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
-                        playerState.setIsMovementRestricted(false);
-                    }
-                });
+                gameState.getRunners().forEach(playerState -> playerState.setIsMovementRestricted(false));
             }
         }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 100);
 
