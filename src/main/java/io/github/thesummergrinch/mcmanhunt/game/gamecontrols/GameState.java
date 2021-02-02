@@ -2,6 +2,7 @@ package io.github.thesummergrinch.mcmanhunt.game.gamecontrols;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
+import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
@@ -107,8 +108,18 @@ public final class GameState implements ConfigurationSerializable {
 
     protected void removePlayerFromGame(@NotNull final UUID playerUUID) {
         PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);
+        playerState.setPlayerRole(PlayerRole.DEFAULT);
         playerState.setGame(null);
         this.playersInGame.remove(playerUUID);
+        if (!this.gameFlowState.equals(GameFlowState.DEFAULT)) { //Win by forfeit
+            if (this.getNumberOfRunners() == 0) {
+                Bukkit.getServer().getPluginManager()
+                        .callEvent(new ManHuntWinEvent(gameName, getHunterUUIDs()));
+            } else if (this.getNumberOfHunters() == 0) {
+                Bukkit.getServer().getPluginManager()
+                        .callEvent(new ManHuntWinEvent(gameName, getRunnerUUIDs()));
+            }
+        }
     }
 
     protected synchronized @NotNull GameFlowState getGameFlowState() {

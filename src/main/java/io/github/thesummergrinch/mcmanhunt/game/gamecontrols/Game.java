@@ -12,6 +12,7 @@ import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -110,6 +111,7 @@ public final class Game implements ConfigurationSerializable {
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
                 player.setHealth(20);
                 player.setFoodLevel(20);
+                player.setGameMode(GameMode.SURVIVAL);
             }
         });
 

@@ -14,6 +14,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.DestroyUniv
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.universe.SetDestroyUniverseOnStopCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinTeamCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.player.LeaveGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.plugin.info.ManHuntVersionCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnBlockDamageEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnEnderDragonDeathEventHandler;
@@ -68,7 +69,6 @@ public final class MCManHunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        UniverseCache.getInstance().onDisable();
         saveConfigFile();
     }
 
@@ -86,6 +86,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("setdestroyuniverseonstop").setExecutor(new SetDestroyUniverseOnStopCommandExecutor());
         this.getCommand("manhuntversion").setExecutor(new ManHuntVersionCommandExecutor());
         this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
+        this.getCommand("leavegame").setExecutor(new LeaveGameCommandExecutor());
     }
 
     private void registerEventHandlers() {

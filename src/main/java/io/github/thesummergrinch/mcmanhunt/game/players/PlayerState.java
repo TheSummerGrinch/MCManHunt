@@ -1,12 +1,17 @@
 package io.github.thesummergrinch.mcmanhunt.game.players;
 
+import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,12 +57,13 @@ public final class PlayerState implements ConfigurationSerializable {
 
     public void setPlayerRole(final PlayerRole playerRole) {
         this.playerRole = playerRole;
+        if (this.playerRole.equals(PlayerRole.DEFAULT)) return;
         if (isOnline()) {
             Bukkit.getPlayer(this.playerUUID).sendMessage(
                     (this.playerRole.equals(PlayerRole.RUNNER))
                             ? LanguageFileLoader.getInstance().getString("added-to-runners")
                             : LanguageFileLoader.getInstance().getString("added-to-hunters")
-                    );
+            );
         }
     }
 
@@ -111,6 +117,23 @@ public final class PlayerState implements ConfigurationSerializable {
 
     public String getPlayerName() {
         return Bukkit.getOfflinePlayer(this.playerUUID).getName();
+    }
+
+    public void leaveGame() {
+        if (!this.isInGame()) return;
+        if (this.isOnline()) {
+            Player player = Bukkit.getPlayer(this.playerUUID);
+            player.setGameMode(GameMode.SURVIVAL);
+            player.setFoodLevel(20);
+            player.setHealth(20);
+            player.getInventory().clear();
+            this.setPlayerRole(PlayerRole.DEFAULT);
+            if (!GameCache.getInstance().getGameFromCache(this.getGameName()).getGameFlowState().equals(GameFlowState.DEFAULT)) {
+                player.teleport(Bukkit.getWorld("world").getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+            }
+            this.isMovementRestricted.set(false);
+            GameCache.getInstance().getGameFromCache(this.getGameName()).removePlayerFromGame(this.getPlayerUUID());
+        }
     }
 
 }

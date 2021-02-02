@@ -62,10 +62,17 @@ commands:
     usage: /mhrule [GameName] [Rulename] [Value]
     permission: mcmanhunt.game.op
     aliases: [ mhr ]
+  leavegame:
+    description: Allows the user to leave the game they are in.
+    usage: /leavegame
+    permission: mcmanhunt.game.leave
 permissions:
   mcmanhunt.game.op:
     description: Allows the user access to op-commands related to the MCManHunt-plugin.
     default: op
+  mcmanhunt.game.leave:
+    description: Allows the user access to the /leavegame-command.
+    default: true
   mcmanhunt.game.join:
     description: Allows the user to access the /joingame-command and /jointeam-command.
     default: true
