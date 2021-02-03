@@ -1,0 +1,58 @@
+package io.github.thesummergrinch.mcmanhunt.eventhandlers;
+
+import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
+import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
+import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class OnAsyncPlayerChatEventHandler implements Listener {
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onAsyncPlayerChatEvent(final AsyncPlayerChatEvent event) {
+
+        PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
+        Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
+        if (!playerState.isInGame()
+                || game == null
+                || game.getGameFlowState().equals(GameFlowState.DEFAULT)
+                || playerState.getPlayerRole().equals(PlayerRole.DEFAULT)) return;
+
+        if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
+            event.getRecipients().clear();
+            Set<Player> recipients = new HashSet<>();
+            game.getRunners().stream().forEach(playerState1 -> {
+                recipients.add(Bukkit.getPlayer(playerState.getPlayerUUID()));
+            });
+            event.getRecipients().addAll(recipients);
+            String format = ChatColor.DARK_GREEN + "[" + LanguageFileLoader.getInstance().getString("runner") + "]" + ChatColor.RESET +" <%s> %s";
+            event.setFormat(format);
+
+        } else if (playerState.getPlayerRole().equals(PlayerRole.HUNTER)) {
+            event.getRecipients().clear();
+            Set<Player> recipients = new HashSet<>();
+            game.getHunters().stream().forEach(playerState1 -> {
+                if (!playerState.isOnline()) return;
+                recipients.add(Bukkit.getPlayer(playerState.getPlayerUUID()));
+            });
+            event.getRecipients().addAll(recipients);
+            String format = ChatColor.DARK_RED+ "[" + LanguageFileLoader.getInstance().getString("hunter") + "]" + ChatColor.RESET + " <%s> %s";
+            event.setFormat(format);
+        }
+
+    }
+
+}
