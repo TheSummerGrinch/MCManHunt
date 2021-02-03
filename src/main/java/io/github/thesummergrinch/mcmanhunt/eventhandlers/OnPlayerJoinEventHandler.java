@@ -19,14 +19,16 @@ public class OnPlayerJoinEventHandler implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerJoinEvent(final PlayerJoinEvent event) {
         final UUID playerUUID = event.getPlayer().getUniqueId();
-        PlayerState playerState;
+        PlayerState playerState = null;
         if (PlayerStateCache.getInstance().getPlayerState(playerUUID) == null) {
             playerState = new PlayerState(playerUUID);
         }
         if (playerState != null) {
             if (playerState.isInGame()) return;
+        } else {
+            playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
         }
-        if (!event.getPlayer().getInventory().contains(Material.COMPASS) || ) return;
+        if (!event.getPlayer().getInventory().contains(Material.COMPASS)) return;
         final Player player = event.getPlayer();
         for (ItemStack itemStack : player.getInventory()) {
             if (itemStack.getType().equals(Material.COMPASS) && itemStack.getItemMeta().hasLore()) {
