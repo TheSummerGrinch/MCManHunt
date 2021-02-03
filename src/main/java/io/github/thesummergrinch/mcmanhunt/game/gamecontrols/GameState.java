@@ -178,6 +178,7 @@ public final class GameState implements ConfigurationSerializable {
     protected void removeAllPlayersFromGame() {
         this.playersInGame.values().forEach(playerState -> {
             playerState.setGame(null);
+            if (!playerState.isOnline()) return;
             Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
             player.getInventory().clear();
             player.setGameMode(GameMode.SURVIVAL);
