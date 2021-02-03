@@ -1,6 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.cache;
 
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
+import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
@@ -76,6 +77,14 @@ public final class GameCache implements ConfigurationSerializable {
 
     public List<String> getGameNamesAsList() {
         return new ArrayList<String>(gameCache.keySet());
+    }
+
+    public List<String> getStandbyGameNamesAsList() {
+        final List<String> gameNames = new ArrayList<>();
+        gameCache.forEach((name, game) -> {
+            if (game.getGameFlowState().equals(GameFlowState.DEFAULT)) gameNames.add(name);
+        });
+        return gameNames;
     }
 
 }
