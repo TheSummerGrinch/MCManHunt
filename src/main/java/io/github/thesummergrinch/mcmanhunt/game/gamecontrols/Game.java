@@ -94,6 +94,7 @@ public final class Game implements ConfigurationSerializable {
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
                 player.setHealth(20);
                 player.setFoodLevel(20);
+                player.setSaturation(5.0f);
                 player.setGameMode(GameMode.SURVIVAL);
             }
         });
