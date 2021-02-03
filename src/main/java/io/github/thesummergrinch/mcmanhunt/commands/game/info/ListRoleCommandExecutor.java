@@ -45,7 +45,6 @@ public class ListRoleCommandExecutor implements CommandExecutor {
             } else {
                 stringBuilder.append(LanguageFileLoader.getInstance().getString("list-hunters"));
                 hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-                stringBuilder.substring(0, stringBuilder.length() - 3);
             }
             if (roleToList.equals(PlayerRole.DEFAULT)) {
                 stringBuilder.append("\n\n");
@@ -55,7 +54,6 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 } else {
                     stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
                     runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-                    stringBuilder.substring(0, stringBuilder.length() - 3);
                 }
             }
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
@@ -65,10 +63,11 @@ public class ListRoleCommandExecutor implements CommandExecutor {
             } else {
                 stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
                 runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-                stringBuilder.substring(0, stringBuilder.length() - 3);
             }
         }
-        sender.sendMessage(stringBuilder.toString());
+        String message = stringBuilder.toString().trim();
+        message = message.substring(0, message.length() - 1);
+        sender.sendMessage(message);
     }
 
     @Nullable
