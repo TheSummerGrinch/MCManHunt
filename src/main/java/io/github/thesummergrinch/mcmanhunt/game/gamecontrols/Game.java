@@ -215,7 +215,12 @@ public final class Game implements ConfigurationSerializable {
                         new CompassState(runners[x].getPlayerUUID(), CompassMetaBuilder.getInstance()
                                 .addEnchant(Enchantment.VANISHING_CURSE, 1, false)
                                 .setLodestone(runners[x].getLastKnownLocation()).setLodestoneTracked(false)
-                                .setName(runners[x].getPlayerName() + " Tracker").create());
+                                .setName(runners[x].getPlayerName() + " Tracker")
+                                .addLore(new ArrayList<String>() {
+                                             {
+                                                 add(LanguageFileLoader.getInstance().getString("manhunt-compass"));
+                                             }
+                                }).create());
                 CompassMeta compassMeta = newCompassState.getCompassMeta();
                 compass.setItemMeta(compassMeta);
             }
