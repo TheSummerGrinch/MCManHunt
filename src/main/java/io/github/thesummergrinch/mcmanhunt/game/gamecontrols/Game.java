@@ -229,7 +229,8 @@ public final class Game implements ConfigurationSerializable {
      */
     public void pause() {
         this.gameState.setGameFlowState(GameFlowState.PAUSED);
-        this.gameState.setUniverseDifficulty(Difficulty.PEACEFUL);
+        this.gameState.getGameUniverse().setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        this.gameState.getGameUniverse().despawnMobs();
         this.gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-paused"));
     }
@@ -245,7 +246,7 @@ public final class Game implements ConfigurationSerializable {
             @Override
             public void run() {
                 gameState.setGameFlowState(GameFlowState.RUNNING);
-                gameState.setUniverseDifficulty(gameState.getDefaultGameDifficulty());
+                gameState.getGameUniverse().setGameRule(GameRule.DO_MOB_SPAWNING, true);
                 gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
                 broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-resumed"));
             }
