@@ -259,13 +259,13 @@ public final class Game implements ConfigurationSerializable {
      * stopped.
      */
     public void stop() {
-        if (this.gameState.getGameUniverse().getDestroyWhenGameIsStopped()) {
-            this.gameState.markUniverseForDestruction(true);
-        }
         teleportPlayersToDefaultWorld();
         broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-stopped"));
         this.removeAllPlayersFromGame();
         GameCache.getInstance().removeGame(this.getName());
+        if (this.gameState.getGameUniverse().getDestroyWhenGameIsStopped()) {
+            this.gameState.markUniverseForDestruction(true);
+        }
     }
 
     private void removeAllPlayersFromGame() {
