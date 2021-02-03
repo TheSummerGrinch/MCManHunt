@@ -36,6 +36,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
     private void listRole(final CommandSender sender, final Game game, final PlayerRole roleToList) {
         final StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringbuilder1 = new StringBuilder("");
         final HashSet<PlayerState> hunters;
         final HashSet<PlayerState> runners;
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
@@ -47,13 +48,15 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
             }
             if (roleToList.equals(PlayerRole.DEFAULT)) {
-                stringBuilder.append("\n\n");
+                String builder = stringBuilder.toString().trim();
+                stringbuilder1.append(builder.substring(0, builder.length() - 1));
+                stringbuilder1.append("\n\n");
                 runners = (HashSet<PlayerState>) game.getRunners();
                 if (runners.isEmpty()) {
-                    stringBuilder.append(LanguageFileLoader.getInstance().getString("runner-team-no-members"));
+                    stringbuilder1.append(LanguageFileLoader.getInstance().getString("runner-team-no-members"));
                 } else {
-                    stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
-                    runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
+                    stringbuilder1.append(LanguageFileLoader.getInstance().getString("list-runners"));
+                    runners.forEach(hunter -> stringbuilder1.append(hunter.getPlayerName()).append(", "));
                 }
             }
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
@@ -65,7 +68,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
             }
         }
-        String message = stringBuilder.toString().trim();
+        String message = (roleToList.equals(PlayerRole.DEFAULT)) ? stringbuilder1.toString().trim() : stringBuilder.toString().trim();
         message = message.substring(0, message.length() - 1);
         sender.sendMessage(message);
     }
