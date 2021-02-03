@@ -10,6 +10,8 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Flying;
+import org.bukkit.entity.Monster;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -212,6 +214,16 @@ public final class Universe implements ConfigurationSerializable {
      */
     public <T> void setGameRule(GameRule<T> gameRule, T value) {
         this.worldHashMap.values().forEach(world -> world.setGameRule(gameRule, value));
+    }
+
+    public void despawnMobs() {
+        this.worldHashMap.forEach((name, world) -> {
+            world.getEntities().forEach(entity -> {
+                if (entity instanceof Monster || entity instanceof Flying) {
+                    entity.remove();
+                }
+            });
+        });
     }
 
 }
