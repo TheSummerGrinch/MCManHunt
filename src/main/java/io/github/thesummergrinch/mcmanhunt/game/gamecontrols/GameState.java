@@ -244,6 +244,15 @@ public final class GameState implements ConfigurationSerializable {
             case "headstart":
                 this.headstart = Long.parseLong(value);
                 break;
+            case "difficulty":
+                if (value.equalsIgnoreCase("peaceful")
+                        || value.equalsIgnoreCase("easy")
+                        || value.equalsIgnoreCase("normal")
+                        || value.equalsIgnoreCase("hard")
+                ) {
+                    this.getGameUniverse().setDifficulty(Difficulty.valueOf(value.toUpperCase()));
+                }
+                break;
             default:
                 break;
         }
