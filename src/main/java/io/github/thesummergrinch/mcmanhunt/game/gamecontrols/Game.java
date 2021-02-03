@@ -273,7 +273,9 @@ public final class Game implements ConfigurationSerializable {
     }
 
     public void teleportPlayersToDefaultWorld() {
-        this.gameState.getPlayersInGame().keySet().forEach(uuid -> {
+
+        this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
+            if (!playerState.isOnline()) return;
             final Player player = Bukkit.getPlayer(uuid);
             player.setBedSpawnLocation(Bukkit.getWorld("world").getSpawnLocation(), true);
             player.teleport(Bukkit.getWorld("world")
