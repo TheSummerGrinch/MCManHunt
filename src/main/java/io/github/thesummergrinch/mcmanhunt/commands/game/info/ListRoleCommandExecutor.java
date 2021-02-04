@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
+import java.util.Set;
 
 public class ListRoleCommandExecutor implements CommandExecutor {
 
@@ -36,41 +36,17 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
     private void listRole(final CommandSender sender, final Game game, final PlayerRole roleToList) {
         final StringBuilder stringBuilder = new StringBuilder();
-        final StringBuilder stringbuilder1 = new StringBuilder("");
-        final HashSet<PlayerState> hunters;
-        final HashSet<PlayerState> runners;
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
-            hunters = (HashSet<PlayerState>) game.getHunters();
-            if (hunters.isEmpty()) {
-                stringBuilder.append(LanguageFileLoader.getInstance().getString("hunter-team-no-members"));
-            } else {
-                stringBuilder.append(LanguageFileLoader.getInstance().getString("list-hunters"));
-                hunters.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-            }
+            stringBuilder.append(getPlayerRoleList(game.getHunters(), PlayerRole.HUNTER));
             if (roleToList.equals(PlayerRole.DEFAULT)) {
-                String builder = stringBuilder.toString().trim();
-                stringbuilder1.append(builder.substring(0, builder.length() - 1));
-                stringbuilder1.append("\n\n");
-                runners = (HashSet<PlayerState>) game.getRunners();
-                if (runners.isEmpty()) {
-                    stringbuilder1.append(LanguageFileLoader.getInstance().getString("runner-team-no-members"));
-                } else {
-                    stringbuilder1.append(LanguageFileLoader.getInstance().getString("list-runners"));
-                    runners.forEach(hunter -> stringbuilder1.append(hunter.getPlayerName()).append(", "));
-                }
+                stringBuilder.append("\n\n");
+                stringBuilder.append(getPlayerRoleList(game.getRunners(), PlayerRole.RUNNER));
             }
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
-            runners = (HashSet<PlayerState>) game.getRunners();
-            if (runners.isEmpty()) {
-                stringBuilder.append(LanguageFileLoader.getInstance().getString("runner-team-no-members"));
-            } else {
-                stringBuilder.append(LanguageFileLoader.getInstance().getString("list-runners"));
-                runners.forEach(hunter -> stringBuilder.append(hunter.getPlayerName()).append(", "));
-            }
+            stringBuilder.append(getPlayerRoleList(game.getRunners(),
+                    PlayerRole.RUNNER));
         }
-        String message = (roleToList.equals(PlayerRole.DEFAULT)) ? stringbuilder1.toString().trim() : stringBuilder.toString().trim();
-        message = message.substring(0, message.length() - 1);
-        sender.sendMessage(message);
+        sender.sendMessage(stringBuilder.toString());
     }
 
     @Nullable
@@ -120,6 +96,29 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 return null;
             }
         }
+    }
+
+    private String getPlayerRoleList(final Set<PlayerState> playerStates,
+                                     final PlayerRole roleToList) {
+        final StringBuilder playerRoleList = new StringBuilder();
+        String message;
+        if (playerStates.isEmpty()) {
+            playerRoleList.append((roleToList.equals(PlayerRole.RUNNER)) ?
+                    LanguageFileLoader.getInstance().getString(
+                    "runner-team-no-members") : LanguageFileLoader
+                    .getInstance().getString("hunter-team-no-members"));
+            message = playerRoleList.toString().trim();
+        } else {
+            playerRoleList.append((roleToList.equals(PlayerRole.RUNNER)) ?
+                    LanguageFileLoader.getInstance().getString("list" +
+                    "-runners") : LanguageFileLoader.getInstance().getString(
+                            "list-hunters"));
+            playerStates.forEach(playerState -> playerRoleList
+                    .append(playerState.getPlayerName()).append(", "));
+            message = playerRoleList.toString().trim();
+            message = message.substring(0, message.length() - 1);
+        }
+        return message;
     }
 
 }
