@@ -83,8 +83,6 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 return GameCache.getInstance().getGameFromCache(playerState.getGameName());
             } else if (labelsUsed && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 return GameCache.getInstance().getGameFromCache(args[0]);
-            } else {
-                return null;
             }
 
         } else {
@@ -92,10 +90,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
                 return GameCache.getInstance().getGameFromCache(args[1]);
             } else if (labelsUsed && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 return GameCache.getInstance().getGameFromCache(args[0]);
-            } else {
-                return null;
             }
         }
+        return null;
     }
 
     private String getPlayerRoleList(final Set<PlayerState> playerStates,
