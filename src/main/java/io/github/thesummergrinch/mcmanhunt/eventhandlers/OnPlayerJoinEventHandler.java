@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,29 +19,51 @@ public class OnPlayerJoinEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerJoinEvent(final PlayerJoinEvent event) {
+
         final UUID playerUUID = event.getPlayer().getUniqueId();
         PlayerState playerState = null;
+
         if (PlayerStateCache.getInstance().getPlayerState(playerUUID) == null) {
+
             playerState = new PlayerState(playerUUID);
-        }
-        if (playerState != null) {
-            if (playerState.isInGame()) return;
+
         } else {
-            playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
+            if (PlayerStateCache.getInstance().getPlayerState(playerUUID).isInGame())
+                return;
         }
-        if (!event.getPlayer().getInventory().contains(Material.COMPASS)) return;
+
+        if (!event.getPlayer().getInventory().contains(Material.COMPASS))
+            return;
+
         final Player player = event.getPlayer();
-        for (ItemStack itemStack : player.getInventory()) {
-            if (itemStack.getType().equals(Material.COMPASS) && itemStack.getItemMeta().hasLore()) {
-                List<String> lore = itemStack.getItemMeta().getLore();
-                for (String loreString : lore) {
-                    if (loreString.equals(LanguageFileLoader.getInstance().getString("manhunt-compass"))) {
-                        player.getInventory().clear();
-                        return;
+        final ItemStack[] inventoryContents =
+                player.getInventory().getContents();
+
+        for (ItemStack itemStack : inventoryContents) {
+
+            if (itemStack != null) {
+
+                if (itemStack.getType() == Material.COMPASS
+                        && itemStack.hasItemMeta()) {
+
+                    ItemMeta itemMeta = itemStack.getItemMeta();
+
+                    if (itemMeta.hasLore()) {
+
+                        List<String> lore = itemMeta.getLore();
+
+                        for (String loreString : lore) {
+
+                            loreString.contains(LanguageFileLoader
+                                    .getInstance()
+                                    .getString("manhunt-compass"));
+
+                            itemStack.setAmount(0);
+
+                        }
                     }
                 }
             }
         }
     }
-
 }
