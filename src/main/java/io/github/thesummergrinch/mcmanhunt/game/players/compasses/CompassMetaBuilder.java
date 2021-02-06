@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public final class CompassMetaBuilder {
 
     private static volatile CompassMetaBuilder instance;
@@ -57,6 +59,12 @@ public final class CompassMetaBuilder {
         CompassMeta meta = this.compassMeta;
         reset();
         return meta;
+    }
+
+    @NotNull
+    public CompassMetaBuilder addLore(final List<String> lore) {
+        this.compassMeta.setLore(lore);
+        return this;
     }
 
     public void reset() {

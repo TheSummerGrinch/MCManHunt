@@ -94,6 +94,7 @@ public final class Game implements ConfigurationSerializable {
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
                 player.setHealth(20);
                 player.setFoodLevel(20);
+                player.setSaturation(5.0f);
                 player.setGameMode(GameMode.SURVIVAL);
             }
         });
@@ -210,11 +211,18 @@ public final class Game implements ConfigurationSerializable {
                 CompassMeta compassMeta = compassState.getCompassMeta();
                 compass.setItemMeta(compassMeta);
             } else {
+                int finalX = x;
                 CompassState newCompassState =
                         new CompassState(runners[x].getPlayerUUID(), CompassMetaBuilder.getInstance()
                                 .addEnchant(Enchantment.VANISHING_CURSE, 1, false)
                                 .setLodestone(runners[x].getLastKnownLocation()).setLodestoneTracked(false)
-                                .setName(runners[x].getPlayerName() + " Tracker").create());
+                                .setName(runners[x].getPlayerName() + " Tracker")
+                                .addLore(new ArrayList<String>() {
+                                             {
+                                                 add(LanguageFileLoader.getInstance().getString("manhunt-compass"));
+                                                 add(runners[finalX].getPlayerName());
+                                             }
+                                }).create());
                 CompassMeta compassMeta = newCompassState.getCompassMeta();
                 compass.setItemMeta(compassMeta);
             }
@@ -228,7 +236,8 @@ public final class Game implements ConfigurationSerializable {
      */
     public void pause() {
         this.gameState.setGameFlowState(GameFlowState.PAUSED);
-        this.gameState.setUniverseDifficulty(Difficulty.PEACEFUL);
+        this.gameState.getGameUniverse().setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        this.gameState.getGameUniverse().despawnMobs();
         this.gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-paused"));
     }
@@ -244,7 +253,7 @@ public final class Game implements ConfigurationSerializable {
             @Override
             public void run() {
                 gameState.setGameFlowState(GameFlowState.RUNNING);
-                gameState.setUniverseDifficulty(gameState.getDefaultGameDifficulty());
+                gameState.getGameUniverse().setGameRule(GameRule.DO_MOB_SPAWNING, true);
                 gameState.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
                 broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-resumed"));
             }
@@ -257,13 +266,13 @@ public final class Game implements ConfigurationSerializable {
      * stopped.
      */
     public void stop() {
-        if (this.gameState.getGameUniverse().getDestroyWhenGameIsStopped()) {
-            this.gameState.markUniverseForDestruction(true);
-        }
         teleportPlayersToDefaultWorld();
         broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-stopped"));
         this.removeAllPlayersFromGame();
         GameCache.getInstance().removeGame(this.getName());
+        if (this.gameState.getGameUniverse().getDestroyWhenGameIsStopped()) {
+            this.gameState.markUniverseForDestruction(true);
+        }
     }
 
     private void removeAllPlayersFromGame() {
@@ -271,7 +280,9 @@ public final class Game implements ConfigurationSerializable {
     }
 
     public void teleportPlayersToDefaultWorld() {
-        this.gameState.getPlayersInGame().keySet().forEach(uuid -> {
+
+        this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
+            if (!playerState.isOnline()) return;
             final Player player = Bukkit.getPlayer(uuid);
             player.setBedSpawnLocation(Bukkit.getWorld("world").getSpawnLocation(), true);
             player.teleport(Bukkit.getWorld("world")

@@ -23,6 +23,8 @@ public enum SupportedLanguages {
                 return EN_GB;
             case "enUS":
                 return EN_US;
+            case "nlNL":
+                return NL_NL;
             default:
                 return DEFAULT;
         }
