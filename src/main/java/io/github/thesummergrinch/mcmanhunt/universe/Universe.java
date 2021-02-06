@@ -3,7 +3,12 @@ package io.github.thesummergrinch.mcmanhunt.universe;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.io.WorldDirectoryFileVisitor;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Flying;
@@ -266,6 +271,9 @@ public final class Universe implements ConfigurationSerializable {
                 -> Bukkit.getWorld(worldUID).setGameRule(gameRule, value));
     }
 
+    /**
+     * Despawns all mobs in the worlds represented by this Universe-object.
+     */
     public void despawnMobs() {
 
         for (Map.Entry<String, UUID> entry : this.worldHashMap.entrySet()) {
