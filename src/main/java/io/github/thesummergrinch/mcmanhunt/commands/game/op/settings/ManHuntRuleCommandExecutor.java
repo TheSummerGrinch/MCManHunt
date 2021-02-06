@@ -20,6 +20,7 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter
             add("compass-enabled-in-nether");
             add("player-roles-randomized");
             add("headstart");
+            add("difficulty");
         }
     };
 

@@ -16,6 +16,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinGameCommandE
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.JoinTeamCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.player.LeaveGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.plugin.info.ManHuntVersionCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnAsyncPlayerChatEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnBlockDamageEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnEnderDragonDeathEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnManHuntWinEventHandler;
@@ -102,6 +103,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerMoveEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerPortalEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerRespawnEventHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChatEventHandler(), this);
     }
 
     private void enableMetrics() {

@@ -79,13 +79,18 @@ public final class GameState implements ConfigurationSerializable {
     public static @NotNull GameState deserialize(final Map<String, Object> objects) {
         final Difficulty defaultGameDifficulty = getDifficultyFromString((String) objects.get("difficulty"));
         final Universe universe = (Universe) objects.get("universe");
-        universe.setDifficulty(Difficulty.PEACEFUL);
+        universe.setDifficulty(defaultGameDifficulty);
+        universe.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         universe.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         GameState gameState = new GameState(universe, defaultGameDifficulty);
         Map<String, PlayerState> playerStateMap = (Map<String, PlayerState>) objects.get("players");
         playerStateMap.forEach((uuidString, playerState) -> gameState.addPlayerToGame(UUID.fromString(uuidString)));
         gameState.gameFlowState = GameFlowState.fromString((String) objects.get("game-flow-state"));
         return gameState;
+    }
+
+    public void initializeTeamWin() {
+        setGameFlowState(GameFlowState.DEFAULT);
     }
 
     protected @NotNull String getGameName() {
@@ -177,6 +182,7 @@ public final class GameState implements ConfigurationSerializable {
     protected void removeAllPlayersFromGame() {
         this.playersInGame.values().forEach(playerState -> {
             playerState.setGame(null);
+            if (!playerState.isOnline()) return;
             Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
             player.getInventory().clear();
             player.setGameMode(GameMode.SURVIVAL);
@@ -242,6 +248,15 @@ public final class GameState implements ConfigurationSerializable {
                 break;
             case "headstart":
                 this.headstart = Long.parseLong(value);
+                break;
+            case "difficulty":
+                if (value.equalsIgnoreCase("peaceful")
+                        || value.equalsIgnoreCase("easy")
+                        || value.equalsIgnoreCase("normal")
+                        || value.equalsIgnoreCase("hard")
+                ) {
+                    this.getGameUniverse().setDifficulty(Difficulty.valueOf(value.toUpperCase()));
+                }
                 break;
             default:
                 break;

@@ -1,5 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow;
 
+import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
@@ -26,12 +28,32 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // If the sender is OP, and specified the name of the game, they will be allowed to initialize a game.
         if (sender.isOp() && args.length >= 1) {
-            sender.sendMessage(LanguageFileLoader.getInstance().getString("init-worlds"));
-            Universe universe = new Universe(args[0]);
-            sender.sendMessage(LanguageFileLoader.getInstance().getString("worlds-ready"));
-            sender.sendMessage(LanguageFileLoader.getInstance().getString("init-game"));
-            new Game(universe);
-            sender.sendMessage(LanguageFileLoader.getInstance().getString("game-ready"));
+            Universe universe =
+                    UniverseCache.getInstance().getUniverse(args[0]);
+
+            if (universe == null) {
+
+                sender.sendMessage(LanguageFileLoader.getInstance()
+                        .getString("init-worlds"));
+
+                universe = new Universe(args[0]);
+
+                sender.sendMessage(LanguageFileLoader.getInstance()
+                        .getString("worlds-ready"));
+            }
+
+            if (GameCache.getInstance().getGameFromCache(args[0]) == null) {
+
+                sender.sendMessage(LanguageFileLoader.getInstance()
+                        .getString("init-game"));
+
+                new Game(universe);
+
+            }
+
+            sender.sendMessage(LanguageFileLoader.getInstance()
+                    .getString("game-ready"));
+
             return true;
         }
         return false;
