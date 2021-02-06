@@ -39,11 +39,12 @@ public class OnAsyncPlayerChatEventHandler implements Listener {
 
         if (playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
 
-            String format = ChatColor.DARK_GREEN + "[" + LanguageFileLoader
-                    .getInstance().getString("runner") + "]"
-                    + ChatColor.RESET +" <%s> %s";
+            String format;
 
-            format = MessageFormat.format(format, event.getPlayer().getName(),
+            format = MessageFormat.format(ChatColor.DARK_GREEN + "[" + LanguageFileLoader
+                    .getInstance().getString("runner") + "]"
+                    + ChatColor.RESET +" <{0}> {1}",
+                    event.getPlayer().getName(),
                     event.getMessage());
 
             Set<Player> recipients = new HashSet<>();
@@ -56,11 +57,12 @@ public class OnAsyncPlayerChatEventHandler implements Listener {
 
         } else if (playerState.getPlayerRole().equals(PlayerRole.HUNTER)) {
 
-            String format = ChatColor.DARK_RED+ "[" + LanguageFileLoader
-                    .getInstance().getString("hunter") + "]"
-                            + ChatColor.RESET + " <%s> %s";
+            String format;
 
-            format = MessageFormat.format(format, event.getPlayer().getName(),
+            format = MessageFormat.format(ChatColor.DARK_RED+ "[" + LanguageFileLoader
+                    .getInstance().getString("hunter") + "]"
+                    + ChatColor.RESET + " <{0}> {1}",
+                    event.getPlayer().getName(),
                     event.getMessage());
 
             Set<Player> recipients = new HashSet<>();
