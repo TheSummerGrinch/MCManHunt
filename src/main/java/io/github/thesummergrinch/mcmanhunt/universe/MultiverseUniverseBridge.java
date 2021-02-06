@@ -7,13 +7,10 @@ import com.onarandombox.MultiverseCore.commands.ImportCommand;
 import com.onarandombox.MultiverseNetherPortals.MultiverseNetherPortals;
 import com.onarandombox.MultiverseNetherPortals.commands.LinkCommand;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MultiverseUniverseBridge {
 
@@ -31,15 +28,43 @@ public class MultiverseUniverseBridge {
 
     protected void registerWorldsInMultiverse(final CommandSender commandSender, final Universe universe) {
 
-        Plugin multiversePortals = MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager().getPlugin("Multiverse-NetherPortals");
-        Plugin multiverseCore = MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager().getPlugin("Multiverse-Core");
+        Plugin multiversePortals = MCManHunt.getPlugin(MCManHunt.class)
+                .getServer().getPluginManager()
+                .getPlugin("Multiverse-NetherPortals");
 
-        new ImportCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>() {{add(universe.getName()); add("normal");}});
-        new ImportCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>() {{add(universe.getName() + "_nether"); add("nether");}});
-        new ImportCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>() {{add(universe.getName() + "_the_end"); add("end");}});
+        Plugin multiverseCore = MCManHunt.getPlugin(MCManHunt.class).getServer()
+                .getPluginManager().getPlugin("Multiverse-Core");
 
-        new LinkCommand((MultiverseNetherPortals) multiversePortals).runCommand(commandSender, new ArrayList<String>() {{add("nether"); add(universe.getName()); add(universe.getName() + "_nether");}});
-        new LinkCommand((MultiverseNetherPortals) multiversePortals).runCommand(commandSender, new ArrayList<String>() {{add("end"); add(universe.getName()); add(universe.getName() + "_the_end");}});
+        new ImportCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {add(universe.getName()); add("normal");}
+                });
+
+        new ImportCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {add(universe.getName() + "_nether"); add("nether");}
+                });
+
+        new ImportCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {add(universe.getName() + "_the_end"); add("end");}
+                });
+
+        new LinkCommand((MultiverseNetherPortals) multiversePortals)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {
+                        add("nether"); add(universe.getName());
+                        add(universe.getName() + "_nether");
+                    }
+                });
+
+        new LinkCommand((MultiverseNetherPortals) multiversePortals)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {
+                        add("end"); add(universe.getName());
+                        add(universe.getName() + "_the_end");
+                    }
+                });
 
     }
 
@@ -48,14 +73,31 @@ public class MultiverseUniverseBridge {
 
         if (!universe.getMarkedForDestruction()) return;
 
-        new DeleteCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>() {{add(universe.getName());}});
-        new ConfirmCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>());
+        new DeleteCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {add(universe.getName());}
+                });
 
-        new DeleteCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>() {{add(universe.getName() + "_nether");}});
-        new ConfirmCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>());
+        new ConfirmCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<>());
 
-        new DeleteCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>() {{add(universe.getName() + "_the_end");}});
-        new ConfirmCommand((MultiverseCore) multiverseCore).runCommand(commandSender, new ArrayList<String>());
+
+        new DeleteCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {add(universe.getName() + "_nether");}
+                });
+
+        new ConfirmCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<>());
+
+
+        new DeleteCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<String>() {
+                    {add(universe.getName() + "_the_end");}
+                });
+
+        new ConfirmCommand((MultiverseCore) multiverseCore)
+                .runCommand(commandSender, new ArrayList<>());
     }
 
 }
