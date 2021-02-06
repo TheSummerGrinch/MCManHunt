@@ -89,6 +89,10 @@ public final class GameState implements ConfigurationSerializable {
         return gameState;
     }
 
+    public void initializeTeamWin() {
+        setGameFlowState(GameFlowState.DEFAULT);
+    }
+
     protected @NotNull String getGameName() {
         return this.gameName;
     }
