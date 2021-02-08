@@ -58,7 +58,9 @@ public class OnPlayerJoinEventHandler implements Listener {
                                     .getInstance()
                                     .getString("manhunt-compass"));
 
-                            itemStack.setAmount(0);
+                            player.getInventory().clear();
+
+                            return;
 
                         }
                     }
