@@ -219,8 +219,11 @@ public final class Game implements ConfigurationSerializable {
                                 .setName(runners[x].getPlayerName() + " Tracker")
                                 .addLore(new ArrayList<String>() {
                                              {
+
+                                                 add(ChatColor.GOLD + LanguageFileLoader.getInstance().getString("right-click-update"));
                                                  add(LanguageFileLoader.getInstance().getString("manhunt-compass"));
                                                  add(runners[finalX].getPlayerName());
+
                                              }
                                 }).create());
                 CompassMeta compassMeta = newCompassState.getCompassMeta();
