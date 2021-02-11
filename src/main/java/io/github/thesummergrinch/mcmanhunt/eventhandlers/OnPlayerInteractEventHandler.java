@@ -44,11 +44,11 @@ public class OnPlayerInteractEventHandler implements Listener {
                 compass = sender.getInventory().getItemInMainHand();
 
                 if (compass.getItemMeta().hasLore() && compass.getItemMeta()
-                .getLore().get(0).equals(LanguageFileLoader.getInstance()
+                .getLore().get(1).equals(LanguageFileLoader.getInstance()
                 .getString("manhunt-compass"))) {
 
                     updateCompassMeta(sender,
-                            compass.getItemMeta().getLore().get(1),
+                            compass.getItemMeta().getLore().get(2),
                             (CompassMeta) compass.getItemMeta(), Hand.MAIN_HAND);
 
                 }
@@ -60,11 +60,11 @@ public class OnPlayerInteractEventHandler implements Listener {
                 compass = sender.getInventory().getItemInOffHand();
 
                 if (compass.getItemMeta().hasLore() && compass.getItemMeta()
-                        .getLore().get(0).equals(LanguageFileLoader.getInstance()
+                        .getLore().get(1).equals(LanguageFileLoader.getInstance()
                                 .getString("manhunt-compass"))) {
 
                     updateCompassMeta(sender,
-                            compass.getItemMeta().getLore().get(1),
+                            compass.getItemMeta().getLore().get(2),
                             (CompassMeta) compass.getItemMeta(), Hand.OFF_HAND);
 
                 }
