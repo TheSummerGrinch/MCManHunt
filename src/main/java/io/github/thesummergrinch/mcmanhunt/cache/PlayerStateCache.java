@@ -37,7 +37,12 @@ public final class PlayerStateCache implements ConfigurationSerializable {
 
     @Override
     public @NotNull Map<String, Object> serialize() {
-        return null;
+        final Map<String, Object> playerStateObjects = new HashMap<>();
+        this.playerStateHashMap.forEach((uuid, playerState) -> {
+            playerStateObjects.put(uuid.toString(), playerState);
+        });
+        return playerStateObjects;
+    }
 
     /**
      * Deserializes the given objects to a UUID,PlayerState pair.
