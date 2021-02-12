@@ -58,11 +58,14 @@ public final class MCManHunt extends JavaPlugin {
         registerCommands();
         enableMetrics();
         checkForUpdate();
+
     }
 
     @Override
     public void onDisable() {
+
         saveConfigFile();
+
     }
 
     private void registerSerializableClasses() {
@@ -122,7 +125,9 @@ public final class MCManHunt extends JavaPlugin {
         } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
 
             final int pluginID = 8784;
+
             new Metrics(this, pluginID);
+
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled"));
 
         } else {
@@ -136,6 +141,7 @@ public final class MCManHunt extends JavaPlugin {
 
         FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
+
         this.saveConfig();
 
     }
@@ -156,6 +162,7 @@ public final class MCManHunt extends JavaPlugin {
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
 
                             getLogger().warning("A new version is available: " + version);
+
                             return;
 
                         }
@@ -169,6 +176,7 @@ public final class MCManHunt extends JavaPlugin {
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
 
                             getLogger().warning("A new version is available: " + version);
+
                             return;
 
                         }
@@ -182,6 +190,7 @@ public final class MCManHunt extends JavaPlugin {
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
 
                             getLogger().warning("A new version is available: " + version);
+
                             return;
 
                         }
@@ -194,9 +203,12 @@ public final class MCManHunt extends JavaPlugin {
     private void loadLanguageFile() {
 
         new BukkitRunnable() {
+
             @Override
             public void run() {
+
                 LanguageFileLoader.getInstance();
+
             }
         }.runTaskAsynchronously(this);
 

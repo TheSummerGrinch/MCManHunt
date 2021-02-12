@@ -17,27 +17,37 @@ public class ManHuntWinEvent extends Event {
     final String gameName;
 
     public ManHuntWinEvent(@NotNull final String gameName, @NotNull final HashSet<UUID> winnerUUIDs) {
+
         this.winnerUUIDs = winnerUUIDs;
         this.gameName = gameName;
+
     }
 
     public static @NotNull HandlerList getHandlerList() {
+
         return handlers;
+
     }
 
     @Override
     public @NotNull HandlerList getHandlers() {
+
         return handlers;
+
     }
 
     @NotNull
     public HashSet<UUID> getWinners() {
+
         return this.winnerUUIDs;
+
     }
 
     @NotNull
     public String getGameName() {
+
         return this.gameName;
+
     }
 
 }

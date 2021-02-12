@@ -16,18 +16,28 @@ public class OnManHuntWinEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onManHuntWinEvent(@NotNull final ManHuntWinEvent event) {
+
         event.getWinners().forEach(uuid -> {
+
             Player player = Bukkit.getPlayer(uuid);
+
             if (player != null && player.isOnline()) {
+
                 Bukkit.getPlayer(uuid).sendMessage(LanguageFileLoader.getInstance().getString("win-message"));
+
             }
         });
+
         GameCache.getInstance().getGameFromCache(event.getGameName())
                 .getGameState().initializeTeamWin();
+
         new BukkitRunnable() {
+
             @Override
             public void run() {
+
                 GameCache.getInstance().getGameFromCache(event.getGameName()).stop();
+
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 200L);
     }

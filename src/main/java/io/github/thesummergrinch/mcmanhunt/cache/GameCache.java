@@ -48,6 +48,7 @@ public final class GameCache implements ConfigurationSerializable {
         HashMap<String, Game> savedGames = (HashMap<String, Game>) objects.get("game-cache");
 
         gameCache.putAll(savedGames);
+
         return getInstance();
 
     }
@@ -83,6 +84,7 @@ public final class GameCache implements ConfigurationSerializable {
         HashMap<String, Object> gameCache = new HashMap<>();
 
         gameCache.put("game-cache", GameCache.gameCache);
+
         return gameCache;
 
     }

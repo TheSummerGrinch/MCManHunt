@@ -15,15 +15,20 @@ public class OnPlayerDamagedEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDamagedEvent(@NotNull final EntityDamageEvent event) {
+
         final PlayerState playerState;
+
         if (event.getEntity() instanceof Player) {
+
             playerState = PlayerStateCache.getInstance().getPlayerState(event.getEntity().getUniqueId());
+
             if ((playerState.isInGame() && !GameCache.getInstance()
                     .getGameFromCache(playerState.getGameName()).getGameFlowState().equals(GameFlowState.RUNNING))
                     || playerState.isMovementRestricted()) {
+
                 event.setCancelled(true);
+
             }
         }
     }
-
 }

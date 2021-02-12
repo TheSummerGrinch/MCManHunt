@@ -36,6 +36,7 @@ public class OnPlayerInteractEventHandler implements Listener {
                 || event.getAction().equals(Action.LEFT_CLICK_AIR)) {
 
             final Player sender = event.getPlayer();
+
             ItemStack compass;
 
             if (sender.getInventory().getItemInMainHand().getType()

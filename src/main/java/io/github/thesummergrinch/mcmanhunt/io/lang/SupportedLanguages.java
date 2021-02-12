@@ -10,24 +10,33 @@ public enum SupportedLanguages {
     private final String correspondingFileSuffix;
 
     SupportedLanguages(final String correspondingFileSuffix) {
+
         this.correspondingFileSuffix = correspondingFileSuffix;
+
     }
 
     public String getCorrespondingFileSuffix() {
+
         return correspondingFileSuffix;
+
     }
 
     public SupportedLanguages fromString(final String supportedLanguagesString) {
+
         switch (supportedLanguagesString) {
+
             case "enGB":
                 return EN_GB;
+
             case "enUS":
                 return EN_US;
+
             case "nlNL":
                 return NL_NL;
+
             default:
                 return DEFAULT;
+
         }
     }
-
 }

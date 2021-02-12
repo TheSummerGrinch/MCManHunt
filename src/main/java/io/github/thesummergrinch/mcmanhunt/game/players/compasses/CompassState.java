@@ -13,21 +13,32 @@ public final class CompassState {
     private final UUID playerUUID;
 
     public CompassState(@NotNull UUID playerUUID, @NotNull final CompassMeta compassMeta) {
+
         this.playerUUID = playerUUID;
         this.compassMeta = compassMeta;
+
         CompassStateCache.getInstance().cacheCompassState(playerUUID, this);
+
     }
 
     public CompassMeta getCompassMeta() {
+
         updatePlayerLocation();
+
         return this.compassMeta;
+
     }
 
     public CompassMeta updatePlayerLocation() {
+
         if (PlayerStateCache.getInstance().getPlayerState(playerUUID).getLastKnownLocation() != null) {
+
             compassMeta.setLodestone(PlayerStateCache.getInstance().getPlayerState(playerUUID).getLastKnownLocation());
+
         }
+
         return this.compassMeta;
+
     }
 
 }

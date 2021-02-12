@@ -18,7 +18,9 @@ public final class CompassStateCache {
     private final HashMap<UUID, CompassState> cacheMap;
 
     private CompassStateCache() {
+
         this.cacheMap = new HashMap<>();
+
     }
 
     // Singleton-pattern
@@ -31,6 +33,7 @@ public final class CompassStateCache {
         synchronized (CompassStateCache.class) {
 
             if (instance == null) instance = new CompassStateCache();
+
             return instance;
 
         }

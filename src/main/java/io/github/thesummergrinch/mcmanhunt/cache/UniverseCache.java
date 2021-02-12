@@ -29,6 +29,7 @@ public final class UniverseCache implements ConfigurationSerializable {
         synchronized (UniverseCache.class) {
 
             if (instance == null) instance = new UniverseCache();
+
             return instance;
 
         }

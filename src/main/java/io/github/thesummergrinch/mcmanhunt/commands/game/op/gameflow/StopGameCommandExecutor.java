@@ -19,34 +19,55 @@ public class StopGameCommandExecutor implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp()) {
+
             final Game game;
+
             if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
             } else {
+
                 if (sender instanceof Player) {
+
                     final PlayerState playerState = PlayerStateCache.getInstance()
                             .getPlayerState(((Player) sender).getUniqueId());
+
                     if (playerState.isInGame()) {
+
                         game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
                     } else {
+
                         sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
                         return true;
+
                     }
+
                 } else {
+
                     sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
                     return true;
+
                 }
             }
+
             game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-stopping"));
             game.stop();
+
             return true;
+
         }
+
         return false;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+
         return GameCache.getInstance().getGameNamesAsList();
+
     }
 }
