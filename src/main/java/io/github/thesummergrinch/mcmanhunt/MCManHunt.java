@@ -49,6 +49,7 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        registerSerializableClasses();
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
         GameCache.getInstance().getGameCacheFromSave("game-cache");
         this.saveConfig();
@@ -76,6 +77,7 @@ public final class MCManHunt extends JavaPlugin {
     }
 
     private void registerCommands() {
+
         this.getCommand("initializegame").setExecutor(new InitializeGameCommandExecutor());
         this.getCommand("joingame").setExecutor(new JoinGameCommandExecutor());
         this.getCommand("startgame").setExecutor(new StartGameCommandExecutor());
@@ -91,9 +93,11 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
         this.getCommand("leavegame").setExecutor(new LeaveGameCommandExecutor());
         this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
+
     }
 
     private void registerEventHandlers() {
+
         this.getServer().getPluginManager().registerEvents(new OnBlockDamageEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnEnderDragonDeathEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnManHuntWinEventHandler(), this);
@@ -105,51 +109,81 @@ public final class MCManHunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerPortalEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerRespawnEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChatEventHandler(), this);
+
     }
 
     private void enableMetrics() {
+
         if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
+
             DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled-on-next-launch"));
+
         } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
+
             final int pluginID = 8784;
             new Metrics(this, pluginID);
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled"));
+
         } else {
+
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-disabled"));
+
         }
     }
 
     private void saveConfigFile() {
+
         FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
         this.saveConfig();
+
     }
 
     private void checkForUpdate() {
+
         if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
+
             new UpdateChecker(this, 83665).getVersion(version -> {
+
                 String[] publishedVersion = version.substring(1).split("\\.");
                 String[] currentVersion = this.getDescription().getVersion().split("\\.");
+
                 if (publishedVersion.length == currentVersion.length) {
+
                     for (int i = 0; i < publishedVersion.length; i++) {
+
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+
                             getLogger().warning("A new version is available: " + version);
                             return;
+
                         }
+
                     }
+
                 } else if (publishedVersion.length < (currentVersion).length) {
+
                     for (int i = 0; i < publishedVersion.length; i++) {
+
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+
                             getLogger().warning("A new version is available: " + version);
                             return;
+
                         }
+
                     }
+
                 } else {
+
                     for (int i = 0; i < currentVersion.length; i++) {
+
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+
                             getLogger().warning("A new version is available: " + version);
                             return;
+
                         }
                     }
                 }
@@ -158,12 +192,14 @@ public final class MCManHunt extends JavaPlugin {
     }
 
     private void loadLanguageFile() {
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 LanguageFileLoader.getInstance();
             }
         }.runTaskAsynchronously(this);
+
     }
 
 }
