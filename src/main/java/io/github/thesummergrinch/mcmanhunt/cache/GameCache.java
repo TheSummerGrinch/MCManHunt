@@ -76,7 +76,7 @@ public final class GameCache implements ConfigurationSerializable {
     }
 
     public List<String> getGameNamesAsList() {
-        return new ArrayList<String>(gameCache.keySet());
+        return new ArrayList<>(gameCache.keySet());
     }
 
     public List<String> getStandbyGameNamesAsList() {
