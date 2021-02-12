@@ -46,16 +46,6 @@ import java.util.logging.Level;
  */
 public final class MCManHunt extends JavaPlugin {
 
-    static {
-        ConfigurationSerialization.registerClass(PlayerState.class);
-        ConfigurationSerialization.registerClass(Game.class);
-        ConfigurationSerialization.registerClass(Universe.class);
-        ConfigurationSerialization.registerClass(GameCache.class);
-        ConfigurationSerialization.registerClass(GameState.class);
-        ConfigurationSerialization.registerClass(DefaultSettingsContainer.class);
-    }
-
-
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -72,6 +62,17 @@ public final class MCManHunt extends JavaPlugin {
     @Override
     public void onDisable() {
         saveConfigFile();
+    }
+
+    private void registerSerializableClasses() {
+
+        ConfigurationSerialization.registerClass(PlayerState.class);
+        ConfigurationSerialization.registerClass(Game.class);
+        ConfigurationSerialization.registerClass(Universe.class);
+        ConfigurationSerialization.registerClass(GameCache.class);
+        ConfigurationSerialization.registerClass(GameState.class);
+        ConfigurationSerialization.registerClass(DefaultSettingsContainer.class);
+
     }
 
     private void registerCommands() {
