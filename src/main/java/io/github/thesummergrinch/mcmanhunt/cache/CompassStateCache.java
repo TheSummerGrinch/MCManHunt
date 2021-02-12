@@ -23,20 +23,29 @@ public final class CompassStateCache {
 
     // Singleton-pattern
     public static CompassStateCache getInstance() {
+
         CompassStateCache compassStateCache = instance;
+
         if (compassStateCache != null) return compassStateCache;
+
         synchronized (CompassStateCache.class) {
+
             if (instance == null) instance = new CompassStateCache();
             return instance;
+
         }
     }
 
     public void cacheCompassState(final UUID playerTrackedUUID, final CompassState compassState) {
+
         this.cacheMap.put(playerTrackedUUID, compassState);
+
     }
 
     public @Nullable CompassState getCompassState(final UUID playerTrackedUUID) {
+
         return this.cacheMap.get(playerTrackedUUID);
+
     }
 
 }
