@@ -38,6 +38,19 @@ public final class PlayerStateCache implements ConfigurationSerializable {
     @Override
     public @NotNull Map<String, Object> serialize() {
         return null;
+
+    /**
+     * Deserializes the given objects to a UUID,PlayerState pair.
+     * @param objects - serialized objects
+     * @return {@link PlayerStateCache} with the deserialized entries.
+     */
+    public static PlayerStateCache deserialize(final Map<String, Object> objects) {
+        PlayerStateCache playerStateCache = PlayerStateCache.getInstance();
+        objects.keySet().forEach(uuidString -> {
+            playerStateCache.cachePlayerState(UUID.fromString(uuidString),
+                    (PlayerState) objects.get(uuidString));
+        });
+        return PlayerStateCache.getInstance();
     }
 
 }
