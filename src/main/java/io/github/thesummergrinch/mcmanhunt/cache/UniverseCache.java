@@ -68,6 +68,10 @@ public final class UniverseCache implements ConfigurationSerializable {
         this.universeCache.remove(universeName);
     }
 
+    /**
+     * Destroys {@link Universe}-objects and deletes their corresponding
+     * world-files, if the Universe in question has been marked for destruction.
+     */
     @Deprecated
     public void onDisable() {
         universeCache.values().forEach(universe -> {

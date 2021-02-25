@@ -17,6 +17,7 @@ import java.util.List;
 
 public class InitializeGameCommandExecutor implements CommandExecutor, TabCompleter {
 
+    // The suggested names for ManHunt-games. May move to config.
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
         {
             add("manhunt");
@@ -31,6 +32,7 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
             Universe universe =
                     UniverseCache.getInstance().getUniverse(args[0]);
 
+            // If there is no Universe with the given name, we create it.
             if (universe == null) {
 
                 sender.sendMessage(LanguageFileLoader.getInstance()

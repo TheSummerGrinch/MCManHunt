@@ -133,6 +133,13 @@ public final class GameCache implements ConfigurationSerializable {
         return new ArrayList<>(gameCache.keySet());
     }
 
+    /**
+     * Retrieves the keys int the {@link #gameCache}, and compiles a List,
+     * containing only the keys that correspond to games that are not ongoing.
+     *
+     * @return a {@link List} containing the keys of games in the
+     * {@link #gameCache} that are not ongoing.
+     */
     public List<String> getStandbyGameNamesAsList() {
         final List<String> gameNames = new ArrayList<>();
         gameCache.forEach((name, game) -> {
