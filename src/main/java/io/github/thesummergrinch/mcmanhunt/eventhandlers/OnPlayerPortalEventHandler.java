@@ -20,23 +20,29 @@ public class OnPlayerPortalEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerPortalEvent(@NotNull final PlayerPortalEvent event) {
 
-        if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null && Bukkit.getPluginManager().getPlugin("Multiverse-NetherPortals") != null) {
+        if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null
+                && Bukkit.getPluginManager()
+                .getPlugin("Multiverse-NetherPortals") != null) {
             return;
         }
 
         final String worldName = event.getFrom().getWorld().getName();
         final UUID playerUUID = event.getPlayer().getUniqueId();
-        final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);
+        final PlayerState playerState =
+                PlayerStateCache.getInstance().getPlayerState(playerUUID);
 
         if (!playerState.isInGame()) return;
 
-        if (worldName.equals("world") || worldName.equals("world_nether") || worldName.equals("world_the_end")) return;
+        if (worldName.equals("world") || worldName.equals("world_nether")
+                || worldName.equals("world_the_end")) return;
 
-        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) {
+        if (event.getCause()
+                .equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) {
 
             event.setSearchRadius(128);
 
-            if (event.getFrom().getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
+            if (event.getFrom().getWorld().getEnvironment()
+                    .equals(World.Environment.NORMAL)) {
 
                 Location to = event.getTo();
                 World worldTo = Bukkit.getWorld(worldName + "_nether");
@@ -60,9 +66,11 @@ public class OnPlayerPortalEventHandler implements Listener {
 
             }
 
-        } else if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.END_PORTAL)) {
+        } else if (event.getCause()
+                .equals(PlayerTeleportEvent.TeleportCause.END_PORTAL)) {
 
-            if (event.getFrom().getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+            if (event.getFrom().getWorld().getEnvironment()
+                    .equals(World.Environment.THE_END)) {
 
                 Location bedLocation = event.getPlayer().getBedSpawnLocation();
 
