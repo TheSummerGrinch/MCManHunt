@@ -23,6 +23,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Provides a layer of information for each {@link Game}-object.
+ */
 public final class GameState implements ConfigurationSerializable {
 
     @NotNull
@@ -60,6 +63,13 @@ public final class GameState implements ConfigurationSerializable {
         this.defaultGameDifficulty = defaultGameDifficulty;
     }
 
+    /**
+     * Converts a String representing a {@link Difficulty}, to a
+     * {@link Difficulty}.
+     * @param difficultyString the String that should be converted to
+     * {@link Difficulty}.
+     * @return the resulting {@link Difficulty}
+     */
     private static Difficulty getDifficultyFromString(@NotNull final String difficultyString) {
         switch (difficultyString.toLowerCase()) {
             case "peaceful":
@@ -75,7 +85,6 @@ public final class GameState implements ConfigurationSerializable {
         }
     }
 
-    @SuppressWarnings("unused")
     public static @NotNull GameState deserialize(final Map<String, Object> objects) {
         final Difficulty defaultGameDifficulty = getDifficultyFromString((String) objects.get("difficulty"));
         final Universe universe = (Universe) objects.get("universe");
@@ -89,14 +98,31 @@ public final class GameState implements ConfigurationSerializable {
         return gameState;
     }
 
+    /**
+     * Sets the {@link GameFlowState} of the {@link GameState} to
+     * {@link GameFlowState#DEFAULT}, in order to prevent the other team from
+     * also fulfilling their win-condition, while the {@link Game} is being
+     * ended.
+     */
     public void initializeTeamWin() {
         setGameFlowState(GameFlowState.DEFAULT);
     }
 
+    /**
+     * Retrieved the name of the game this {@link GameState}-object is
+     * related to.
+     * @return the name of the game.
+     */
     protected @NotNull String getGameName() {
         return this.gameName;
     }
 
+    /**
+     * Prepares the {@link PlayerState}-object and adds it to the specified
+     * {@link Game}.
+     * @param game the specified {@link Game}
+     * @param playerUUID the {@link UUID} of the {@link Player}.
+     */
     protected void addPlayerToGame(final Game game, @NotNull final UUID playerUUID) {
         PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);
         if (playerState.getGameName() != null) {
@@ -106,11 +132,25 @@ public final class GameState implements ConfigurationSerializable {
         this.playersInGame.put(playerUUID, playerState);
     }
 
+    /**
+     * Used when the {@link GameState}-object is being deserialized. Adds the
+     * {@link PlayerState} mapped to the specified {@link UUID}, to the
+     * {@link #playersInGame}
+     * @param playerUUID the {@link UUID} of the {@link Player} that was in
+     *                   the {@link Game} when the server stopped.
+     */
     private void addPlayerToGame(final UUID playerUUID) {
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);
         this.playersInGame.put(playerUUID, playerState);
     }
 
+    /**
+     * Prepares the {@link PlayerState} mapped to the given {@link UUID}, and
+     * removes the {@link PlayerState} from the {@link Game}. If the
+     * {@link Game} was already ongoing, and the {@link Player} was the last
+     * in their team, the opposing team wins by forfeit.
+     * @param playerUUID the {@link UUID} of the leaving {@link Player}.
+     */
     protected void removePlayerFromGame(@NotNull final UUID playerUUID) {
         PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(playerUUID);
         playerState.setPlayerRole(PlayerRole.DEFAULT);
@@ -127,6 +167,10 @@ public final class GameState implements ConfigurationSerializable {
         }
     }
 
+    /**
+     * Gets the {@link GameFlowState} of this {@link GameState}.
+     * @return the {@link GameFlowState}.
+     */
     protected synchronized @NotNull GameFlowState getGameFlowState() {
         return this.gameFlowState;
     }
@@ -151,13 +195,13 @@ public final class GameState implements ConfigurationSerializable {
         return this.worldSpawn;
     }
 
-    protected synchronized Set<PlayerState> getRunners() {
+    protected synchronized @NotNull Set<PlayerState> getRunners() {
         return playersInGame.values().stream()
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.RUNNER))
                 .collect(Collectors.toSet());
     }
 
-    protected synchronized Set<PlayerState> getHunters() {
+    protected synchronized @NotNull Set<PlayerState> getHunters() {
         return playersInGame.values().stream()
                 .filter(playerState -> playerState.getPlayerRole().equals(PlayerRole.HUNTER))
                 .collect(Collectors.toSet());
@@ -179,6 +223,9 @@ public final class GameState implements ConfigurationSerializable {
         gameUniverse.setGameRule(gameRule, value);
     }
 
+    /**
+     * Removes all {@link PlayerState}-objects from the {@link Game}.
+     */
     protected void removeAllPlayersFromGame() {
         this.playersInGame.values().forEach(playerState -> {
             playerState.setGame(null);
@@ -204,14 +251,14 @@ public final class GameState implements ConfigurationSerializable {
         return this.isCompassEnabledInNether;
     }
 
-    protected HashSet<UUID> getHunterUUIDs() {
+    protected @NotNull HashSet<UUID> getHunterUUIDs() {
         final HashSet<UUID> hunterUUIDs = new HashSet<>();
         this.playersInGame.values().stream().filter(playerState -> playerState.getPlayerRole()
                 .equals(PlayerRole.HUNTER)).forEach(playerState -> hunterUUIDs.add(playerState.getPlayerUUID()));
         return hunterUUIDs;
     }
 
-    protected HashSet<UUID> getRunnerUUIDs() {
+    protected @NotNull HashSet<UUID> getRunnerUUIDs() {
         final HashSet<UUID> runnerUUIDs = new HashSet<>();
         this.playersInGame.values().stream().filter(playerState -> playerState.getPlayerRole()
                 .equals(PlayerRole.RUNNER)).forEach(playerState -> runnerUUIDs.add(playerState.getPlayerUUID()));

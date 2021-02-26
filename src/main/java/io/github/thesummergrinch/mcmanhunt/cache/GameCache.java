@@ -43,7 +43,7 @@ public final class GameCache implements ConfigurationSerializable {
      * Used by the server to deserialize a stored {@link GameCache}
      * -representation back into a {@link GameCache}-object. The
      * {@link GameCache}-representation is generally stored in the config.yml.
-     * @param objects - YAML objects
+     * @param objects YAML objects
      * @return a GameCache-object that represents the data present in the
      * config.yml.
      */
@@ -66,8 +66,8 @@ public final class GameCache implements ConfigurationSerializable {
     /**
      * Maps a String representing the name of a {@link Game}, and stores them
      * in the {@link #gameCache}.
-     * @param gameName - name of a game
-     * @param game - {@link Game}-object
+     * @param gameName name of a game
+     * @param game {@link Game}-object
      */
     public void cacheGame(final String gameName, final Game game) {
         gameCache.put(gameName, game);
@@ -76,8 +76,8 @@ public final class GameCache implements ConfigurationSerializable {
     /**
      * Retrieves a {@link Game}-object from the {@link #gameCache},
      * using the given String as a key.
-     * @param gameName - the key
-     * @return - {@link Game}-object
+     * @param gameName the key
+     * @return {@link Game}-object
      */
     @Nullable
     public Game getGameFromCache(final String gameName) {
@@ -87,7 +87,7 @@ public final class GameCache implements ConfigurationSerializable {
     /**
      * Retrieves all entries in the {@link #gameCache} and returns them as a
      * {@code Set<Map#Entry<String, Game>>}-object.
-     * @return - a {@link Set} of {@link java.util.Map.Entry}-objects
+     * @return a {@link Set} of {@link java.util.Map.Entry}-objects
      */
     public Set<Map.Entry<String, Game>> getAllGames() {
         return gameCache.entrySet();
@@ -95,7 +95,7 @@ public final class GameCache implements ConfigurationSerializable {
 
     /**
      * Creates a {@link HashMap}, adds an entry ("game-cache",
-     * {@link #gameCache}), and returns the Map.
+     * {@link #gameCache}), and returns the {@link Map}.
      * @return a {@link Map} containing the {@link #gameCache}
      */
     @Override
@@ -109,7 +109,7 @@ public final class GameCache implements ConfigurationSerializable {
      * Loads a {@link Game}-object into the {@link #gameCache}, using a value
      * stored in the {@link org.bukkit.configuration.file.FileConfiguration}.
      * This {@link Game} is retrieved using the given String as the key.
-     * @param key - String key
+     * @param key String key
      */
     public void getGameCacheFromSave(final String key) {
         instance = FileConfigurationLoader.getInstance().loadGames(key);
@@ -118,7 +118,7 @@ public final class GameCache implements ConfigurationSerializable {
 
     /**
      * Removes a {@link Game} from the {@link #gameCache}.
-     * @param gameName - String gameName
+     * @param gameName String gameName
      */
     public void removeGame(@NotNull final String gameName) {
         gameCache.remove(gameName);

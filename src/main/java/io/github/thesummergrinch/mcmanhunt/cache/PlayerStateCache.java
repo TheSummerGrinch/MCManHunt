@@ -37,8 +37,8 @@ public final class PlayerStateCache implements ConfigurationSerializable {
     /**
      * Maps a {@link UUID} to a {@link PlayerState}, and stores them in
      * {@link #playerStateHashMap}.
-     * @param playerUUID - {@link UUID}
-     * @param playerState - {@link PlayerState}
+     * @param playerUUID {@link UUID}
+     * @param playerState {@link PlayerState}
      */
     public void cachePlayerState(final UUID playerUUID, final PlayerState playerState) {
         this.playerStateHashMap.put(playerUUID, playerState);
@@ -47,7 +47,7 @@ public final class PlayerStateCache implements ConfigurationSerializable {
     /**
      * Retrieves a PlayerState from the {@link #playerStateHashMap}, using
      * the given {@link UUID} as the key.
-     * @param playerUUID - {@link UUID}
+     * @param playerUUID {@link UUID}
      * @return a {@link PlayerState}
      */
     @Nullable

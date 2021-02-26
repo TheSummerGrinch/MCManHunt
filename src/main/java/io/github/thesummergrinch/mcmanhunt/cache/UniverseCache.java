@@ -38,8 +38,8 @@ public final class UniverseCache implements ConfigurationSerializable {
     /**
      * Maps a String to a {@link Universe}-object, and stores them in
      * {@link #universeCache}.
-     * @param universeName - String
-     * @param universe - {@link Universe}
+     * @param universeName String
+     * @param universe {@link Universe}
      */
     public void cacheUniverse(final String universeName, final Universe universe) {
         this.universeCache.put(universeName, universe);
@@ -47,7 +47,7 @@ public final class UniverseCache implements ConfigurationSerializable {
 
     /**
      * Retrieves a {@link Universe}, using the given String as the key.
-     * @param universeName - String
+     * @param universeName String
      * @return a {@link Universe}
      */
     public @Nullable Universe getUniverse(final String universeName) {
@@ -62,7 +62,7 @@ public final class UniverseCache implements ConfigurationSerializable {
     /**
      * Removes a {@link Universe} from the {@link #universeCache}, using the
      * given String as the key.
-     * @param universeName - String
+     * @param universeName String
      */
     public void removeUniverse(@NotNull final String universeName) {
         this.universeCache.remove(universeName);
@@ -70,7 +70,8 @@ public final class UniverseCache implements ConfigurationSerializable {
 
     /**
      * Destroys {@link Universe}-objects and deletes their corresponding
-     * world-files, if the Universe in question has been marked for destruction.
+     * world-files, if the {@link Universe} in question has been marked for
+     * destruction.
      */
     @Deprecated
     public void onDisable() {

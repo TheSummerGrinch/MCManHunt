@@ -74,6 +74,9 @@ public final class MCManHunt extends JavaPlugin {
         saveConfigFile();
     }
 
+    /**
+     * Registers all commands used by MCManHunt.
+     */
     private void registerCommands() {
         this.getCommand("initializegame").setExecutor(new InitializeGameCommandExecutor());
         this.getCommand("joingame").setExecutor(new JoinGameCommandExecutor());
@@ -92,6 +95,9 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
     }
 
+    /**
+     * Registers all necessary EventHandlers.
+     */
     private void registerEventHandlers() {
         this.getServer().getPluginManager().registerEvents(new OnBlockDamageEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnEnderDragonDeathEventHandler(), this);
@@ -106,6 +112,9 @@ public final class MCManHunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChatEventHandler(), this);
     }
 
+    /**
+     * Enables bStats-{@link Metrics}.
+     */
     private void enableMetrics() {
         if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
             DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
@@ -119,12 +128,19 @@ public final class MCManHunt extends JavaPlugin {
         }
     }
 
+    /**
+     * Saves the configurations to file.
+     */
     private void saveConfigFile() {
         FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
         this.saveConfig();
     }
 
+    /**
+     * Checks for updates by comparing the most recent version number known
+     * at SpigotMC.
+     */
     private void checkForUpdate() {
         if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
             new UpdateChecker(this, 83665).getVersion(version -> {
@@ -156,6 +172,9 @@ public final class MCManHunt extends JavaPlugin {
         }
     }
 
+    /**
+     * Asynchronously loads the LanguageFileLoader.
+     */
     private void loadLanguageFile() {
         new BukkitRunnable() {
             @Override

@@ -59,7 +59,7 @@ public final class Game implements ConfigurationSerializable {
     /**
      * Reconstructs a {@link Game}-object from a yml-representation, as specified by {@link #serialize()}.
      *
-     * @param objects - {@link Map} constructed from the yml-representation of the {@link Game}-object.
+     * @param objects {@link Map} constructed from the yml-representation of the {@link Game}-object.
      * @return the reconstructed {@link Game}-object.
      */
     @SuppressWarnings("unused")

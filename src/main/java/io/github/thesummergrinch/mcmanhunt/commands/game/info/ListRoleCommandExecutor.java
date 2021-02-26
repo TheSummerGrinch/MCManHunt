@@ -52,10 +52,10 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      * we compile a the team-configurations for both the Hunters, as well as
      * the Runners.
      *
-     * @param sender - the {@link CommandSender} responsible for calling the
+     * @param sender the {@link CommandSender} responsible for calling the
      *               command
-     * @param game - the {@link Game} that should be modified
-     * @param roleToList - the {@link PlayerRole} that should be listed.
+     * @param game the {@link Game} that should be modified
+     * @param roleToList the {@link PlayerRole} that should be listed.
      */
     private void listRole(final CommandSender sender, final Game game, final PlayerRole roleToList) {
         final StringBuilder stringBuilder = new StringBuilder();
@@ -85,8 +85,8 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      * "/listteams" will return {@link PlayerRole#DEFAULT} to facilitate
      * compiling a list of both team-configurations.
      *
-     * @param label - the label used to send the command.
-     * @param args - the arguments given when the CommandSender issued the
+     * @param label the label used to send the command.
+     * @param args the arguments given when the CommandSender issued the
      *             command.
      * @return the {@link PlayerRole} corresponding to which
      * team-configuration should be shown to the CommandSender.
@@ -112,7 +112,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      * Determines if a non-default label (anything that is not the command
      * name) was used to issue the command.
      *
-     * @param label - the label used to issue the command.
+     * @param label the label used to issue the command.
      * @return true if a non-default label was used, false otherwise.
      */
     private boolean labelUsed(final String label) {
@@ -124,10 +124,10 @@ public class ListRoleCommandExecutor implements CommandExecutor {
     /**
      * Gets which game's team-configuration(s) should be retrieved.
      *
-     * @param sender - the {@link CommandSender} that issued the command.
-     * @param args - the arguments sent when the command was issued.
-     * @param labelsUsed - the label used to issue the command.
-     * @return - the {@link Game}-object of which the team-configurations
+     * @param sender the {@link CommandSender} that issued the command.
+     * @param args the arguments sent when the command was issued.
+     * @param labelsUsed the label used to issue the command.
+     * @return the {@link Game}-object of which the team-configurations
      * should be listed. If no team was found, it will return null.
      */
     @Nullable
@@ -156,9 +156,9 @@ public class ListRoleCommandExecutor implements CommandExecutor {
     /**
      * Compiles (a part of) the message that should be sent to the
      * CommandSender.
-     * @param playerStates - the {@link PlayerState}-objects associated with
+     * @param playerStates the {@link PlayerState}-objects associated with
      *                     the {@link Game}.
-     * @param roleToList - the {@link PlayerRole} that determines which
+     * @param roleToList the {@link PlayerRole} that determines which
      *                   team-configuration should be listed.
      * @return (a part of) the message the will be sent to the CommandSender.
      */

@@ -25,14 +25,29 @@ public final class FileConfigurationLoader {
         }
     }
 
+    /**
+     * Saves the given object in the Plugin's {@link FileConfiguration}.
+     * @param key - the path to the object
+     * @param value - the object to be stored in the {@link FileConfiguration}
+     */
     public void saveItemToConfig(final String key, final Object value) {
         FileConfigurationLoader.getInstance().fileConfiguration.set(key, value);
     }
 
+    /**
+     * Loads a {@link GameCache} from the config.yml.
+     * @param key - path to the serialized {@link GameCache} object.
+     * @return - the {@link GameCache}-object stored in the config.yml.
+     */
     public GameCache loadGames(final String key) {
         return fileConfiguration.getObject(key, GameCache.class);
     }
 
+    /**
+     * Loads settings from the config.yml located in the Plugin's datafolder.
+     * @param key
+     * @return
+     */
     public DefaultSettingsContainer loadDefaultSettings(final String key) {
         DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
         if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
@@ -41,6 +56,12 @@ public final class FileConfigurationLoader {
         return DefaultSettingsContainer.getInstance();
     }
 
+    /**
+     * Invoked when no config.yml can be found in the Plugin's datafolder.
+     * Returns a {@link HashMap} of default settings to be used until the next
+     * launch.
+     * @return - the {@link HashMap} containing default settings.
+     */
     public HashMap<String, String> getDefaultSettings() {
         return new HashMap<String, String>() {
             {
