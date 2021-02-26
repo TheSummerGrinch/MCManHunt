@@ -2,7 +2,6 @@ package io.github.thesummergrinch.mcmanhunt.commands.game.op.settings;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
-import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
