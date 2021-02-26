@@ -17,6 +17,9 @@ import java.util.UUID;
 
 public class JoinGameCommandExecutor implements CommandExecutor, TabCompleter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player && args.length >= 1) {
@@ -30,6 +33,9 @@ public class JoinGameCommandExecutor implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         return GameCache.getInstance().getStandbyGameNamesAsList();

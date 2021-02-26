@@ -24,6 +24,9 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter
         }
     };
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp() && args.length >= 3) {
@@ -38,6 +41,9 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         return ManHuntRuleCommandExecutor.AVAILABLE_MANHUNT_RULES;

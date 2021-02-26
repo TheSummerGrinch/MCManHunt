@@ -13,6 +13,9 @@ import java.util.List;
 
 public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor, TabCompleter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp() && args.length >= 2 && UniverseCache.getInstance().getUniverse(args[0]) != null
@@ -23,6 +26,9 @@ public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor,
         } else return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         return UniverseCache.getInstance().getUniverseNamesAsList();

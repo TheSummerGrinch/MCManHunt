@@ -25,6 +25,9 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
         }
     };
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // If the sender is OP, and specified the name of the game, they will be allowed to initialize a game.
@@ -61,6 +64,9 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
