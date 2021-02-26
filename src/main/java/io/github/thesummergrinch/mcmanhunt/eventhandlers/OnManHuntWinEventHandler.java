@@ -17,6 +17,8 @@ public class OnManHuntWinEventHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onManHuntWinEvent(@NotNull final ManHuntWinEvent event) {
 
+        if (event.isCancelled()) return;
+
         event.getWinners().forEach(uuid -> {
 
             Player player = Bukkit.getPlayer(uuid);
