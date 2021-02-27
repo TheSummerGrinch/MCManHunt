@@ -1,6 +1,8 @@
 package io.github.thesummergrinch.mcmanhunt;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.commands.chat.SayGlobalCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.chat.SayLobbyCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRoleCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.ManHuntRuleCommandExecutor;
@@ -96,6 +98,8 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
         this.getCommand("leavegame").setExecutor(new LeaveGameCommandExecutor());
         this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
+        this.getCommand("saylobby").setExecutor(new SayLobbyCommandExecutor());
+        this.getCommand("sayglobal").setExecutor(new SayGlobalCommandExecutor());
 
     }
 
