@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -450,4 +451,9 @@ public final class Game implements ConfigurationSerializable {
         return this.gameState.isEligibleForStart();
 
     }
+
+    public Collection<PlayerState> getAllPlayers() {
+        return this.gameState.getPlayersInGame().values();
+    }
+
 }
