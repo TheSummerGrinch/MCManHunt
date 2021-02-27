@@ -4,6 +4,14 @@ main: io.github.thesummergrinch.mcmanhunt.MCManHunt
 api-version: 1.16
 softdepend: [ Multiverse-Core, Multiverse-NetherPortals ]
 commands:
+  sayglobal:
+    description: Sends the given message to all players.
+    usage: /sayglobal [message]
+    permission: mcmanhunt.chat.global
+  saylobby:
+    description: Send the given message to all players in the current game.
+    usage: /saylobby [message]
+    permission: mcmanhunt.chat.lobby
   initializegame:
     description: Initializes a game.
     usage: /intializegame [gamename]
@@ -86,3 +94,9 @@ permissions:
   mcmanhunt.plugin.info:
     description: Allows access to informative commands.
     default: op
+  mcmanhunt.chat.global:
+    description: Allows access to the /sayglobal-command.
+    default: true
+  mcmanhunt.chat.lobby:
+    description: Allows access to the /saylobby-command.
+    default: true
