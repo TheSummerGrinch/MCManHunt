@@ -50,7 +50,9 @@ public class OnAsyncPlayerChatEventHandler implements Listener {
             Set<Player> recipients = new HashSet<>();
 
             for (PlayerState runner : game.getRunners()) {
+
                 recipients.add(Bukkit.getPlayer(runner.getPlayerUUID()));
+
             }
 
             sendMessageToTeamMates(recipients, format);
@@ -68,7 +70,9 @@ public class OnAsyncPlayerChatEventHandler implements Listener {
             Set<Player> recipients = new HashSet<>();
 
             for (PlayerState hunter : game.getHunters()) {
+
                 recipients.add(Bukkit.getPlayer(hunter.getPlayerUUID()));
+
             }
 
             sendMessageToTeamMates(recipients, format);
@@ -82,7 +86,9 @@ public class OnAsyncPlayerChatEventHandler implements Listener {
     private void sendMessageToTeamMates(@NotNull final Set<Player> recipients,
                                         @NotNull final String message) {
         for (Player player : recipients) {
+
             player.sendMessage(message);
+
         }
     }
 

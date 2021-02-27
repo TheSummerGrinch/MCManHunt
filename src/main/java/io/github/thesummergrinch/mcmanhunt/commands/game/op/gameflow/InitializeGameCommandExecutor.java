@@ -19,8 +19,10 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
 
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
         {
+
             add("manhunt");
             add("world");
+
         }
     };
 
@@ -61,6 +63,8 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+
         return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+
     }
 }

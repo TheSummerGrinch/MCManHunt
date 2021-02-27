@@ -21,20 +21,30 @@ public final class UniverseCache implements ConfigurationSerializable {
     }
 
     public static UniverseCache getInstance() {
+
         UniverseCache universeCache = instance;
+
         if (universeCache != null) return universeCache;
+
         synchronized (UniverseCache.class) {
+
             if (instance == null) instance = new UniverseCache();
+
             return instance;
+
         }
     }
 
     public void cacheUniverse(final String universeName, final Universe universe) {
+
         this.universeCache.put(universeName, universe);
+
     }
 
     public @Nullable Universe getUniverse(final String universeName) {
+
         return this.universeCache.get(universeName);
+
     }
 
     @Override
@@ -43,20 +53,29 @@ public final class UniverseCache implements ConfigurationSerializable {
     }
 
     public void removeUniverse(@NotNull final String universeName) {
+
         this.universeCache.remove(universeName);
+
     }
 
     @Deprecated
     public void onDisable() {
+
         universeCache.values().forEach(universe -> {
+
             if (universe.getMarkedForDestruction()) {
+
                 universe.destroyUniverse();
+
             }
+
         });
     }
 
     public List<String> getUniverseNamesAsList() {
+
         return new ArrayList<>(universeCache.keySet());
+
     }
 
 }

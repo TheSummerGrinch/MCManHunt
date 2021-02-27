@@ -19,11 +19,17 @@ public class MultiverseUniverseBridge {
     private MultiverseUniverseBridge() {}
 
     public static MultiverseUniverseBridge getInstance() {
+
         if (instance != null) return instance;
+
         synchronized (MultiverseUniverseBridge.class) {
+
             instance = new MultiverseUniverseBridge();
+
         }
+
         return instance;
+
     }
 
     protected void registerWorldsInMultiverse(final CommandSender commandSender, final Universe universe) {
@@ -69,6 +75,7 @@ public class MultiverseUniverseBridge {
     }
 
     protected  void unloadAndDestroy(CommandSender commandSender, Universe universe) {
+
         Plugin multiverseCore = MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager().getPlugin("Multiverse-Core");
 
         if (!universe.getMarkedForDestruction()) return;

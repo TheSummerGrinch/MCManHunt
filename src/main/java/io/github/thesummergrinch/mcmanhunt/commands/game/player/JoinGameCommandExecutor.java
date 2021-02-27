@@ -19,19 +19,29 @@ public class JoinGameCommandExecutor implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender instanceof Player && args.length >= 1) {
+
             final Game game = GameCache.getInstance().getGameFromCache(args[0]);
+
             if (game == null || !game.getGameFlowState().equals(GameFlowState.DEFAULT)) return false;
+
             UUID playerUUID = ((Player) sender).getUniqueId();
+
             game.addPlayerToGame(playerUUID);
             sender.sendMessage(LanguageFileLoader.getInstance().getString("joined-game"));
+
             return true;
+
         }
+
         return false;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+
         return GameCache.getInstance().getStandbyGameNamesAsList();
+
     }
 }

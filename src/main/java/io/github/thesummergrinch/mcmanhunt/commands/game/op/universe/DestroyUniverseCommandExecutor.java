@@ -17,17 +17,25 @@ public class DestroyUniverseCommandExecutor implements CommandExecutor, TabCompl
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                              @NotNull String[] args) {
+
         if (sender.isOp() && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) == null
                 && UniverseCache.getInstance().getUniverse(args[0]) != null) {
+
             UniverseCache.getInstance().getUniverse(args[0]).setMarkedForDestruction(true);
+
         } else {
+
             sender.sendMessage(LanguageFileLoader.getInstance().getString("universe-destroy-failed"));
+
         }
+
         return true;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+
         return UniverseCache.getInstance().getUniverseNamesAsList();
+
     }
 }

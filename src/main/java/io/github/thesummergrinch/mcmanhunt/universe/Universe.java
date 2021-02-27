@@ -3,7 +3,12 @@ package io.github.thesummergrinch.mcmanhunt.universe;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.io.WorldDirectoryFileVisitor;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Flying;
@@ -80,6 +85,7 @@ public final class Universe implements ConfigurationSerializable {
      * in the {@link HashMap}.
      */
     private void populateUniverse() {
+
         final World overworld = WorldCreator.name(universeName)
                 .environment(World.Environment.NORMAL)
                 .generateStructures(true).type(WorldType.NORMAL).createWorld();
@@ -117,7 +123,9 @@ public final class Universe implements ConfigurationSerializable {
      */
     @Nullable
     public World getWorld(@NotNull final String worldName) {
+
         return Bukkit.getWorld(worldName);
+
     }
 
     /**
@@ -128,10 +136,14 @@ public final class Universe implements ConfigurationSerializable {
      */
     @Override
     public @NotNull Map<String, Object> serialize() {
+
         HashMap<String, Object> objects = new HashMap<>();
+
         objects.put("name", this.universeName);
         objects.put("destroy-when-game-is-stopped", this.destroyWhenGameIsStopped);
+
         return objects;
+
     }
 
     /**
@@ -140,7 +152,9 @@ public final class Universe implements ConfigurationSerializable {
      * @return - the universe name.
      */
     public @NotNull String getName() {
+
         return this.universeName;
+
     }
 
     /**
@@ -150,8 +164,10 @@ public final class Universe implements ConfigurationSerializable {
      * @param difficulty - target difficulty
      */
     public void setDifficulty(@NotNull final Difficulty difficulty) {
+
         this.worldHashMap.values().forEach(worldUID
             -> Bukkit.getWorld(worldUID).setDifficulty(difficulty));
+
     }
 
     /**
@@ -167,6 +183,7 @@ public final class Universe implements ConfigurationSerializable {
             try {
 
                 File worldDirectory = new File(Bukkit.getWorldContainer(), "/" + worldName);
+
                 Files.walkFileTree(worldDirectory.toPath(), new WorldDirectoryFileVisitor());
 
             } catch (IOException exception) {
@@ -177,6 +194,7 @@ public final class Universe implements ConfigurationSerializable {
                                 "the developer (GitHub: Github.com/TheSummerGrinch).");
             }
         });
+
     }
 
     /**
@@ -184,20 +202,29 @@ public final class Universe implements ConfigurationSerializable {
      * permanently deleted when the game ends.
      */
     public boolean getDestroyWhenGameIsStopped() {
+
         return this.destroyWhenGameIsStopped;
+
     }
 
     public void setDestroyWhenGameIsStopped(final boolean destroyWhenGameIsStopped) {
+
         this.destroyWhenGameIsStopped = destroyWhenGameIsStopped;
+
     }
 
     public boolean getMarkedForDestruction() {
+
         return this.markedForDestruction;
+
     }
 
     public void setMarkedForDestruction(final boolean markedForDestruction) {
+
         this.markedForDestruction = true;
+
         unloadAndDestroy();
+
     }
 
     public void unloadAndDestroy() {
@@ -205,8 +232,11 @@ public final class Universe implements ConfigurationSerializable {
         if (this.universeName.equals("world")) return;
 
         for (Map.Entry<String, UUID> entry : this.worldHashMap.entrySet()) {
+
             String name = entry.getKey();
+
             Bukkit.unloadWorld(name, !markedForDestruction);
+
         }
 
         if (!markedForDestruction) return;
@@ -220,12 +250,15 @@ public final class Universe implements ConfigurationSerializable {
             UniverseCache.getInstance().removeUniverse(this.universeName);
 
             return;
+
         }
 
         this.worldHashMap.forEach((worldName, world) -> {
+
             File worldDirectory = new File(Bukkit.getWorldContainer(), "/" + worldName);
 
             new BukkitRunnable() {
+
                 @Override
                 public void run() {
 
@@ -262,8 +295,10 @@ public final class Universe implements ConfigurationSerializable {
      * @param <T>      - Generic type
      */
     public <T> void setGameRule(GameRule<T> gameRule, T value) {
+
         this.worldHashMap.values().forEach(worldUID
                 -> Bukkit.getWorld(worldUID).setGameRule(gameRule, value));
+
     }
 
     public void despawnMobs() {
@@ -275,11 +310,12 @@ public final class Universe implements ConfigurationSerializable {
             for (Entity entity : Bukkit.getWorld(worldUID).getEntities()) {
 
                 if (entity instanceof Monster || entity instanceof Flying) {
+
                     entity.remove();
+
                 }
 
             }
         }
     }
-
 }

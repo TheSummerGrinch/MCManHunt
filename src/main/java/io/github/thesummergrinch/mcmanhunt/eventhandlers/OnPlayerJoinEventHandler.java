@@ -28,8 +28,10 @@ public class OnPlayerJoinEventHandler implements Listener {
             playerState = new PlayerState(playerUUID);
 
         } else {
+
             if (PlayerStateCache.getInstance().getPlayerState(playerUUID).isInGame())
                 return;
+
         }
 
         if (!event.getPlayer().getInventory().contains(Material.COMPASS))

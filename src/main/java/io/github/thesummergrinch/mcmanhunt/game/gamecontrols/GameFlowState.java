@@ -9,25 +9,35 @@ public enum GameFlowState {
     DEFAULT;
 
     public static @NotNull GameFlowState fromString(@NotNull final String gameStateString) {
+
         switch (gameStateString) {
+
             case "paused":
                 return PAUSED;
+
             case "running":
                 return RUNNING;
+
             default:
                 return DEFAULT;
+
         }
     }
 
     @Override
     public @NotNull String toString() {
+
         switch (this) {
+
             case PAUSED:
                 return "paused";
+
             case RUNNING:
                 return "running";
+
             default:
                 return "default";
+
         }
     }
 
