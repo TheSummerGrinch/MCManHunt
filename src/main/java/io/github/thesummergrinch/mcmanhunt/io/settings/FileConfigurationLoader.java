@@ -69,6 +69,8 @@ public final class FileConfigurationLoader {
                 put("default-headstart", "30");
                 put("enable-update-checking", "true");
                 put("locale", "enGB");
+                put("bungeecord-enabled", "false");
+                put("bungeecord-hub-name", "hub");
             }
         };
 
