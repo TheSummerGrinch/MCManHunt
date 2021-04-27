@@ -19,6 +19,8 @@ import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -34,6 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -356,6 +359,13 @@ public final class Game implements ConfigurationSerializable {
      */
     public void stop() {
 
+        if (DefaultSettingsContainer.getInstance()
+                .getSetting("clear-advancements-after-game")
+                .equalsIgnoreCase("true")) {
+            this.getAllPlayers().forEach((playerState -> {
+                revokeAdvancements(Bukkit.getPlayer(playerState.getPlayerUUID()));
+            }));
+        }
         teleportPlayersToDefaultWorld();
         broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-stopped"));
         this.removeAllPlayersFromGame();
@@ -365,6 +375,17 @@ public final class Game implements ConfigurationSerializable {
 
             this.gameState.markUniverseForDestruction(true);
 
+        }
+    }
+
+    private void revokeAdvancements(final Player player) {
+        final Iterator<Advancement> advancementIterator =
+                Bukkit.getServer().advancementIterator();
+        while (advancementIterator.hasNext()) {
+            AdvancementProgress progress =
+                    player.getAdvancementProgress(advancementIterator.next());
+            for (String s : progress.getAwardedCriteria())
+                progress.revokeCriteria(s);
         }
     }
 
