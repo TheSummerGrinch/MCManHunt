@@ -17,14 +17,19 @@ public class OnEnderDragonDeathEventHandler implements @NotNull Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEnderDragonDeathEvent(@NotNull final EntityDeathEvent event) {
+
         if (event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
+
             @Nullable final Game game = GameCache.getInstance()
-                    .getGameFromCache(event.getEntity().getLocation().getWorld().getName().split("_")[0]);
+                    .getGameFromCache(event.getEntity().getLocation().getWorld()
+                            .getName().split("_")[0]);
+
             if (game != null && game.getGameFlowState().equals(GameFlowState.RUNNING)) {
+
                 Bukkit.getServer().getPluginManager()
                         .callEvent(new ManHuntWinEvent(game.getName(), game.getRunnerUUIDs()));
+
             }
         }
     }
-
 }

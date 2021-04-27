@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResumeGameCommandExecutor implements CommandExecutor, TabCompleter {
@@ -23,46 +24,80 @@ public class ResumeGameCommandExecutor implements CommandExecutor, TabCompleter 
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp()) {
+
             final Game game;
+
             // If the sender is a player and in an active game, they may forego the command argument.
             if (sender instanceof Player) {
+
                 if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+
                     game = GameCache.getInstance().getGameFromCache(args[0]);
+
                     // If a game is found and it is currently paused, the game will be resumed and the players notified.
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
+
                         game.resume();
                         game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-resumed"));
+
                     } else {
+
                         sender.sendMessage(LanguageFileLoader.getInstance().getString("game-not-paused"));
+
                     }
+
                     return true;
+
                 }
+
                 final PlayerState playerState = PlayerStateCache.getInstance()
                         .getPlayerState(((Player) sender).getUniqueId());
+
                 if (playerState.isInGame()) {
+
                     game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
                     if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
+
                         game.resume();
                         game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-resumed"));
+
                     } else {
+
                         sender.sendMessage(LanguageFileLoader.getInstance().getString("game-not-paused"));
+
                     }
                 } else {
+
                     sender.sendMessage(LanguageFileLoader.getInstance().getString("not-in-game-no-game-specified"));
+
                 }
+
                 return true;
+
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+
                 game = GameCache.getInstance().getGameFromCache(args[0]);
+
                 if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
+
                     game.resume();
                     game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-resumed"));
+
                 }
+
             } else {
+
                 sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
             }
+
             return true;
+
         }
+
         return false;
     }
 
@@ -71,6 +106,8 @@ public class ResumeGameCommandExecutor implements CommandExecutor, TabCompleter 
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return GameCache.getInstance().getGameNamesAsList();
+
+        if(args.length == 1) return GameCache.getInstance().getGameNamesAsList();
+        return new ArrayList<>();
     }
 }

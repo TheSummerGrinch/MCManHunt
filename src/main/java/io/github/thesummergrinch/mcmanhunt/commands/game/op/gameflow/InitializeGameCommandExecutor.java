@@ -20,8 +20,10 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
     // The suggested names for ManHunt-games. May move to config.
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
         {
+
             add("manhunt");
             add("world");
+
         }
     };
 
@@ -69,6 +71,8 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+
+        if (args.length == 1) return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+        return new ArrayList<String>();
     }
 }

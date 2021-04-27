@@ -14,11 +14,17 @@ public class LeaveGameCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender instanceof Player) {
+
             PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId()).leaveGame();
+
             return true;
+
         } else {
+
             return false;
+
         }
     }
 }

@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * Cache for {@link CompassState}-objects, intended to make existing
- * {@link CompassState} and their corresponding
- * {@link org.bukkit.inventory.meta.CompassMeta}-objects more accessible and
- * reusable.
+ * Cache for {@link CompassState}-objects, intended to make existing {@link CompassState} and their corresponding
+ * {@link org.bukkit.inventory.meta.CompassMeta}-objects more accessible and reusable.
  */
 public final class CompassStateCache {
 
@@ -20,29 +18,37 @@ public final class CompassStateCache {
     private final HashMap<UUID, CompassState> cacheMap;
 
     private CompassStateCache() {
+
         this.cacheMap = new HashMap<>();
+
     }
 
     // Singleton-pattern
     public static CompassStateCache getInstance() {
+
         CompassStateCache compassStateCache = instance;
+
         if (compassStateCache != null) return compassStateCache;
+
         synchronized (CompassStateCache.class) {
+
             if (instance == null) instance = new CompassStateCache();
+
             return instance;
+
         }
     }
 
-    // Saves the given CompassState-object in the HashMap<UUID, CompassState>
-    // using the given Player UUID as the key.
-    public void cacheCompassState(final UUID playerTrackedUUID,
-                                  final CompassState compassState) {
+    public void cacheCompassState(final UUID playerTrackedUUID, final CompassState compassState) {
+
         this.cacheMap.put(playerTrackedUUID, compassState);
+
     }
 
-    // Returns the CompassState mapped
     public @Nullable CompassState getCompassState(final UUID playerTrackedUUID) {
+
         return this.cacheMap.get(playerTrackedUUID);
+
     }
 
 }

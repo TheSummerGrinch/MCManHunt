@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StartGameCommandExecutor implements CommandExecutor, TabCompleter {
@@ -23,35 +24,63 @@ public class StartGameCommandExecutor implements CommandExecutor, TabCompleter {
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp()) {
+
             if (args.length >= 1) {
+
                 Game game = GameCache.getInstance().getGameFromCache(args[0]);
+
                 if (game.isEligibleForStart()) {
+
                     game.start();
+
                 } else {
+
                     sender.sendMessage(LanguageFileLoader.getInstance().getString("not-enough-players"));
+
                 }
+
                 return true;
+
             } else if (sender instanceof Player) {
+
                 PlayerState player = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
+
                 if (player.isInGame()) {
+
                     Game game = GameCache.getInstance().getGameFromCache(player.getGameName());
+
                     if (game.getGameFlowState().equals(GameFlowState.DEFAULT)) {
+
                         if (game.isEligibleForStart()) {
+
                             game.start();
+
                         } else {
+
                             sender.sendMessage(LanguageFileLoader.getInstance().getString("not-enough-players"));
+
                         }
+
                         return true;
+
                     } else if (game.getGameFlowState().equals(GameFlowState.PAUSED)) {
+
                         game.resume();
+
                         return true;
+
                     }
+
                 } else {
+
                     return false;
+
                 }
             }
         }
+
         return false;
     }
 
@@ -60,6 +89,8 @@ public class StartGameCommandExecutor implements CommandExecutor, TabCompleter {
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return GameCache.getInstance().getGameNamesAsList();
+
+        if (args.length == 1) return GameCache.getInstance().getGameNamesAsList();
+        return new ArrayList<String>();
     }
 }

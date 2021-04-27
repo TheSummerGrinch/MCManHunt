@@ -69,8 +69,6 @@ Place the plugin-jar into your plugin-folder. A config-file will be generated on
 
 Metrics / Data-collection
 
-NOTE: DATA COLLECTION IS CURRENTLY DISABLED IN THE LATEST VERSION OF MCMANHUNT. THE INFORMATION BELOW IS TRUE FOR VERSIONS 1.5.X AND LOWER.
-
 MCManHunt uses bStats to collect data. You can disable bStats data-collection in the bStats-config (Serverroot -> plugins -> bStats -> config.yml -> enabled: false). Additionally, you can also specifically stop data-collection for MCManHunt by changing the allow-metrics field, in the plugin.yml, to false.
 
 

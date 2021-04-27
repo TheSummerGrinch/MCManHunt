@@ -13,15 +13,23 @@ public final class FileConfigurationLoader {
     private final FileConfiguration fileConfiguration;
 
     private FileConfigurationLoader() {
+
         fileConfiguration = MCManHunt.getPlugin(MCManHunt.class).getConfig();
+
     }
 
     public static FileConfigurationLoader getInstance() {
+
         FileConfigurationLoader loader = instance;
+
         if (loader != null) return loader;
+
         synchronized (FileConfigurationLoader.class) {
+
             if (instance == null) instance = new FileConfigurationLoader();
+
             return instance;
+
         }
     }
 
@@ -31,7 +39,9 @@ public final class FileConfigurationLoader {
      * @param value - the object to be stored in the {@link FileConfiguration}
      */
     public void saveItemToConfig(final String key, final Object value) {
+
         FileConfigurationLoader.getInstance().fileConfiguration.set(key, value);
+
     }
 
     /**
@@ -40,7 +50,9 @@ public final class FileConfigurationLoader {
      * @return - the {@link GameCache}-object stored in the config.yml.
      */
     public GameCache loadGames(final String key) {
+
         return fileConfiguration.getObject(key, GameCache.class);
+
     }
 
     /**
@@ -49,11 +61,16 @@ public final class FileConfigurationLoader {
      * @return
      */
     public DefaultSettingsContainer loadDefaultSettings(final String key) {
+
         DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
+
         if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
+
         DefaultSettingsContainer.getInstance().setSettings(getDefaultSettings());
         this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
+
         return DefaultSettingsContainer.getInstance();
+
     }
 
     /**
@@ -63,6 +80,7 @@ public final class FileConfigurationLoader {
      * @return - the {@link HashMap} containing default settings.
      */
     public HashMap<String, String> getDefaultSettings() {
+
         return new HashMap<String, String>() {
             {
                 put("first-run", "true");
@@ -72,8 +90,11 @@ public final class FileConfigurationLoader {
                 put("default-headstart", "30");
                 put("enable-update-checking", "true");
                 put("locale", "enGB");
+                put("bungeecord-enabled", "false");
+                put("bungeecord-hub-name", "hub");
+                put("clear-advancements-after-game", "false");
             }
         };
-    }
 
+    }
 }

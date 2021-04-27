@@ -17,17 +17,27 @@ public class OnPlayerRespawnEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerRespawnEvent(@NotNull final PlayerRespawnEvent event) {
+
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getPlayer().getUniqueId());
+
         if (!playerState.isInGame()) return;
+
         final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
         if (playerState.isInGame())
+
             if (game.getGameFlowState().equals(GameFlowState.RUNNING))
+
                 if (playerState.getPlayerRole().equals(PlayerRole.HUNTER)) {
+
                     game.giveHunterCompasses(playerState.getPlayerUUID());
+
                 }
+
         if (Bukkit.getPlayer(playerState.getPlayerUUID()).getBedSpawnLocation() == null) {
+
             event.setRespawnLocation(game.getWorldSpawn());
+
         }
     }
-
 }

@@ -16,10 +16,14 @@ public class ManHuntVersionCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp()) {
+
             sender.sendMessage(MessageFormat.format(LanguageFileLoader.getInstance().getString("version-message"),
                     MCManHunt.getPlugin(MCManHunt.class).getDescription().getVersion()));
+
         }
+
         return true;
     }
 }

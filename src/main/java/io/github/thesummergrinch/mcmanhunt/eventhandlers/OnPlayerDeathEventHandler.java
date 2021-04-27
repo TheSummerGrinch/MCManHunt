@@ -20,18 +20,25 @@ public class OnPlayerDeathEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeathEvent(@NotNull final PlayerDeathEvent event) {
+
         final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(event.getEntity().getUniqueId());
+
         if (playerState.isInGame() && playerState.getPlayerRole().equals(PlayerRole.RUNNER)) {
+
             final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
             final Game game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
             if (game.getGameFlowState().equals(GameFlowState.RUNNING)) {
+
                 playerState.setPlayerRole(PlayerRole.SPECTATOR);
                 player.setGameMode(GameMode.SPECTATOR);
+
                 if (game.getNumberOfRunners() == 0L) {
+
                     Bukkit.getPluginManager().callEvent(new ManHuntWinEvent(game.getName(), game.getHunterUUIDs()));
+
                 }
             }
         }
     }
-
 }

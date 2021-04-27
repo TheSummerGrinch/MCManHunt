@@ -58,17 +58,27 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      * @param roleToList the {@link PlayerRole} that should be listed.
      */
     private void listRole(final CommandSender sender, final Game game, final PlayerRole roleToList) {
+
         final StringBuilder stringBuilder = new StringBuilder();
+
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
+
             stringBuilder.append(getPlayerRoleList(game.getHunters(), PlayerRole.HUNTER));
+
             if (roleToList.equals(PlayerRole.DEFAULT)) {
+
                 stringBuilder.append("\n\n");
                 stringBuilder.append(getPlayerRoleList(game.getRunners(), PlayerRole.RUNNER));
+
             }
+
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
+
             stringBuilder.append(getPlayerRoleList(game.getRunners(),
                     PlayerRole.RUNNER));
+
         }
+
         sender.sendMessage(stringBuilder.toString());
     }
 
@@ -93,18 +103,27 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      */
     @Nullable
     private PlayerRole determineRequestedPlayerRole(final String label, final String[] args) {
+
         if ((args.length >= 1 && args[0].equalsIgnoreCase("runners"))
                 || label.equalsIgnoreCase("listrunners")
                 || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
+
             return PlayerRole.RUNNER;
+
         } else if ((args.length >= 1 && args[0].equalsIgnoreCase("hunters"))
                 || label.equalsIgnoreCase("listhunters")
                 || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
+
             return PlayerRole.HUNTER;
+
         } else if (label.equalsIgnoreCase("listteams")) {
+
             return PlayerRole.DEFAULT;
+
         } else {
+
             return null;
+
         }
     }
 
@@ -116,9 +135,11 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      * @return true if a non-default label was used, false otherwise.
      */
     private boolean labelUsed(final String label) {
+
         return label.equalsIgnoreCase("listrunners")
                 || label.equalsIgnoreCase("listhunters")
                 || label.equalsIgnoreCase("listteams");
+
     }
 
     /**
@@ -132,24 +153,38 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      */
     @Nullable
     private Game getGame(final CommandSender sender, final String[] args, final boolean labelsUsed) {
+
         if (sender instanceof Player) {
+
             final PlayerState playerState = PlayerStateCache.getInstance().getPlayerState(((Player) sender).getUniqueId());
 
             if ((args.length >= 2 && GameCache.getInstance().getGameFromCache(args[1]) != null)) {
+
                 return GameCache.getInstance().getGameFromCache(args[1]);
+
             } else if (playerState.isInGame()) {
+
                 return GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
             } else if (labelsUsed && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+
                 return GameCache.getInstance().getGameFromCache(args[0]);
+
             }
 
         } else {
+
             if ((args.length >= 2 && GameCache.getInstance().getGameFromCache(args[1]) != null)) {
+
                 return GameCache.getInstance().getGameFromCache(args[1]);
+
             } else if (labelsUsed && args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+
                 return GameCache.getInstance().getGameFromCache(args[0]);
+
             }
         }
+
         return null;
     }
 
@@ -164,24 +199,34 @@ public class ListRoleCommandExecutor implements CommandExecutor {
      */
     private String getPlayerRoleList(final Set<PlayerState> playerStates,
                                      final PlayerRole roleToList) {
+
         final StringBuilder playerRoleList = new StringBuilder();
         String message;
+
         if (playerStates.isEmpty()) {
+
             playerRoleList.append((roleToList.equals(PlayerRole.RUNNER)) ?
                     LanguageFileLoader.getInstance().getString(
                     "runner-team-no-members") : LanguageFileLoader
                     .getInstance().getString("hunter-team-no-members"));
+
             message = playerRoleList.toString().trim();
+
         } else {
+
             playerRoleList.append((roleToList.equals(PlayerRole.RUNNER)) ?
                     LanguageFileLoader.getInstance().getString("list" +
                     "-runners") : LanguageFileLoader.getInstance().getString(
                             "list-hunters"));
+
             playerStates.forEach(playerState -> playerRoleList
                     .append(playerState.getPlayerName()).append(", "));
+
             message = playerRoleList.toString().trim();
             message = message.substring(0, message.length() - 1);
+
         }
+
         return message;
     }
 

@@ -9,6 +9,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor, TabCompleter {
@@ -18,12 +19,17 @@ public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor,
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp() && args.length >= 2 && UniverseCache.getInstance().getUniverse(args[0]) != null
                 && (args[1].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("true"))
                 || args[1].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("false")))) {
+
             UniverseCache.getInstance().getUniverse(args[0]).setDestroyWhenGameIsStopped(Boolean.parseBoolean(args[1]));
+
             return true;
+
         } else return false;
+
     }
 
     /**
@@ -31,7 +37,9 @@ public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor,
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return UniverseCache.getInstance().getUniverseNamesAsList();
+
+        if (args.length == 1) return UniverseCache.getInstance().getUniverseNamesAsList();
+        return new ArrayList<>();
     }
 
 }

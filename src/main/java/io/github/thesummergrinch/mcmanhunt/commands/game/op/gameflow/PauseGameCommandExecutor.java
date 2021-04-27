@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PauseGameCommandExecutor implements CommandExecutor, TabCompleter {
@@ -22,30 +23,48 @@ public class PauseGameCommandExecutor implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender.isOp()) {
+
             // If the sender is a player and in an active game, they may forego specifying the game
             if (sender instanceof Player) { // However, specifying the game name is preferred.
+
                 if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+
                     GameCache.getInstance().getGameFromCache(args[0]).pause();
                     return true;
+
                 }
+
                 final PlayerState playerState = PlayerStateCache.getInstance()
                         .getPlayerState(((Player) sender).getUniqueId());
+
                 if (playerState.isInGame()) {
+
                     GameCache.getInstance().getGameFromCache(playerState.getGameName()).pause();
+
                 } else {
+
                     // If neither options return a game, the sender will be notified of this.
                     sender.sendMessage(LanguageFileLoader.getInstance().getString("not-in-game-no-game-specified"));
+
                 }
+
                 return true;
+
             } else if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
+
                 // If the sender is not a player, the sender must specify the game name in the command argument.
                 GameCache.getInstance().getGameFromCache(args[0]).pause();
+
                 return true;
+
             } else {
+
                 // If the game name does not link to an existing game, the sender is notified.
                 sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
             }
         }
+
         return false;
     }
 
@@ -54,6 +73,8 @@ public class PauseGameCommandExecutor implements CommandExecutor, TabCompleter {
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return GameCache.getInstance().getGameNamesAsList();
+
+        if (args.length == 1) return GameCache.getInstance().getGameNamesAsList();
+        return new ArrayList<String>();
     }
 }

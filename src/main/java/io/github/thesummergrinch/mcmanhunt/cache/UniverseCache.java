@@ -27,11 +27,17 @@ public final class UniverseCache implements ConfigurationSerializable {
     }
 
     public static UniverseCache getInstance() {
+
         UniverseCache universeCache = instance;
+
         if (universeCache != null) return universeCache;
+
         synchronized (UniverseCache.class) {
+
             if (instance == null) instance = new UniverseCache();
+
             return instance;
+
         }
     }
 
@@ -42,7 +48,9 @@ public final class UniverseCache implements ConfigurationSerializable {
      * @param universe {@link Universe}
      */
     public void cacheUniverse(final String universeName, final Universe universe) {
+
         this.universeCache.put(universeName, universe);
+
     }
 
     /**
@@ -51,7 +59,9 @@ public final class UniverseCache implements ConfigurationSerializable {
      * @return a {@link Universe}
      */
     public @Nullable Universe getUniverse(final String universeName) {
+
         return this.universeCache.get(universeName);
+
     }
 
     @Override
@@ -65,7 +75,9 @@ public final class UniverseCache implements ConfigurationSerializable {
      * @param universeName String
      */
     public void removeUniverse(@NotNull final String universeName) {
+
         this.universeCache.remove(universeName);
+
     }
 
     /**
@@ -75,10 +87,15 @@ public final class UniverseCache implements ConfigurationSerializable {
      */
     @Deprecated
     public void onDisable() {
+
         universeCache.values().forEach(universe -> {
+
             if (universe.getMarkedForDestruction()) {
+
                 universe.destroyUniverse();
+
             }
+
         });
     }
 
@@ -89,7 +106,9 @@ public final class UniverseCache implements ConfigurationSerializable {
      * {@link #universeCache}
      */
     public List<String> getUniverseNamesAsList() {
+
         return new ArrayList<>(universeCache.keySet());
+
     }
 
 }

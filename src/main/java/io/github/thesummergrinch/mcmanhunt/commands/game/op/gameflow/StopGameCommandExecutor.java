@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StopGameCommandExecutor implements CommandExecutor, TabCompleter {
@@ -22,29 +23,48 @@ public class StopGameCommandExecutor implements CommandExecutor, TabCompleter {
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp()) {
+
             final Game game;
+
             if (args.length >= 1 && GameCache.getInstance().getGameFromCache(args[0]) != null) {
                 game = GameCache.getInstance().getGameFromCache(args[0]);
             } else {
+
                 if (sender instanceof Player) {
+
                     final PlayerState playerState = PlayerStateCache.getInstance()
                             .getPlayerState(((Player) sender).getUniqueId());
+
                     if (playerState.isInGame()) {
+
                         game = GameCache.getInstance().getGameFromCache(playerState.getGameName());
+
                     } else {
+
                         sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
                         return true;
+
                     }
+
                 } else {
+
                     sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
                     return true;
+
                 }
             }
+
             game.broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-stopping"));
             game.stop();
+
             return true;
+
         }
+
         return false;
     }
 
@@ -53,6 +73,8 @@ public class StopGameCommandExecutor implements CommandExecutor, TabCompleter {
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return GameCache.getInstance().getGameNamesAsList();
+
+        if(args.length == 1) return GameCache.getInstance().getGameNamesAsList();
+        return new ArrayList<String>();
     }
 }

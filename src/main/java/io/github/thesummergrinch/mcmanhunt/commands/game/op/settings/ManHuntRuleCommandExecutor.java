@@ -17,10 +17,12 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter
 
     private static List<String> AVAILABLE_MANHUNT_RULES = new ArrayList<String>() {
         {
+
             add("compass-enabled-in-nether");
             add("player-roles-randomized");
             add("headstart");
             add("difficulty");
+
         }
     };
 
@@ -29,15 +31,25 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
         if (sender.isOp() && args.length >= 3) {
+
             final Game game = GameCache.getInstance().getGameFromCache(args[0]);
+
             if (game != null) {
+
                 game.setManHuntRule(args[1], args[2]);
+
             } else {
+
                 sender.sendMessage(LanguageFileLoader.getInstance().getString("rule-change-failed"));
+
             }
+
             return true;
+
         }
+
         return false;
     }
 
@@ -46,6 +58,34 @@ public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return ManHuntRuleCommandExecutor.AVAILABLE_MANHUNT_RULES;
+        final List<String> options = new ArrayList<>();
+        if (args.length <= 1) {
+            return GameCache.getInstance().getGameNamesAsList();
+        } else if (args.length == 2) {
+            return ManHuntRuleCommandExecutor.AVAILABLE_MANHUNT_RULES;
+        } else if (args.length == 3) {
+            switch (args[1].toLowerCase()) {
+                case "compass-enabled-in-nether":
+                case "player-roles-randomized":
+                    options.add("true");
+                    options.add("false");
+                    return options;
+                case "headstart":
+                    options.add("0");
+                    options.add("15");
+                    options.add("30");
+                    return options;
+                case "difficulty":
+                    options.add("peaceful");
+                    options.add("easy");
+                    options.add("normal");
+                    options.add("hard");
+                    return options;
+                default:
+                    return options;
+            }
+        } else {
+            return options;
+        }
     }
 }

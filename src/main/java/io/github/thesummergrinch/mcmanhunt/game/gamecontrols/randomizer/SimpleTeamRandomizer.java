@@ -11,14 +11,17 @@ public class SimpleTeamRandomizer implements TeamRandomizerStrategy {
 
     @Override
     public void randomizeTeams(@NotNull final List<PlayerState> playerStateList) {
+
         Collections.shuffle(playerStateList);
+
         for (int index = 0; index < playerStateList.size(); index ++) {
+
             playerStateList.get(index).setPlayerRole(
                 (index % 2 == 0)
                 ? PlayerRole.RUNNER
                 : PlayerRole.HUNTER
             );
+
         }
     }
-
 }

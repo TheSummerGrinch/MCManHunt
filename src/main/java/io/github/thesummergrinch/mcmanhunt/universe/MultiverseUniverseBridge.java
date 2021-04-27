@@ -22,11 +22,17 @@ public class MultiverseUniverseBridge {
     private MultiverseUniverseBridge() {}
 
     public static MultiverseUniverseBridge getInstance() {
+
         if (instance != null) return instance;
+
         synchronized (MultiverseUniverseBridge.class) {
+
             instance = new MultiverseUniverseBridge();
+
         }
+
         return instance;
+
     }
 
     /**
@@ -88,6 +94,7 @@ public class MultiverseUniverseBridge {
      * @param universe - the Universe that should be deleted.
      */
     protected  void unloadAndDestroy(CommandSender commandSender, Universe universe) {
+
         Plugin multiverseCore = MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager().getPlugin("Multiverse-Core");
 
         if (!universe.getMarkedForDestruction()) return;

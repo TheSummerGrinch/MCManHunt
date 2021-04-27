@@ -1,6 +1,8 @@
 package io.github.thesummergrinch.mcmanhunt;
 
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
+import io.github.thesummergrinch.mcmanhunt.commands.chat.SayGlobalCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.chat.SayLobbyCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRoleCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.ManHuntRuleCommandExecutor;
@@ -46,19 +48,10 @@ import java.util.logging.Level;
  */
 public final class MCManHunt extends JavaPlugin {
 
-    static {
-        ConfigurationSerialization.registerClass(PlayerState.class);
-        ConfigurationSerialization.registerClass(Game.class);
-        ConfigurationSerialization.registerClass(Universe.class);
-        ConfigurationSerialization.registerClass(GameCache.class);
-        ConfigurationSerialization.registerClass(GameState.class);
-        ConfigurationSerialization.registerClass(DefaultSettingsContainer.class);
-    }
-
-
     @Override
     public void onEnable() {
         // Plugin startup logic
+        registerSerializableClasses();
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
         GameCache.getInstance().getGameCacheFromSave("game-cache");
         this.saveConfig();
@@ -67,17 +60,37 @@ public final class MCManHunt extends JavaPlugin {
         registerCommands();
         enableMetrics();
         checkForUpdate();
+        if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
+                "-enabled").equalsIgnoreCase("true")) {
+            //TODO register Outgoing channel
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        }
+
     }
 
     @Override
     public void onDisable() {
+
         saveConfigFile();
+
+    }
+
+    private void registerSerializableClasses() {
+
+        ConfigurationSerialization.registerClass(PlayerState.class);
+        ConfigurationSerialization.registerClass(Game.class);
+        ConfigurationSerialization.registerClass(Universe.class);
+        ConfigurationSerialization.registerClass(GameCache.class);
+        ConfigurationSerialization.registerClass(GameState.class);
+        ConfigurationSerialization.registerClass(DefaultSettingsContainer.class);
+
     }
 
     /**
      * Registers all commands used by MCManHunt.
      */
     private void registerCommands() {
+
         this.getCommand("initializegame").setExecutor(new InitializeGameCommandExecutor());
         this.getCommand("joingame").setExecutor(new JoinGameCommandExecutor());
         this.getCommand("startgame").setExecutor(new StartGameCommandExecutor());
@@ -93,12 +106,16 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("manhuntrule").setExecutor(new ManHuntRuleCommandExecutor());
         this.getCommand("leavegame").setExecutor(new LeaveGameCommandExecutor());
         this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
+        this.getCommand("saylobby").setExecutor(new SayLobbyCommandExecutor());
+        this.getCommand("sayglobal").setExecutor(new SayGlobalCommandExecutor());
+
     }
 
     /**
      * Registers all necessary EventHandlers.
      */
     private void registerEventHandlers() {
+
         this.getServer().getPluginManager().registerEvents(new OnBlockDamageEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnEnderDragonDeathEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnManHuntWinEventHandler(), this);
@@ -110,21 +127,31 @@ public final class MCManHunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerPortalEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerRespawnEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChatEventHandler(), this);
+
     }
 
     /**
      * Enables bStats-{@link Metrics}.
      */
     private void enableMetrics() {
+
         if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
+
             DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled-on-next-launch"));
+
         } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
+
             final int pluginID = 8784;
+
             new Metrics(this, pluginID);
+
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled"));
+
         } else {
+
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-disabled"));
+
         }
     }
 
@@ -132,9 +159,12 @@ public final class MCManHunt extends JavaPlugin {
      * Saves the configurations to file.
      */
     private void saveConfigFile() {
+
         FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
+
         this.saveConfig();
+
     }
 
     /**
@@ -142,29 +172,52 @@ public final class MCManHunt extends JavaPlugin {
      * at SpigotMC.
      */
     private void checkForUpdate() {
+
         if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
+
             new UpdateChecker(this, 83665).getVersion(version -> {
+
                 String[] publishedVersion = version.substring(1).split("\\.");
                 String[] currentVersion = this.getDescription().getVersion().split("\\.");
+
                 if (publishedVersion.length == currentVersion.length) {
+
                     for (int i = 0; i < publishedVersion.length; i++) {
+
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+
                             getLogger().warning("A new version is available: " + version);
+
                             return;
+
                         }
+
                     }
+
                 } else if (publishedVersion.length < (currentVersion).length) {
+
                     for (int i = 0; i < publishedVersion.length; i++) {
+
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+
                             getLogger().warning("A new version is available: " + version);
+
                             return;
+
                         }
+
                     }
+
                 } else {
+
                     for (int i = 0; i < currentVersion.length; i++) {
+
                         if (Integer.parseInt(publishedVersion[i]) > Integer.parseInt(currentVersion[i])) {
+
                             getLogger().warning("A new version is available: " + version);
+
                             return;
+
                         }
                     }
                 }
@@ -176,12 +229,17 @@ public final class MCManHunt extends JavaPlugin {
      * Asynchronously loads the LanguageFileLoader.
      */
     private void loadLanguageFile() {
+
         new BukkitRunnable() {
+
             @Override
             public void run() {
+
                 LanguageFileLoader.getInstance();
+
             }
         }.runTaskAsynchronously(this);
+
     }
 
 }
