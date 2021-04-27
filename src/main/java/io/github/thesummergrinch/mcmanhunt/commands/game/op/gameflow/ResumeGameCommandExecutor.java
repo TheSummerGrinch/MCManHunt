@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResumeGameCommandExecutor implements CommandExecutor, TabCompleter {
@@ -100,7 +101,7 @@ public class ResumeGameCommandExecutor implements CommandExecutor, TabCompleter 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        return GameCache.getInstance().getGameNamesAsList();
-
+        if(args.length == 1) return GameCache.getInstance().getGameNamesAsList();
+        return new ArrayList<>();
     }
 }

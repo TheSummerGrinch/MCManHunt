@@ -1,5 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.game.gamecontrols;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.CompassStateCache;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
@@ -8,6 +10,7 @@ import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassMetaBuilder;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
+import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +19,8 @@ import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -31,6 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -353,6 +359,13 @@ public final class Game implements ConfigurationSerializable {
      */
     public void stop() {
 
+        if (DefaultSettingsContainer.getInstance()
+                .getSetting("clear-advancements-after-game")
+                .equalsIgnoreCase("true")) {
+            this.getAllPlayers().forEach((playerState -> {
+                revokeAdvancements(Bukkit.getPlayer(playerState.getPlayerUUID()));
+            }));
+        }
         teleportPlayersToDefaultWorld();
         broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-stopped"));
         this.removeAllPlayersFromGame();
@@ -365,25 +378,56 @@ public final class Game implements ConfigurationSerializable {
         }
     }
 
+    private void revokeAdvancements(final Player player) {
+        final Iterator<Advancement> advancementIterator =
+                Bukkit.getServer().advancementIterator();
+        while (advancementIterator.hasNext()) {
+            AdvancementProgress progress =
+                    player.getAdvancementProgress(advancementIterator.next());
+            for (String s : progress.getAwardedCriteria())
+                progress.revokeCriteria(s);
+        }
+    }
+
     private void removeAllPlayersFromGame() {
 
         this.gameState.removeAllPlayersFromGame();
 
     }
 
+    public void connectPlayerToHub(final Player player) {
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(DefaultSettingsContainer.getInstance().getSetting(
+                "bungeecord-hub-name"));
+        player.sendPluginMessage(MCManHunt.getPlugin(MCManHunt.class), "BungeeCord",
+                out.toByteArray());
+
+    }
+
     public void teleportPlayersToDefaultWorld() {
 
-        this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
+        if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
+                "-enabled").equalsIgnoreCase("true")) {
+            this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
+                if (!playerState.isOnline()) return;
+                connectPlayerToHub(Bukkit.getPlayer(uuid));
+            });
+        } else {
 
-            if (!playerState.isOnline()) return;
+            this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
 
-            final Player player = Bukkit.getPlayer(uuid);
+                if (!playerState.isOnline()) return;
 
-            player.setBedSpawnLocation(Bukkit.getWorld("world").getSpawnLocation(), true);
-            player.teleport(Bukkit.getWorld("world")
-                    .getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                final Player player = Bukkit.getPlayer(uuid);
 
-        });
+                player.setBedSpawnLocation(Bukkit.getWorld("world").getSpawnLocation(), true);
+                player.teleport(Bukkit.getWorld("world")
+                        .getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+
+            });
+        }
     }
 
     public synchronized long getNumberOfRunners() {

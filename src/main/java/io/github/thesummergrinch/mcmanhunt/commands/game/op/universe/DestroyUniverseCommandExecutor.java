@@ -10,6 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DestroyUniverseCommandExecutor implements CommandExecutor, TabCompleter {
@@ -35,7 +36,7 @@ public class DestroyUniverseCommandExecutor implements CommandExecutor, TabCompl
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        return UniverseCache.getInstance().getUniverseNamesAsList();
-
+        if (args.length == 1) return UniverseCache.getInstance().getUniverseNamesAsList();
+        return new ArrayList<String>();
     }
 }

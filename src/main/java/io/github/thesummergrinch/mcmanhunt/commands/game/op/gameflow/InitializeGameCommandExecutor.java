@@ -64,7 +64,7 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
-
+        if (args.length == 1) return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+        return new ArrayList<String>();
     }
 }

@@ -60,6 +60,11 @@ public final class MCManHunt extends JavaPlugin {
         registerCommands();
         enableMetrics();
         checkForUpdate();
+        if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
+                "-enabled").equalsIgnoreCase("true")) {
+            //TODO register Outgoing channel
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        }
 
     }
 

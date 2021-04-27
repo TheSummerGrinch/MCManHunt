@@ -8,10 +8,12 @@ commands:
     description: Sends the given message to all players.
     usage: /sayglobal [message]
     permission: mcmanhunt.chat.global
+    aliases: [ sg ]
   saylobby:
     description: Send the given message to all players in the current game.
     usage: /saylobby [message]
     permission: mcmanhunt.chat.lobby
+    aliases: [ sl ]
   initializegame:
     description: Initializes a game.
     usage: /intializegame [gamename]

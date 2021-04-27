@@ -43,5 +43,4 @@ public class OnManHuntWinEventHandler implements Listener {
             }
         }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 200L);
     }
-
 }

@@ -60,7 +60,7 @@ public class SetManHuntLanguageCommandExecutor implements CommandExecutor, TabCo
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        return SetManHuntLanguageCommandExecutor.AVAILABLE_LANGUAGES;
-
+        if (args.length == 1) return SetManHuntLanguageCommandExecutor.AVAILABLE_LANGUAGES;
+        return new ArrayList<String>();
     }
 }
