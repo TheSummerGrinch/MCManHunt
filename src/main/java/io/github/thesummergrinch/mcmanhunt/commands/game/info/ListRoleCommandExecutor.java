@@ -61,10 +61,14 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
         final StringBuilder stringBuilder = new StringBuilder();
 
+        // If the user has asked for a list of the Hunters, or for a list of
+        // all roles, we start by adding all the Hunters.
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
 
             stringBuilder.append(getPlayerRoleList(game.getHunters(), PlayerRole.HUNTER));
 
+            // If the user asked for both roles to be listed, we add the
+            // Runners here.
             if (roleToList.equals(PlayerRole.DEFAULT)) {
 
                 stringBuilder.append("\n\n");
@@ -72,6 +76,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
             }
 
+            // If the user only asked for the Runners, we add the Runners.
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
 
             stringBuilder.append(getPlayerRoleList(game.getRunners(),
@@ -104,18 +109,24 @@ public class ListRoleCommandExecutor implements CommandExecutor {
     @Nullable
     private PlayerRole determineRequestedPlayerRole(final String label, final String[] args) {
 
+        // If the command-argument or the command-alias corresponded to
+        // runners or listrunners, respectively, we return PlayerRole.RUNNER.
         if ((args.length >= 1 && args[0].equalsIgnoreCase("runners"))
                 || label.equalsIgnoreCase("listrunners")
                 || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
 
             return PlayerRole.RUNNER;
 
+            // If the argument/alias corresponds to hunters/listhunters, we
+            // return PlayerRole.HUNTER.
         } else if ((args.length >= 1 && args[0].equalsIgnoreCase("hunters"))
                 || label.equalsIgnoreCase("listhunters")
                 || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
 
             return PlayerRole.HUNTER;
 
+            // If the alias corresponds to listteams, we return DEFAULT, to
+            // signify both roles need to be listed.
         } else if (label.equalsIgnoreCase("listteams")) {
 
             return PlayerRole.DEFAULT;

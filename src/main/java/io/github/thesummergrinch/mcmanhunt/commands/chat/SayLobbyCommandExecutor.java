@@ -24,23 +24,33 @@ import java.util.List;
 public class SayLobbyCommandExecutor implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
+        // Checking that the CommandSender is a Player, and the message is
+        // not empty.
         if (sender instanceof Player && args.length > 0) {
 
+            // Getting the Player's corresponding PlayerState
             final PlayerState playerState =
                     PlayerStateCache.getInstance()
                             .getPlayerState(((Player) sender).getUniqueId());
 
+            // If the Player is not in a Game, the command will fail.
+            // TODO add meaningful response to player.
             if (!playerState.isInGame()) return false;
 
+            // Get the Game-object
             final Game game = GameCache.getInstance()
                     .getGameFromCache(playerState.getGameName());
 
+            // If Player is not in a Game, or the Game has not started yet,
+            // the command fails.
+            // TODO add meaningful response to player.
             if (game == null || game.getGameFlowState() == GameFlowState.DEFAULT)
                 return false;
 
+            //Prepare StringBuilder for the formatted message.
             final StringBuilder messageBuilder = new StringBuilder();
 
+            // Appending each word to the StringBuilder
             for (String word : args) {
                 messageBuilder.append(word);
                 messageBuilder.append(" ");
@@ -48,6 +58,10 @@ public class SayLobbyCommandExecutor implements CommandExecutor, TabCompleter {
 
             String formattedString;
 
+            // If the Player is a Runner, we give the Player a green
+            // [Runner]-tag. If the Player is a Hunter, we give the Player a
+            // red [Hunter]-tag. If the Player is neither Runner, not Hunter,
+            // we just format the message as normal.
             if (playerState.getPlayerRole() == PlayerRole.RUNNER) {
                 formattedString =
                         MessageFormat.format(ChatColor.DARK_GREEN + "[" + LanguageFileLoader
@@ -80,6 +94,7 @@ public class SayLobbyCommandExecutor implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        // Just making sure Bukkit does not suggest random usernames etc.
         return new ArrayList<String>();
     }
 }
