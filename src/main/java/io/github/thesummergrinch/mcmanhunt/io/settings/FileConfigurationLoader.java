@@ -71,6 +71,7 @@ public final class FileConfigurationLoader {
                 put("locale", "enGB");
                 put("bungeecord-enabled", "false");
                 put("bungeecord-hub-name", "hub");
+                put("clear-advancements-after-game", "false");
             }
         };
 
