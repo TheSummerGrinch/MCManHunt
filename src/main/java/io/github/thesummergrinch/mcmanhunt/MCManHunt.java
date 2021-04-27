@@ -86,6 +86,9 @@ public final class MCManHunt extends JavaPlugin {
 
     }
 
+    /**
+     * Registers all commands used by MCManHunt.
+     */
     private void registerCommands() {
 
         this.getCommand("initializegame").setExecutor(new InitializeGameCommandExecutor());
@@ -108,6 +111,9 @@ public final class MCManHunt extends JavaPlugin {
 
     }
 
+    /**
+     * Registers all necessary EventHandlers.
+     */
     private void registerEventHandlers() {
 
         this.getServer().getPluginManager().registerEvents(new OnBlockDamageEventHandler(), this);
@@ -124,6 +130,9 @@ public final class MCManHunt extends JavaPlugin {
 
     }
 
+    /**
+     * Enables bStats-{@link Metrics}.
+     */
     private void enableMetrics() {
 
         if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
@@ -146,6 +155,9 @@ public final class MCManHunt extends JavaPlugin {
         }
     }
 
+    /**
+     * Saves the configurations to file.
+     */
     private void saveConfigFile() {
 
         FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
@@ -155,6 +167,10 @@ public final class MCManHunt extends JavaPlugin {
 
     }
 
+    /**
+     * Checks for updates by comparing the most recent version number known
+     * at SpigotMC.
+     */
     private void checkForUpdate() {
 
         if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
@@ -209,6 +225,9 @@ public final class MCManHunt extends JavaPlugin {
         }
     }
 
+    /**
+     * Asynchronously loads the LanguageFileLoader.
+     */
     private void loadLanguageFile() {
 
         new BukkitRunnable() {

@@ -17,31 +17,58 @@ import java.util.Set;
 
 public class ListRoleCommandExecutor implements CommandExecutor {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
+        // Determine which role to list
         final PlayerRole roleToList = determineRequestedPlayerRole(label, args);
 
+        // If the PlayerRole somehow equals null, return false.
         if (roleToList == null) return false;
 
+        //Determine whether the command was issued using a label.
         boolean labelsUsed = labelUsed(label);
+        // Determine which game's team-configuration(s) should be listed.
         final Game game = getGame(sender, args, labelsUsed);
 
+        // If no game was specified, and the user was not in a game when
+        // issuing the command, we return false.
         if (game == null) return false;
 
+        // List the role(s) to the player.
         listRole(sender, game, roleToList);
 
         return true;
     }
 
+    /**
+     * Compiles a the requested team-configuration for the
+     * {@link CommandSender} in a String, and sends it to the CommandSender.
+     *
+     * If the {@link PlayerRole} has been set to {@link PlayerRole#DEFAULT},
+     * we compile a the team-configurations for both the Hunters, as well as
+     * the Runners.
+     *
+     * @param sender the {@link CommandSender} responsible for calling the
+     *               command
+     * @param game the {@link Game} that should be modified
+     * @param roleToList the {@link PlayerRole} that should be listed.
+     */
     private void listRole(final CommandSender sender, final Game game, final PlayerRole roleToList) {
 
         final StringBuilder stringBuilder = new StringBuilder();
 
+        // If the user has asked for a list of the Hunters, or for a list of
+        // all roles, we start by adding all the Hunters.
         if (roleToList.equals(PlayerRole.HUNTER) || roleToList.equals(PlayerRole.DEFAULT)) {
 
             stringBuilder.append(getPlayerRoleList(game.getHunters(), PlayerRole.HUNTER));
 
+            // If the user asked for both roles to be listed, we add the
+            // Runners here.
             if (roleToList.equals(PlayerRole.DEFAULT)) {
 
                 stringBuilder.append("\n\n");
@@ -49,6 +76,7 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
             }
 
+            // If the user only asked for the Runners, we add the Runners.
         } else if (roleToList.equals(PlayerRole.RUNNER)) {
 
             stringBuilder.append(getPlayerRoleList(game.getRunners(),
@@ -59,21 +87,46 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         sender.sendMessage(stringBuilder.toString());
     }
 
+    /**
+     * Determines which team-configuration should be compiled for the
+     * {@link CommandSender}.
+     *
+     * This is determined by using the arguments given as the CommandSender
+     * sent the command, or by using the label.
+     *
+     * E.g.
+     * "/listrunners" and "/listrole runners" are the same thing.
+     * "/listhunters" and "/listrole hunters" are the same thing.
+     * "/listteams" will return {@link PlayerRole#DEFAULT} to facilitate
+     * compiling a list of both team-configurations.
+     *
+     * @param label the label used to send the command.
+     * @param args the arguments given when the CommandSender issued the
+     *             command.
+     * @return the {@link PlayerRole} corresponding to which
+     * team-configuration should be shown to the CommandSender.
+     */
     @Nullable
     private PlayerRole determineRequestedPlayerRole(final String label, final String[] args) {
 
+        // If the command-argument or the command-alias corresponded to
+        // runners or listrunners, respectively, we return PlayerRole.RUNNER.
         if ((args.length >= 1 && args[0].equalsIgnoreCase("runners"))
                 || label.equalsIgnoreCase("listrunners")
                 || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("runners"))) {
 
             return PlayerRole.RUNNER;
 
+            // If the argument/alias corresponds to hunters/listhunters, we
+            // return PlayerRole.HUNTER.
         } else if ((args.length >= 1 && args[0].equalsIgnoreCase("hunters"))
                 || label.equalsIgnoreCase("listhunters")
                 || args.length >= 1 && args[0].equalsIgnoreCase(LanguageFileLoader.getInstance().getString("hunters"))) {
 
             return PlayerRole.HUNTER;
 
+            // If the alias corresponds to listteams, we return DEFAULT, to
+            // signify both roles need to be listed.
         } else if (label.equalsIgnoreCase("listteams")) {
 
             return PlayerRole.DEFAULT;
@@ -85,6 +138,13 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         }
     }
 
+    /**
+     * Determines if a non-default label (anything that is not the command
+     * name) was used to issue the command.
+     *
+     * @param label the label used to issue the command.
+     * @return true if a non-default label was used, false otherwise.
+     */
     private boolean labelUsed(final String label) {
 
         return label.equalsIgnoreCase("listrunners")
@@ -93,6 +153,15 @@ public class ListRoleCommandExecutor implements CommandExecutor {
 
     }
 
+    /**
+     * Gets which game's team-configuration(s) should be retrieved.
+     *
+     * @param sender the {@link CommandSender} that issued the command.
+     * @param args the arguments sent when the command was issued.
+     * @param labelsUsed the label used to issue the command.
+     * @return the {@link Game}-object of which the team-configurations
+     * should be listed. If no team was found, it will return null.
+     */
     @Nullable
     private Game getGame(final CommandSender sender, final String[] args, final boolean labelsUsed) {
 
@@ -130,6 +199,15 @@ public class ListRoleCommandExecutor implements CommandExecutor {
         return null;
     }
 
+    /**
+     * Compiles (a part of) the message that should be sent to the
+     * CommandSender.
+     * @param playerStates the {@link PlayerState}-objects associated with
+     *                     the {@link Game}.
+     * @param roleToList the {@link PlayerRole} that determines which
+     *                   team-configuration should be listed.
+     * @return (a part of) the message the will be sent to the CommandSender.
+     */
     private String getPlayerRoleList(final Set<PlayerState> playerStates,
                                      final PlayerRole roleToList) {
 

@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public class ListGamesCommandExecutor implements CommandExecutor {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 

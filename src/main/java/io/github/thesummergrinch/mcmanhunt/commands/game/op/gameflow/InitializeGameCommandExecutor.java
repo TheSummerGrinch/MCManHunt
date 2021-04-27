@@ -17,6 +17,7 @@ import java.util.List;
 
 public class InitializeGameCommandExecutor implements CommandExecutor, TabCompleter {
 
+    // The suggested names for ManHunt-games. May move to config.
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
         {
 
@@ -26,6 +27,9 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
         }
     };
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // If the sender is OP, and specified the name of the game, they will be allowed to initialize a game.
@@ -33,6 +37,7 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
             Universe universe =
                     UniverseCache.getInstance().getUniverse(args[0]);
 
+            // If there is no Universe with the given name, we create it.
             if (universe == null) {
 
                 sender.sendMessage(LanguageFileLoader.getInstance()
@@ -61,6 +66,9 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 

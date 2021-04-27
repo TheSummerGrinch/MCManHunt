@@ -75,7 +75,7 @@ public final class Game implements ConfigurationSerializable {
     /**
      * Reconstructs a {@link Game}-object from a yml-representation, as specified by {@link #serialize()}.
      *
-     * @param objects - {@link Map} constructed from the yml-representation of the {@link Game}-object.
+     * @param objects {@link Map} constructed from the yml-representation of the {@link Game}-object.
      * @return the reconstructed {@link Game}-object.
      */
     @SuppressWarnings("unused")
@@ -114,6 +114,11 @@ public final class Game implements ConfigurationSerializable {
 
     }
 
+    /**
+     * Teleports the players associated with the Game-object, to the correct
+     * World. Also sets Health to its default value, as well as FoodLevel and
+     * Saturation.
+     */
     private void teleportPlayersToGameWorld() {
 
         gameState.getPlayersInGame().forEach((uuid, playerState) -> {
@@ -123,6 +128,7 @@ public final class Game implements ConfigurationSerializable {
                 final Player player = Bukkit.getPlayer(playerState.getPlayerUUID());
 
                 player.setBedSpawnLocation(gameState.getWorldSpawn(), true);
+                // TODO Change the TeleportCause to TeleportCause.PLUGIN
                 player.teleport(gameState.getWorldSpawn(), PlayerTeleportEvent.TeleportCause.COMMAND);
                 player.setHealth(20);
                 player.setFoodLevel(20);
@@ -359,6 +365,8 @@ public final class Game implements ConfigurationSerializable {
      */
     public void stop() {
 
+        // Clear advancements of the Players, if the corresponding flag in
+        // the config.yml is set to 'true'.
         if (DefaultSettingsContainer.getInstance()
                 .getSetting("clear-advancements-after-game")
                 .equalsIgnoreCase("true")) {
@@ -378,6 +386,11 @@ public final class Game implements ConfigurationSerializable {
         }
     }
 
+    /**
+     * Revokes the advancements of the given Player, if the corresponding
+     * flag in the config.yml is set to 'true'.
+     * @param player - Player whose advancements will be revoked.
+     */
     private void revokeAdvancements(final Player player) {
         final Iterator<Advancement> advancementIterator =
                 Bukkit.getServer().advancementIterator();
@@ -408,6 +421,8 @@ public final class Game implements ConfigurationSerializable {
 
     public void teleportPlayersToDefaultWorld() {
 
+        // Connect players to the given BungeeCord-lobby, if BungeeCord is
+        // enabled in the config.yml
         if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
                 "-enabled").equalsIgnoreCase("true")) {
             this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {

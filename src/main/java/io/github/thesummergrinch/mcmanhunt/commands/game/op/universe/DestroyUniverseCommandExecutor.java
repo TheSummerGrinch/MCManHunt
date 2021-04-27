@@ -15,6 +15,9 @@ import java.util.List;
 
 public class DestroyUniverseCommandExecutor implements CommandExecutor, TabCompleter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                              @NotNull String[] args) {
@@ -33,6 +36,9 @@ public class DestroyUniverseCommandExecutor implements CommandExecutor, TabCompl
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 

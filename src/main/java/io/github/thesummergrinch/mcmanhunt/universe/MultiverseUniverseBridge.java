@@ -12,6 +12,9 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 
+/**
+ * Used for compatibility with Multiverse-NetherPortals.
+ */
 public class MultiverseUniverseBridge {
 
     private static volatile MultiverseUniverseBridge instance;
@@ -32,6 +35,15 @@ public class MultiverseUniverseBridge {
 
     }
 
+    /**
+     * Registers a {@link Universe}'s Worlds in Multiverse, by importing them
+     * using Multiverse's {@link ImportCommand}. Also links the imported
+     * Worlds using Multiverse-NetherPortals' {@link LinkCommand}.
+     *
+     * @param commandSender - the CommandSender that should be passed to
+     *                      Multiverse/Multiverse-NetherPortals.
+     * @param universe - the Universe that should be imported into Multiverse.
+     */
     protected void registerWorldsInMultiverse(final CommandSender commandSender, final Universe universe) {
 
         Plugin multiversePortals = MCManHunt.getPlugin(MCManHunt.class)
@@ -74,6 +86,13 @@ public class MultiverseUniverseBridge {
 
     }
 
+    /**
+     * Tells Multiverse to delete a world, both from Multiverse's config, and
+     * the corresponding world-files.
+     * @param commandSender - the {@link CommandSender} that should be passed
+     *                     to Multiverse.
+     * @param universe - the Universe that should be deleted.
+     */
     protected  void unloadAndDestroy(CommandSender commandSender, Universe universe) {
 
         Plugin multiverseCore = MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager().getPlugin("Multiverse-Core");

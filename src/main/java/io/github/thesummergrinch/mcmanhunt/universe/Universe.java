@@ -301,6 +301,9 @@ public final class Universe implements ConfigurationSerializable {
 
     }
 
+    /**
+     * Despawns all mobs in the worlds represented by this Universe-object.
+     */
     public void despawnMobs() {
 
         for (Map.Entry<String, UUID> entry : this.worldHashMap.entrySet()) {

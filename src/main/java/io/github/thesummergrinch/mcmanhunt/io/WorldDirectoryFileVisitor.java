@@ -7,8 +7,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
+/**
+ * Used to recursively delete world-files and folders, in the event that an
+ * MCManHunt-game ends.
+ */
 public final class WorldDirectoryFileVisitor implements FileVisitor<Path> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
 
@@ -16,6 +23,9 @@ public final class WorldDirectoryFileVisitor implements FileVisitor<Path> {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
@@ -29,6 +39,9 @@ public final class WorldDirectoryFileVisitor implements FileVisitor<Path> {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) {
 
@@ -36,6 +49,9 @@ public final class WorldDirectoryFileVisitor implements FileVisitor<Path> {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
 
