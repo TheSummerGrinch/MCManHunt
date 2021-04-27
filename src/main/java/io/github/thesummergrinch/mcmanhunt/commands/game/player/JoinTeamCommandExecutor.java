@@ -66,7 +66,7 @@ public class JoinTeamCommandExecutor implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> suggestedArgument = new ArrayList<>();
-        if (alias.equalsIgnoreCase("jointeam")) {
+        if (alias.equalsIgnoreCase("jointeam") && args.length == 1) {
             suggestedArgument.add(LanguageFileLoader.getInstance().getString("hunters"));
             suggestedArgument.add(LanguageFileLoader.getInstance().getString("runners"));
         }
