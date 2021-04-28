@@ -368,8 +368,7 @@ public final class Game implements ConfigurationSerializable {
         // Clear advancements of the Players, if the corresponding flag in
         // the config.yml is set to 'true'.
         if (DefaultSettingsContainer.getInstance()
-                .getSetting("clear-advancements-after-game")
-                .equalsIgnoreCase("true")) {
+                .getBoolean("clear-advancements-after-game")) {
             this.getAllPlayers().forEach((playerState -> {
                 revokeAdvancements(Bukkit.getPlayer(playerState.getPlayerUUID()));
             }));
@@ -423,8 +422,8 @@ public final class Game implements ConfigurationSerializable {
 
         // Connect players to the given BungeeCord-lobby, if BungeeCord is
         // enabled in the config.yml
-        if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
-                "-enabled").equalsIgnoreCase("true")) {
+        if (DefaultSettingsContainer.getInstance().getBoolean("bungeecord" +
+                "-enabled")) {
             this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
                 if (!playerState.isOnline()) return;
                 connectPlayerToHub(Bukkit.getPlayer(uuid));
