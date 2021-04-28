@@ -47,13 +47,14 @@ public final class GameState implements ConfigurationSerializable {
         this.gameFlowState = GameFlowState.DEFAULT;
         this.gameName = this.gameUniverse.getName();
         this.playersInGame = new HashMap<>();
-        this.isCompassEnabledInNether = Boolean.parseBoolean(DefaultSettingsContainer.getInstance()
-                .getSetting("compass-enabled-in-nether"));
+        this.isCompassEnabledInNether = DefaultSettingsContainer.getInstance()
+                .getBoolean("compass-enabled-in-nether");
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
-        this.playerRolesRandomized = Boolean.parseBoolean((DefaultSettingsContainer.getInstance()
-                .getSetting("player-roles-randomized")));
-        this.headstart = Long.parseLong(DefaultSettingsContainer.getInstance().getSetting("default-headstart"));
+        this.playerRolesRandomized = (DefaultSettingsContainer.getInstance()
+                .getBoolean("player-roles-randomized"));
+        this.headstart = DefaultSettingsContainer.getInstance().getInteger(
+                "headstart");
 
     }
 
