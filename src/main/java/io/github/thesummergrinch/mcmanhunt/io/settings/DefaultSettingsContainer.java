@@ -2,6 +2,7 @@ package io.github.thesummergrinch.mcmanhunt.io.settings;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ public final class DefaultSettingsContainer implements ConfigurationSerializable
 
     private static volatile DefaultSettingsContainer instance;
 
-    private final Map<String, String> defaultSettings;
+    private final Map<String, Object> defaultSettings;
 
     private DefaultSettingsContainer() {
 
@@ -56,29 +57,86 @@ public final class DefaultSettingsContainer implements ConfigurationSerializable
 
     }
 
-    public String getSetting(final String key) {
+    public int getInteger(final String key) {
 
-        String value = this.defaultSettings.get(key);
+        Object value = this.defaultSettings.get(key);
 
-        if (value != null) return value;
+        if (value instanceof Integer) return (Integer) value;
 
-        value = FileConfigurationLoader.getInstance().getDefaultSettings().get(key);
+        value =
+                FileConfigurationLoader.getInstance().getDefaultSettings().get(key);
 
-        if (value != null) setSetting(key, value);
+        if (value instanceof Integer) {
+            this.defaultSettings.put(key, value);
+            return (Integer) value;
+        }
 
-        return value;
+        return -1;
 
     }
 
-    public void setSetting(final String key, final String value) {
+    public boolean getBoolean(final String key) {
+
+        Object value = this.defaultSettings.get(key);
+
+        if (value instanceof Boolean) return (Boolean) value;
+
+        value =
+                FileConfigurationLoader.getInstance().getDefaultSettings().get(key);
+
+        if (value instanceof Boolean) {
+            this.defaultSettings.put(key, value);
+            return (Boolean) value;
+        }
+
+        return false;
+
+    }
+
+    @Nullable
+    public String getSetting(final String key) {
+
+        Object value = this.defaultSettings.get(key);
+
+        if (value instanceof String) return (String) value;
+
+        value = FileConfigurationLoader.getInstance().getDefaultSettings().get(key);
+
+        if (value instanceof String) {
+            setSetting(key, value);
+            return (String) value;
+        }
+
+        return null;
+
+    }
+
+    public void setSetting(final String key, final Object value) {
 
         this.defaultSettings.put(key, value);
 
     }
 
-    public void setSettings(final Map<String, String> settings) {
+    public void setSettings(final Map<String, Object> settings) {
 
         this.defaultSettings.putAll(settings);
 
     }
+
+    public void setBoolean(final String key, boolean value) {
+
+        this.defaultSettings.put(key, value);
+
+    }
+
+    public void setInteger(final String key, int value) {
+
+        this.defaultSettings.put(key, value);
+
+    }
+
+    public boolean contains(final String key) {
+        return this.defaultSettings.containsKey(key);
+    }
+
 }
