@@ -32,6 +32,7 @@ import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerRespawnEventHan
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.data.SavedGamesLoader;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
@@ -53,16 +54,15 @@ public final class MCManHunt extends JavaPlugin {
         // Plugin startup logic
         registerSerializableClasses();
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
-        GameCache.getInstance().getGameCacheFromSave("game-cache");
+        GameCache.getInstance().getGameCacheFromSave("saved-games");
         this.saveConfig();
         loadLanguageFile();
         registerEventHandlers();
         registerCommands();
         enableMetrics();
         checkForUpdate();
-        if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
-                "-enabled").equalsIgnoreCase("true")) {
-            //TODO register Outgoing channel
+        if (DefaultSettingsContainer.getInstance().getBoolean("bungeecord" +
+                "-enabled")) {
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         }
 
@@ -135,12 +135,14 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void enableMetrics() {
 
-        if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
+        if (DefaultSettingsContainer.getInstance().getBoolean("first-run")) {
 
-            DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
+            DefaultSettingsContainer.getInstance().setBoolean("first-run",
+                    false);
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled-on-next-launch"));
 
-        } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
+        } else if (DefaultSettingsContainer.getInstance().getBoolean("allow" +
+                "-metrics")) {
 
             final int pluginID = 8784;
 
@@ -160,10 +162,10 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void saveConfigFile() {
 
-        FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
         FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
-
         this.saveConfig();
+
+        SavedGamesLoader.getInstance().saveGameCache(GameCache.getInstance());
 
     }
 
@@ -173,7 +175,8 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void checkForUpdate() {
 
-        if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
+        if (DefaultSettingsContainer.getInstance().getBoolean(
+                "enable-update-checking")) {
 
             new UpdateChecker(this, 83665).getVersion(version -> {
 
