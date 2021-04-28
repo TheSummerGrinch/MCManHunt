@@ -49,6 +49,7 @@ public final class FileConfigurationLoader {
      * @param key - path to the serialized {@link GameCache} object.
      * @return - the {@link GameCache}-object stored in the config.yml.
      */
+    @Deprecated
     public GameCache loadGames(final String key) {
 
         return fileConfiguration.getObject(key, GameCache.class);
@@ -64,7 +65,17 @@ public final class FileConfigurationLoader {
 
         DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
 
-        if (defaultSettingsContainer != null) return DefaultSettingsContainer.getInstance();
+        if (defaultSettingsContainer != null) {
+
+            if (defaultSettingsContainer.getInteger("config-version") < (int) this.getDefaultSettings().get("config-version")) {
+                this.getDefaultSettings().forEach((name, value) -> {
+                    if (!defaultSettingsContainer.contains(name))
+                        defaultSettingsContainer.setSetting(name, value);
+                });
+            }
+
+            return DefaultSettingsContainer.getInstance();
+        }
 
         DefaultSettingsContainer.getInstance().setSettings(getDefaultSettings());
         this.fileConfiguration.set("settings", DefaultSettingsContainer.getInstance());
@@ -79,20 +90,21 @@ public final class FileConfigurationLoader {
      * launch.
      * @return - the {@link HashMap} containing default settings.
      */
-    public HashMap<String, String> getDefaultSettings() {
+    public HashMap<String, Object> getDefaultSettings() {
 
-        return new HashMap<String, String>() {
+        return new HashMap<String, Object>() {
             {
-                put("first-run", "true");
-                put("allow-metrics", "true");
-                put("compass-enabled-in-nether", "false");
-                put("player-roles-randomized", "false");
-                put("default-headstart", "30");
-                put("enable-update-checking", "true");
+                put("config-version", 1);
+                put("first-run", true);
+                put("allow-metrics", true);
+                put("compass-enabled-in-nether", false);
+                put("player-roles-randomized", false);
+                put("default-headstart", 30);
+                put("enable-update-checking", true);
                 put("locale", "enGB");
-                put("bungeecord-enabled", "false");
+                put("bungeecord-enabled", false);
                 put("bungeecord-hub-name", "hub");
-                put("clear-advancements-after-game", "false");
+                put("clear-advancements-after-game", false);
             }
         };
 
