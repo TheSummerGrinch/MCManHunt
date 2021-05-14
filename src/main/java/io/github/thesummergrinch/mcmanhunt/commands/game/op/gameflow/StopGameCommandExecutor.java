@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,6 +46,8 @@ public class StopGameCommandExecutor implements CommandExecutor, TabCompleter {
 
                         sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
 
+                        Bukkit.getServer().dispatchCommand(sender, "listgames");
+
                         return true;
 
                     }
@@ -52,6 +55,8 @@ public class StopGameCommandExecutor implements CommandExecutor, TabCompleter {
                 } else {
 
                     sender.sendMessage(LanguageFileLoader.getInstance().getString("specified-game-not-exist"));
+
+                    Bukkit.getServer().dispatchCommand(sender, "listgames");
 
                     return true;
 
