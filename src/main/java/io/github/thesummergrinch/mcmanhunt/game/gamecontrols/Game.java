@@ -437,7 +437,7 @@ public final class Game implements ConfigurationSerializable {
                 final Player player = Bukkit.getPlayer(uuid);
 
                 player.setBedSpawnLocation(Bukkit.getWorld("world").getSpawnLocation(), true);
-                player.teleport(Bukkit.getWorld("world")
+                player.teleport(Bukkit.getWorld(DefaultSettingsContainer.getInstance().getSetting("base-world"))
                         .getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
             });
