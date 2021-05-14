@@ -179,4 +179,8 @@ public final class GameCache implements ConfigurationSerializable {
 
     }
 
+    public boolean containsKey(final String key) {
+        return gameCache.containsKey(key);
+    }
+
 }
