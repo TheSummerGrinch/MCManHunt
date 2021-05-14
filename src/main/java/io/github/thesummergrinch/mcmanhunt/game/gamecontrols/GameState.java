@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public final class GameState implements ConfigurationSerializable {
@@ -384,7 +385,26 @@ public final class GameState implements ConfigurationSerializable {
 
     protected boolean isEligibleForStart() {
 
-        return ((getNumberOfHunters() >= 1 && getNumberOfRunners() >= 1) || (playerRolesRandomized && playersInGame.size() >= 2));
+        final AtomicBoolean runnersReady = new AtomicBoolean(false);
+        final AtomicBoolean huntersReady = new AtomicBoolean(false);
+
+        for (PlayerState runner : this.getRunners()) {
+            if (runner.isOnline()) {
+                runnersReady.set(true);
+                break;
+            }
+        }
+
+        for(PlayerState hunter : this.getHunters()) {
+            if (hunter.isOnline()) {
+                huntersReady.set(true);
+                break;
+            }
+        }
+
+        return (runnersReady.get() && huntersReady.get())
+                && ((this.getNumberOfHunters() >= 1 && this.getNumberOfRunners() >= 1)
+                || (this.playerRolesRandomized && this.playersInGame.size() >= 2));
 
     }
 
