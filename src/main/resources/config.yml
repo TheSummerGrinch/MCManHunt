@@ -3,7 +3,7 @@
 # Website: https://www.github.com/TheSummerGrinch
 # Support at https://www.github.com/TheSummerGrinch or via Discord on https://discord.gg/N5dYy3F
 
-config-version: 1
+config-version: 2
 
 # Tells the plugin whether it's the first time it's being run. If so, metrics
 # will be automatically disabled until the next start, to allow the user to
@@ -52,3 +52,7 @@ debug-level: 0
 # disabled. Usually the default world will be called 'world', but certain
 # server providers, such as ShockByte, don't use the default name.
 base-world: 'world'
+
+# Sets whether or not admins should receive a message when an update is
+# available. True by default.
+update-alert: true

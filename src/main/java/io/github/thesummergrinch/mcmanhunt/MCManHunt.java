@@ -51,6 +51,8 @@ import java.util.logging.Level;
  */
 public final class MCManHunt extends JavaPlugin {
 
+    private boolean updateAvailable = false;
+
     @Override
     public void onEnable() {
 
@@ -272,6 +274,10 @@ public final class MCManHunt extends JavaPlugin {
             }
         }.runTaskAsynchronously(this);
 
+    }
+
+    public boolean isUpdateAvailable() {
+        return this.updateAvailable;
     }
 
 }
