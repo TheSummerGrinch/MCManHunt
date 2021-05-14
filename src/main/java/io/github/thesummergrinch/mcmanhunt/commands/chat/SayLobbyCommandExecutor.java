@@ -4,11 +4,8 @@ import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
-import io.github.thesummergrinch.mcmanhunt.game.players.PlayerRole;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
-import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -62,24 +59,10 @@ public class SayLobbyCommandExecutor implements CommandExecutor, TabCompleter {
             // [Runner]-tag. If the Player is a Hunter, we give the Player a
             // red [Hunter]-tag. If the Player is neither Runner, not Hunter,
             // we just format the message as normal.
-            if (playerState.getPlayerRole() == PlayerRole.RUNNER) {
-                formattedString =
-                        MessageFormat.format(ChatColor.DARK_GREEN + "[" + LanguageFileLoader
-                                        .getInstance().getString("runner") + "]"
-                                        + ChatColor.RESET + " <{0}> {1}",
-                                playerState.getPlayerName(),
-                                messageBuilder.toString());
-            } else if (playerState.getPlayerRole() == PlayerRole.HUNTER) {
-                formattedString =
-                        MessageFormat.format(ChatColor.DARK_RED+ "[" + LanguageFileLoader
-                                .getInstance().getString("hunter") + "]"
-                                + ChatColor.RESET + " <{0}> {1}",
-                        playerState.getPlayerName(),
-                        messageBuilder.toString());
-            } else {
-                formattedString = MessageFormat.format("<{0}> {1}",
-                        playerState.getPlayerName(), messageBuilder.toString());
-            }
+            formattedString =
+                    MessageFormat.format(playerState.getPlayerRole().getRolePrefix() + "<{0" +
+                                    "}> {1}",
+                            playerState.getPlayerName(), messageBuilder.toString());
             game.getAllPlayers().forEach(playerStateObject -> {
                 Bukkit.getPlayer(playerStateObject.getPlayerUUID())
                         .sendMessage(formattedString);
