@@ -1,7 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.io.settings;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,18 +8,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class DefaultSettingsContainer implements ConfigurationSerializable {
+public final class DefaultSettingsContainer {
 
     private static volatile DefaultSettingsContainer instance;
 
-    private final Map<String, Object> defaultSettings;
     private final Map<String, Integer> integerSettings;
     private final Map<String, Boolean> booleanSettings;
     private final Map<String, String> stringSettings;
 
     private DefaultSettingsContainer() {
 
-        this.defaultSettings = new HashMap<>();
         this.integerSettings = new HashMap<>();
         this.booleanSettings = new HashMap<>();
         this.stringSettings = new HashMap<>();
@@ -40,28 +37,6 @@ public final class DefaultSettingsContainer implements ConfigurationSerializable
         }
 
         return instance;
-
-    }
-
-    @SuppressWarnings("unused")
-    public static DefaultSettingsContainer deserialize(final Map<String, Object> objects) {
-
-        DefaultSettingsContainer defaultSettingsContainer = DefaultSettingsContainer.getInstance();
-
-        defaultSettingsContainer.defaultSettings.putAll((HashMap<String, String>) objects.get("settings"));
-
-        return DefaultSettingsContainer.getInstance();
-
-    }
-
-    @Override
-    public @NotNull Map<String, Object> serialize() {
-
-        HashMap<String, Object> settingsMap = new HashMap<>();
-
-
-
-        return settingsMap;
 
     }
 
@@ -184,9 +159,12 @@ public final class DefaultSettingsContainer implements ConfigurationSerializable
 
     }
 
-    @Deprecated
-    public Map<String, Object> getDefaultSettings() {
-        return this.defaultSettings;
+    public void loadSettings(final Plugin plugin) {
+
+        final FileConfiguration fileConfiguration = plugin.getConfig();
+
+        this.setSettings(fileConfiguration.getValues(false));
+
     }
 
 }
