@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public final class GameState implements ConfigurationSerializable {
@@ -47,13 +48,14 @@ public final class GameState implements ConfigurationSerializable {
         this.gameFlowState = GameFlowState.DEFAULT;
         this.gameName = this.gameUniverse.getName();
         this.playersInGame = new HashMap<>();
-        this.isCompassEnabledInNether = Boolean.parseBoolean(DefaultSettingsContainer.getInstance()
-                .getSetting("compass-enabled-in-nether"));
+        this.isCompassEnabledInNether = DefaultSettingsContainer.getInstance()
+                .getBoolean("compass-enabled-in-nether");
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
-        this.playerRolesRandomized = Boolean.parseBoolean((DefaultSettingsContainer.getInstance()
-                .getSetting("player-roles-randomized")));
-        this.headstart = Long.parseLong(DefaultSettingsContainer.getInstance().getSetting("default-headstart"));
+        this.playerRolesRandomized = (DefaultSettingsContainer.getInstance()
+                .getBoolean("player-roles-randomized"));
+        this.headstart = DefaultSettingsContainer.getInstance().getInteger(
+                "headstart");
 
     }
 
@@ -383,7 +385,26 @@ public final class GameState implements ConfigurationSerializable {
 
     protected boolean isEligibleForStart() {
 
-        return ((getNumberOfHunters() >= 1 && getNumberOfRunners() >= 1) || (playerRolesRandomized && playersInGame.size() >= 2));
+        final AtomicBoolean runnersReady = new AtomicBoolean(false);
+        final AtomicBoolean huntersReady = new AtomicBoolean(false);
+
+        for (PlayerState runner : this.getRunners()) {
+            if (runner.isOnline()) {
+                runnersReady.set(true);
+                break;
+            }
+        }
+
+        for(PlayerState hunter : this.getHunters()) {
+            if (hunter.isOnline()) {
+                huntersReady.set(true);
+                break;
+            }
+        }
+
+        return (runnersReady.get() && huntersReady.get())
+                && ((this.getNumberOfHunters() >= 1 && this.getNumberOfRunners() >= 1)
+                || (this.playerRolesRandomized && this.playersInGame.size() >= 2));
 
     }
 

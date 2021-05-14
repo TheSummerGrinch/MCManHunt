@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.chat.SayGlobalCommandExecuto
 import io.github.thesummergrinch.mcmanhunt.commands.chat.SayLobbyCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRoleCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.op.debug.DebugCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.ManHuntRuleCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.InitializeGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.PauseGameCommandExecutor;
@@ -26,12 +27,14 @@ import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerDamagedEventHan
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerDeathEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerInteractEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerJoinEventHandler;
+import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerLeaveEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerMoveEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerPortalEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerRespawnEventHandler;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
+import io.github.thesummergrinch.mcmanhunt.io.data.SavedGamesLoader;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
@@ -50,19 +53,45 @@ public final class MCManHunt extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+
+        // Copy the config default over to file, if no config-file exists in
+        // the datafolder.
+        this.saveDefaultConfig();
+
+        //Register serializable classes.
         registerSerializableClasses();
+
+        // Load settings
+        // TODO load settings in DefaultSettingsContainer maybe?
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
-        GameCache.getInstance().getGameCacheFromSave("game-cache");
-        this.saveConfig();
+
+        // Load existing games.
+        // TODO make a config option to disable saving games
+        GameCache.getInstance().getGameCacheFromSave("saved-games");
+
+        // Saving the config.
+        // TODO is this necessary. Doubt it.
+        // this.saveConfig();
+
+        // Load language file corresponding to the locale set in the config.
         loadLanguageFile();
+
+        // Register event-handlers.
         registerEventHandlers();
+
+        // Register commands.
         registerCommands();
+
+        // Enable metrics if not first run, and enabled in config.
         enableMetrics();
+
+        // Check for updates if enabled in config.
         checkForUpdate();
-        if (DefaultSettingsContainer.getInstance().getSetting("bungeecord" +
-                "-enabled").equalsIgnoreCase("true")) {
-            //TODO register Outgoing channel
+
+        // Open Plugin Messaging Channel, if bungeecord is enabled. Prone to
+        // user error. Should check if it worked.
+        if (DefaultSettingsContainer.getInstance().getBoolean("bungeecord" +
+                "-enabled")) {
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         }
 
@@ -108,6 +137,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
         this.getCommand("saylobby").setExecutor(new SayLobbyCommandExecutor());
         this.getCommand("sayglobal").setExecutor(new SayGlobalCommandExecutor());
+        this.getCommand("mhdebug").setExecutor(new DebugCommandExecutor());
 
     }
 
@@ -127,6 +157,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerPortalEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerRespawnEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChatEventHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerLeaveEventHandler(), this);
 
     }
 
@@ -135,12 +166,14 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void enableMetrics() {
 
-        if (DefaultSettingsContainer.getInstance().getSetting("first-run").equals("true")) {
+        if (DefaultSettingsContainer.getInstance().getBoolean("first-run")) {
 
-            DefaultSettingsContainer.getInstance().setSetting("first-run", "false");
+            DefaultSettingsContainer.getInstance().setBoolean("first-run",
+                    false);
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled-on-next-launch"));
 
-        } else if (DefaultSettingsContainer.getInstance().getSetting("allow-metrics").equals("true")) {
+        } else if (DefaultSettingsContainer.getInstance().getBoolean("allow" +
+                "-metrics")) {
 
             final int pluginID = 8784;
 
@@ -160,10 +193,8 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void saveConfigFile() {
 
-        FileConfigurationLoader.getInstance().saveItemToConfig("game-cache", GameCache.getInstance());
-        FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
-
-        this.saveConfig();
+        DefaultSettingsContainer.getInstance().saveSettings(this);
+        SavedGamesLoader.getInstance().saveGameCache(GameCache.getInstance());
 
     }
 
@@ -173,7 +204,8 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void checkForUpdate() {
 
-        if (Boolean.parseBoolean(DefaultSettingsContainer.getInstance().getSetting("enable-update-checking"))) {
+        if (DefaultSettingsContainer.getInstance().getBoolean(
+                "enable-update-checking")) {
 
             new UpdateChecker(this, 83665).getVersion(version -> {
 

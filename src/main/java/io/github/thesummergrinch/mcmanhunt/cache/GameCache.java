@@ -2,7 +2,7 @@ package io.github.thesummergrinch.mcmanhunt.cache;
 
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
-import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
+import io.github.thesummergrinch.mcmanhunt.io.data.SavedGamesLoader;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -135,7 +135,7 @@ public final class GameCache implements ConfigurationSerializable {
      */
     public void getGameCacheFromSave(final String key) {
 
-        instance = FileConfigurationLoader.getInstance().loadGames(key);
+        instance = SavedGamesLoader.getInstance().loadSavedGames(key);
         GameCache.getInstance().getAllGames().forEach(entry -> gameCache.put(entry.getKey(), entry.getValue()));
 
     }
@@ -177,6 +177,10 @@ public final class GameCache implements ConfigurationSerializable {
 
         return gameNames;
 
+    }
+
+    public boolean containsKey(final String key) {
+        return gameCache.containsKey(key);
     }
 
 }

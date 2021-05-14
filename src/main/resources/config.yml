@@ -1,0 +1,54 @@
+# Default config for MCManHunt
+# Author: TheSummerGrinch
+# Website: https://www.github.com/TheSummerGrinch
+# Support at https://www.github.com/TheSummerGrinch or via Discord on https://discord.gg/N5dYy3F
+
+config-version: 1
+
+# Tells the plugin whether it's the first time it's being run. If so, metrics
+# will be automatically disabled until the next start, to allow the user to
+# disable metrics.
+first-run: true
+
+# Allows the user to disable/enable metrics.
+allow-metrics: true
+
+# Sets whether or not the tracking-compasses should point to the runner in
+# the Nether.
+compass-enabled-in-nether: false
+
+# Sets whether or not roles should be randomized by default.
+player-roles-randomized: false
+
+# The default headstart for runners. Valid range: 0 <= x <= Integer.MAX_VALUE
+default-headstart: 15
+
+# Allows the user to enable/disable automatic update-checking. The plugin
+# does not automatically download updates.
+enable-update-checking: true
+
+# The Locale, used to set the language used by the MCManHunt-plugin.
+# Available languages: enGB, enUS, nlNL
+locale: 'enGB'
+
+# Sets whether or not the server is part of a BungeeCord-network. If enabled,
+# will atempt to teleport players to the hub-server when a game ends.
+bungeecord-enabled: false
+
+# The name of the hub-server, or whichever server the players should
+# connected to when a ManHunt-game ends.
+bungeecord-hub-name: 'hub'
+
+# Sets whether the advancements of (participating) players should be cleared
+# when a ManHunt-game ends.
+clear-advancements-after-game: false
+
+# Sets the debug-level. Unlocks debugging features per (valid) level. Do not
+# edit unless you know what you're doing, or have received instruction from
+# the developer to do so.
+debug-level: 0
+
+# Name of the world that players should be teleported to if BungeeCord is
+# disabled. Usually the default world will be called 'world', but certain
+# server providers, such as ShockByte, don't use the default name.
+base-world: 'world'
