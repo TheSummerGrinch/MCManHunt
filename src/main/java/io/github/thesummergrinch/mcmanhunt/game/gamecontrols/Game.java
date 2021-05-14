@@ -430,15 +430,19 @@ public final class Game implements ConfigurationSerializable {
             });
         } else {
 
+            final String baseWorldName =
+                    DefaultSettingsContainer.getInstance().getSetting(
+                            "base-world");
+
             this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
 
                 if (!playerState.isOnline()) return;
 
                 final Player player = Bukkit.getPlayer(uuid);
 
-                player.setBedSpawnLocation(Bukkit.getWorld("world").getSpawnLocation(), true);
-                player.teleport(Bukkit.getWorld(DefaultSettingsContainer.getInstance().getSetting("base-world"))
-                        .getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                player.setBedSpawnLocation(Bukkit.getWorld(baseWorldName).getSpawnLocation(), true);
+                player.teleport(Bukkit.getWorld(baseWorldName).getSpawnLocation(),
+                        PlayerTeleportEvent.TeleportCause.PLUGIN);
 
             });
         }
