@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.commands.chat.SayGlobalCommandExecuto
 import io.github.thesummergrinch.mcmanhunt.commands.chat.SayLobbyCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListGamesCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.info.ListRoleCommandExecutor;
+import io.github.thesummergrinch.mcmanhunt.commands.game.op.debug.DebugCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.settings.ManHuntRuleCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.InitializeGameCommandExecutor;
 import io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow.PauseGameCommandExecutor;
@@ -26,6 +27,7 @@ import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerDamagedEventHan
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerDeathEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerInteractEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerJoinEventHandler;
+import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerLeaveEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerMoveEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerPortalEventHandler;
 import io.github.thesummergrinch.mcmanhunt.eventhandlers.OnPlayerRespawnEventHandler;
@@ -51,16 +53,43 @@ public final class MCManHunt extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+
+        // Copy the config default over to file, if no config-file exists in
+        // the datafolder.
+        this.saveDefaultConfig();
+
+        //Register serializable classes.
         registerSerializableClasses();
+
+        // Load settings
+        // TODO load settings in DefaultSettingsContainer maybe?
         FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
+
+        // Load existing games.
+        // TODO make a config option to disable saving games
         GameCache.getInstance().getGameCacheFromSave("saved-games");
-        this.saveConfig();
+
+        // Saving the config.
+        // TODO is this necessary. Doubt it.
+        // this.saveConfig();
+
+        // Load language file corresponding to the locale set in the config.
         loadLanguageFile();
+
+        // Register event-handlers.
         registerEventHandlers();
+
+        // Register commands.
         registerCommands();
+
+        // Enable metrics if not first run, and enabled in config.
         enableMetrics();
+
+        // Check for updates if enabled in config.
         checkForUpdate();
+
+        // Open Plugin Messaging Channel, if bungeecord is enabled. Prone to
+        // user error. Should check if it worked.
         if (DefaultSettingsContainer.getInstance().getBoolean("bungeecord" +
                 "-enabled")) {
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -108,6 +137,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getCommand("setlanguage").setExecutor(new SetManHuntLanguageCommandExecutor());
         this.getCommand("saylobby").setExecutor(new SayLobbyCommandExecutor());
         this.getCommand("sayglobal").setExecutor(new SayGlobalCommandExecutor());
+        this.getCommand("mhdebug").setExecutor(new DebugCommandExecutor());
 
     }
 
@@ -127,6 +157,7 @@ public final class MCManHunt extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerPortalEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerRespawnEventHandler(), this);
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChatEventHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerLeaveEventHandler(), this);
 
     }
 
@@ -162,9 +193,7 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void saveConfigFile() {
 
-        FileConfigurationLoader.getInstance().saveItemToConfig("settings", DefaultSettingsContainer.getInstance());
-        this.saveConfig();
-
+        DefaultSettingsContainer.getInstance().saveSettings(this);
         SavedGamesLoader.getInstance().saveGameCache(GameCache.getInstance());
 
     }
