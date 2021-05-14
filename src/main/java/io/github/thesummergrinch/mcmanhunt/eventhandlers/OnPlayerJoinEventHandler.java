@@ -1,8 +1,10 @@
 package io.github.thesummergrinch.mcmanhunt.eventhandlers;
 
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
+import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +21,12 @@ public class OnPlayerJoinEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerJoinEvent(final PlayerJoinEvent event) {
+
+        if (event.getPlayer().isOp()
+                && MCManHunt.getPlugin(MCManHunt.class).isUpdateAvailable()
+                && DefaultSettingsContainer.getInstance().getBoolean("update-alert")) {
+            event.getPlayer().sendMessage(LanguageFileLoader.getInstance().getString("update-available"));
+        }
 
         final UUID playerUUID = event.getPlayer().getUniqueId();
         PlayerState playerState = null;
