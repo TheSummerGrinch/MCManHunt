@@ -5,6 +5,7 @@ import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public final class FileConfigurationLoader {
 
@@ -61,6 +62,7 @@ public final class FileConfigurationLoader {
      * @param key
      * @return
      */
+    @Deprecated
     public DefaultSettingsContainer loadDefaultSettings(final String key) {
 
         DefaultSettingsContainer defaultSettingsContainer = fileConfiguration.getObject(key, DefaultSettingsContainer.class);
@@ -68,10 +70,26 @@ public final class FileConfigurationLoader {
         if (defaultSettingsContainer != null) {
 
             if (defaultSettingsContainer.getInteger("config-version") < (int) this.getDefaultSettings().get("config-version")) {
-                this.getDefaultSettings().forEach((name, value) -> {
-                    if (!defaultSettingsContainer.contains(name))
-                        defaultSettingsContainer.setSetting(name, value);
-                });
+                if (defaultSettingsContainer.getInteger("config-version") == -1) {
+                    LegacyConfigConverter.getInstance().convertLegacyConfig(defaultSettingsContainer);
+                    this.fileConfiguration.set("game-cache", null);
+                    this.fileConfiguration.set("settings", null);
+                } else {
+                    this.getDefaultSettings().forEach((name, value) -> {
+                        if (!defaultSettingsContainer.contains(name)) {
+                            if (value instanceof Boolean) {
+                                defaultSettingsContainer.setBoolean(name,
+                                        (Boolean) value);
+                            } else if (value instanceof Integer) {
+                                defaultSettingsContainer.setInteger(name,
+                                        (Integer) value);
+                            } else if (value instanceof String) {
+                                defaultSettingsContainer.setSetting(name,
+                                        (String) value);
+                            }
+                        }
+                    });
+                }
             }
 
             return DefaultSettingsContainer.getInstance();
@@ -105,8 +123,26 @@ public final class FileConfigurationLoader {
                 put("bungeecord-enabled", false);
                 put("bungeecord-hub-name", "hub");
                 put("clear-advancements-after-game", false);
+                put("debug-level", 0);
             }
         };
+
+    }
+
+    public DefaultSettingsContainer loadSettings(final FileConfiguration fileConfiguration) {
+
+        DefaultSettingsContainer settingsContainer =
+                DefaultSettingsContainer.getInstance();
+
+        Set<String> keys = fileConfiguration.getKeys(false);
+
+        if (!keys.contains("config-version") || fileConfiguration.getInt(
+                "config-version") != (int) getDefaultSettings().get("config" +
+                "-version")) {
+            return LegacyConfigConverter.getInstance().convertLegacyConfig(fileConfiguration);
+        }
+
+        return DefaultSettingsContainer.getInstance();
 
     }
 }
