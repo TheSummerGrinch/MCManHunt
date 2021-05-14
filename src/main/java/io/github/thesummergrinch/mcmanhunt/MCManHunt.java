@@ -37,7 +37,6 @@ import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.io.data.SavedGamesLoader;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
-import io.github.thesummergrinch.mcmanhunt.io.settings.FileConfigurationLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -64,16 +63,11 @@ public final class MCManHunt extends JavaPlugin {
         registerSerializableClasses();
 
         // Load settings
-        // TODO load settings in DefaultSettingsContainer maybe?
-        FileConfigurationLoader.getInstance().loadDefaultSettings("settings");
+        DefaultSettingsContainer.getInstance().loadSettings(this);
 
         // Load existing games.
         // TODO make a config option to disable saving games
         GameCache.getInstance().getGameCacheFromSave("saved-games");
-
-        // Saving the config.
-        // TODO is this necessary. Doubt it.
-        // this.saveConfig();
 
         // Load language file corresponding to the locale set in the config.
         loadLanguageFile();
@@ -113,7 +107,6 @@ public final class MCManHunt extends JavaPlugin {
         ConfigurationSerialization.registerClass(Universe.class);
         ConfigurationSerialization.registerClass(GameCache.class);
         ConfigurationSerialization.registerClass(GameState.class);
-        ConfigurationSerialization.registerClass(DefaultSettingsContainer.class);
 
     }
 
