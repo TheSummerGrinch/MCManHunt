@@ -6,16 +6,15 @@ import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitializeGameCommandExecutor implements CommandExecutor, TabCompleter {
+public class InitializeGameCommandExecutor implements TabExecutor {
 
     // The suggested names for ManHunt-games. May move to config.
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {

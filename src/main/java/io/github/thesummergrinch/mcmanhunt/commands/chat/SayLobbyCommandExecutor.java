@@ -7,9 +7,8 @@ import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameFlowState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +17,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SayLobbyCommandExecutor implements CommandExecutor, TabCompleter {
+public class SayLobbyCommandExecutor implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // Checking that the CommandSender is a Player, and the message is

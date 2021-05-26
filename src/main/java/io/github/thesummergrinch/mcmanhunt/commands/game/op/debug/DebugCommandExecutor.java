@@ -5,9 +5,8 @@ import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
 import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebugCommandExecutor implements CommandExecutor, TabCompleter {
+public class DebugCommandExecutor implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

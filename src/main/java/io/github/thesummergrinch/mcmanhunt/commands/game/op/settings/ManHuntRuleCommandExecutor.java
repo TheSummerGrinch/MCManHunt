@@ -4,16 +4,15 @@ import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManHuntRuleCommandExecutor implements CommandExecutor, TabCompleter {
+public class ManHuntRuleCommandExecutor implements TabExecutor {
 
     private static List<String> AVAILABLE_MANHUNT_RULES = new ArrayList<String>() {
         {

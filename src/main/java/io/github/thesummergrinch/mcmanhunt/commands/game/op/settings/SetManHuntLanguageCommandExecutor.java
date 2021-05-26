@@ -3,9 +3,8 @@ package io.github.thesummergrinch.mcmanhunt.commands.game.op.settings;
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +15,10 @@ import java.util.List;
 import java.util.Locale;
 
 //TODO implement properly
-public class SetManHuntLanguageCommandExecutor implements CommandExecutor, TabCompleter {
+//TODO leave more meaningful todo-messages for future me, smh.
+public class SetManHuntLanguageCommandExecutor implements TabExecutor {
+
+    private final MCManHunt manhuntPlugin;
 
     private static final List<String> AVAILABLE_LANGUAGES = new ArrayList<String>() {
         {
