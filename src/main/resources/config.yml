@@ -56,3 +56,8 @@ base-world: 'world'
 # Sets whether or not admins should receive a message when an update is
 # available. True by default.
 update-alert: true
+
+# Sets whether or not to delete a ManHunt-World (which has been marked for
+# deletion) immediately after a game ends. Set to false by default. If set to
+# false, the World will be deleted when the server stops.
+delete-world-after-game: false
