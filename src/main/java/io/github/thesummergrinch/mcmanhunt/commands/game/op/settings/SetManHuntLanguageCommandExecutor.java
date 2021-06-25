@@ -30,6 +30,10 @@ public class SetManHuntLanguageCommandExecutor implements TabExecutor {
         }
     };
 
+    public SetManHuntLanguageCommandExecutor(final MCManHunt manhuntPlugin) {
+        this.manhuntPlugin = manhuntPlugin;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -43,7 +47,7 @@ public class SetManHuntLanguageCommandExecutor implements TabExecutor {
             try {
 
                 LanguageFileLoader.getInstance().loadNewLanguage(new File(
-                        MCManHunt.getPlugin(MCManHunt.class).getDataFolder().getPath() + File.separator + "lang"
+                        manhuntPlugin.getDataFolder().getPath() + File.separator + "lang"
                 ), new Locale(args[0].substring(0,2), args[0].substring(2,4)));
 
                 sender.sendMessage(LanguageFileLoader.getInstance().getString("language-loaded"));
