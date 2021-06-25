@@ -26,6 +26,13 @@ public class InitializeGameCommandExecutor implements TabExecutor {
         }
     };
 
+    private static final List<String> DELETE_ON_STOP_PARAMETERS = new ArrayList<String>() {
+        {
+            add("true");
+            add("false");
+        }
+    };
+
     /**
      * {@inheritDoc}
      */
@@ -42,8 +49,11 @@ public class InitializeGameCommandExecutor implements TabExecutor {
                 sender.sendMessage(LanguageFileLoader.getInstance()
                         .getString("init-worlds"));
 
-                universe = new Universe(args[0]);
-
+                if (args.length == 2) {
+                    universe = new Universe(args[0], Boolean.parseBoolean(args[1]));
+                } else {
+                    universe = new Universe(args[0]);
+                }
                 sender.sendMessage(LanguageFileLoader.getInstance()
                         .getString("worlds-ready"));
             }
@@ -71,7 +81,11 @@ public class InitializeGameCommandExecutor implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        if (args.length == 1) return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+        if (args.length == 1) {
+            return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+        } else if (args.length == 2) {
+            return InitializeGameCommandExecutor.DELETE_ON_STOP_PARAMETERS;
+        }
         return new ArrayList<String>();
     }
 }
