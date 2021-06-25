@@ -23,7 +23,7 @@ public class SavedGamesLoader {
         this.manhuntPlugin = MCManHunt.getPlugin(MCManHunt.class);
 
         try {
-            this.dataFile = createDataFile(this.plugin);
+            this.dataFile = createDataFile(this.manhuntPlugin);
         } catch (IOException exception) {
             this.manhuntPlugin.getLogger().severe("Could not create saved-game file." +
                     " Please contact developer: https://www.github" +
