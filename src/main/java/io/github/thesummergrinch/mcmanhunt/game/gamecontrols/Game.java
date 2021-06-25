@@ -10,7 +10,6 @@ import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassMetaBuilder;
 import io.github.thesummergrinch.mcmanhunt.game.players.compasses.CompassState;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
-import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -86,7 +85,7 @@ public final class Game implements ConfigurationSerializable {
     @SuppressWarnings("unused")
     public static @NotNull Game deserialize(final Map<String, Object> objects) {
 
-        return new Game((GameState) objects.get("game-state"));
+        return new Game(MCManHunt.getPlugin(MCManHunt.class),(GameState) objects.get("game-state"));
 
     }
 
@@ -372,7 +371,7 @@ public final class Game implements ConfigurationSerializable {
 
         // Clear advancements of the Players, if the corresponding flag in
         // the config.yml is set to 'true'.
-        if (DefaultSettingsContainer.getInstance()
+        if (manhuntPlugin.getFileConfiguration()
                 .getBoolean("clear-advancements-after-game")) {
             this.getAllPlayers().forEach((playerState -> {
                 revokeAdvancements(Bukkit.getPlayer(playerState.getPlayerUUID()));
@@ -387,6 +386,11 @@ public final class Game implements ConfigurationSerializable {
 
             this.gameState.markUniverseForDestruction(true);
 
+        }
+
+        if (manhuntPlugin.getFileConfiguration().getBoolean("delete-world" +
+                "-after-game")) {
+            this.gameState.getGameUniverse().unloadAndDestroy();
         }
     }
 
@@ -416,7 +420,7 @@ public final class Game implements ConfigurationSerializable {
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
-        out.writeUTF(DefaultSettingsContainer.getInstance().getSetting(
+        out.writeUTF(manhuntPlugin.getFileConfiguration().getString(
                 "bungeecord-hub-name"));
         player.sendPluginMessage(this.manhuntPlugin, "BungeeCord",
                 out.toByteArray());
@@ -427,7 +431,7 @@ public final class Game implements ConfigurationSerializable {
 
         // Connect players to the given BungeeCord-lobby, if BungeeCord is
         // enabled in the config.yml
-        if (DefaultSettingsContainer.getInstance().getBoolean("bungeecord" +
+        if (manhuntPlugin.getFileConfiguration().getBoolean("bungeecord" +
                 "-enabled")) {
             this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
                 if (!playerState.isOnline()) return;
@@ -436,7 +440,7 @@ public final class Game implements ConfigurationSerializable {
         } else {
 
             final String baseWorldName =
-                    DefaultSettingsContainer.getInstance().getSetting(
+                    manhuntPlugin.getFileConfiguration().getString(
                             "base-world");
 
             this.gameState.getPlayersInGame().forEach((uuid, playerState) -> {
