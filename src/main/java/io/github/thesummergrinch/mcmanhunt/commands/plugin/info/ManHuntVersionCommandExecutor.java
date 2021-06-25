@@ -11,6 +11,12 @@ import java.text.MessageFormat;
 
 public class ManHuntVersionCommandExecutor implements CommandExecutor {
 
+    private final MCManHunt manhuntPlugin;
+
+    public ManHuntVersionCommandExecutor(final MCManHunt manhuntPlugin) {
+        this.manhuntPlugin = manhuntPlugin;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -20,7 +26,7 @@ public class ManHuntVersionCommandExecutor implements CommandExecutor {
         if (sender.isOp()) {
 
             sender.sendMessage(MessageFormat.format(LanguageFileLoader.getInstance().getString("version-message"),
-                    MCManHunt.getPlugin(MCManHunt.class).getDescription().getVersion()));
+                    manhuntPlugin.getDescription().getVersion()));
 
         }
 
