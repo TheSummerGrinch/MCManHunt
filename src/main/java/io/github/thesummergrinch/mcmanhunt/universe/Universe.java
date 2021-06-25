@@ -55,9 +55,14 @@ public final class Universe implements ConfigurationSerializable {
         populateUniverse();
         UniverseCache.getInstance().cacheUniverse(this.universeName, this);
 
-        this.destroyWhenGameIsStopped = !universeName.equals("world");
-        this.markedForDestruction = false;
+        this.markedForDestruction = MCManHunt.getPlugin(MCManHunt.class)
+                .getFileConfiguration().getBoolean("mark-worlds-automatically");
 
+    }
+
+    public Universe(final String universeName, final boolean destroyWhenGameIsStopped) {
+        this(universeName);
+        this.setDestroyWhenGameIsStopped(destroyWhenGameIsStopped);
     }
 
     /**
