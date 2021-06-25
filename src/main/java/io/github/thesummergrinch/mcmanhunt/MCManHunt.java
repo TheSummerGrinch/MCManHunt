@@ -36,9 +36,9 @@ import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.GameState;
 import io.github.thesummergrinch.mcmanhunt.game.players.PlayerState;
 import io.github.thesummergrinch.mcmanhunt.io.data.SavedGamesLoader;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
-import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -51,6 +51,9 @@ import java.util.logging.Level;
 public final class MCManHunt extends JavaPlugin {
 
     private boolean updateAvailable = false;
+    private FileConfiguration fileConfiguration;
+    private String versionString = "";
+    private @NotNull PluginManager pluginManager;
 
     @Override
     public void onEnable() {
@@ -58,12 +61,13 @@ public final class MCManHunt extends JavaPlugin {
         // Copy the config default over to file, if no config-file exists in
         // the datafolder.
         this.saveDefaultConfig();
+        this.getConfig().options().copyDefaults(true);
+        this.saveConfig();
+        this.fileConfiguration = this.getConfig();
+
 
         //Register serializable classes.
         registerSerializableClasses();
-
-        // Load settings
-        DefaultSettingsContainer.getInstance().loadSettings(this);
 
         // Load existing games.
         // TODO make a config option to disable saving games
@@ -86,7 +90,7 @@ public final class MCManHunt extends JavaPlugin {
 
         // Open Plugin Messaging Channel, if bungeecord is enabled. Prone to
         // user error. Should check if it worked.
-        if (DefaultSettingsContainer.getInstance().getBoolean("bungeecord" +
+        if (this.fileConfiguration.getBoolean("bungeecord" +
                 "-enabled")) {
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         }
@@ -161,13 +165,13 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void enableMetrics() {
 
-        if (DefaultSettingsContainer.getInstance().getBoolean("first-run")) {
+        if (this.fileConfiguration.getBoolean("first-run")) {
 
-            DefaultSettingsContainer.getInstance().setBoolean("first-run",
+            this.fileConfiguration.set("first-run",
                     false);
             getLogger().log(Level.INFO, LanguageFileLoader.getInstance().getString("metrics-enabled-on-next-launch"));
 
-        } else if (DefaultSettingsContainer.getInstance().getBoolean("allow" +
+        } else if (this.fileConfiguration.getBoolean("allow" +
                 "-metrics")) {
 
             final int pluginID = 8784;
@@ -188,7 +192,7 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void saveConfigFile() {
 
-        DefaultSettingsContainer.getInstance().saveSettings(this);
+        this.saveConfig();
         SavedGamesLoader.getInstance().saveGameCache(GameCache.getInstance());
 
     }
@@ -199,7 +203,7 @@ public final class MCManHunt extends JavaPlugin {
      */
     private void checkForUpdate() {
 
-        if (DefaultSettingsContainer.getInstance().getBoolean(
+        if (this.fileConfiguration.getBoolean(
                 "enable-update-checking")) {
 
             new UpdateChecker(this, 83665).getVersion(version -> {
