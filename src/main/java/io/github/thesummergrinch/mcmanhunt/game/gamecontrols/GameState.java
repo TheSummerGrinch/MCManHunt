@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.game.gamecontrols;
 
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.PlayerStateCache;
 import io.github.thesummergrinch.mcmanhunt.events.ManHuntWinEvent;
@@ -34,6 +35,8 @@ public final class GameState implements ConfigurationSerializable {
     private final String gameName;
     @NotNull
     private final Location worldSpawn;
+    @NotNull
+    private final MCManHunt manHuntPlugin;
     private boolean isCompassEnabledInNether;
     @NotNull
     private GameFlowState gameFlowState;
@@ -42,26 +45,26 @@ public final class GameState implements ConfigurationSerializable {
     private boolean playerRolesRandomized;
     private long headstart;
 
-    protected GameState(final Universe gameUniverse) {
+    protected GameState(final MCManHunt manHuntPlugin, final Universe gameUniverse) {
 
+        this.manHuntPlugin = manHuntPlugin;
         this.gameUniverse = gameUniverse;
         this.gameFlowState = GameFlowState.DEFAULT;
         this.gameName = this.gameUniverse.getName();
         this.playersInGame = new HashMap<>();
-        this.isCompassEnabledInNether = DefaultSettingsContainer.getInstance()
+        this.isCompassEnabledInNether = this.manHuntPlugin.getFileConfiguration()
                 .getBoolean("compass-enabled-in-nether");
         this.defaultGameDifficulty = gameUniverse.getWorld(gameName).getDifficulty();
         this.worldSpawn = gameUniverse.getWorld(gameName).getSpawnLocation();
-        this.playerRolesRandomized = (DefaultSettingsContainer.getInstance()
+        this.playerRolesRandomized = (this.manHuntPlugin.getFileConfiguration()
                 .getBoolean("player-roles-randomized"));
-        this.headstart = DefaultSettingsContainer.getInstance().getInteger(
-                "headstart");
+        this.headstart = this.manHuntPlugin.getFileConfiguration().getInt("headstart");
 
     }
 
     protected GameState(final Universe universe, final @NotNull Difficulty defaultGameDifficulty) {
 
-        this(universe);
+        this(MCManHunt.getPlugin(MCManHunt.class), universe);
         this.defaultGameDifficulty = defaultGameDifficulty;
 
     }
