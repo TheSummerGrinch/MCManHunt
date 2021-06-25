@@ -44,27 +44,32 @@ import java.util.UUID;
 
 public final class Game implements ConfigurationSerializable {
 
+    private final MCManHunt manhuntPlugin;
+
     @NotNull
     private final GameState gameState;
 
-    public Game(@NotNull final Universe gameUniverse) {
+    public Game(@NotNull MCManHunt manhuntPlugin, @NotNull final Universe gameUniverse) {
 
-        this.gameState = new GameState(gameUniverse);
+        this.manhuntPlugin = manhuntPlugin;
+        this.gameState = new GameState(this.manhuntPlugin, gameUniverse);
 
         GameCache.getInstance().cacheGame(gameState.getGameName(), this);
 
     }
 
-    public Game(@NotNull final Universe gameUniverse, @NotNull final Difficulty defaultGameDifficulty) {
+    public Game(final MCManHunt manhuntPlugin, @NotNull final Universe gameUniverse, @NotNull final Difficulty defaultGameDifficulty) {
 
+        this.manhuntPlugin = manhuntPlugin;
         this.gameState = new GameState(gameUniverse, defaultGameDifficulty);
 
         GameCache.getInstance().cacheGame(gameState.getGameName(), this);
 
     }
 
-    private Game(@NotNull GameState gameState) {
+    private Game(final MCManHunt manhuntPlugin, @NotNull GameState gameState) {
 
+        this.manhuntPlugin = manhuntPlugin;
         this.gameState = gameState;
 
         this.gameState.linkPlayerStatesToGameObject(this);
@@ -171,7 +176,7 @@ public final class Game implements ConfigurationSerializable {
                         ,5 ,gameState.getHeadstart()));
 
             }
-        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 20L);
+        }.runTaskLater(this.manhuntPlugin, 20L);
 
         new BukkitRunnable() {
 
@@ -181,7 +186,7 @@ public final class Game implements ConfigurationSerializable {
                 gameState.getPlayersInGame().forEach((uuid, playerState) -> playerState.setIsMovementRestricted(true));
 
             }
-        }.runTaskAsynchronously(MCManHunt.getPlugin(MCManHunt.class));
+        }.runTaskAsynchronously(this.manhuntPlugin);
 
         getHunters().forEach(hunter -> giveHunterCompasses(hunter.getPlayerUUID()));
 
@@ -193,7 +198,7 @@ public final class Game implements ConfigurationSerializable {
                 gameState.getRunners().forEach(playerState -> playerState.setIsMovementRestricted(false));
 
             }
-        }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 100);
+        }.runTaskLaterAsynchronously(this.manhuntPlugin, 100);
 
         new BukkitRunnable() {
             @Override
@@ -202,7 +207,7 @@ public final class Game implements ConfigurationSerializable {
                 broadcastToPlayers(LanguageFileLoader.getInstance().getString("runners-started"));
 
             }
-        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100);
+        }.runTaskLater(this.manhuntPlugin, 100);
 
         new BukkitRunnable() {
 
@@ -218,7 +223,7 @@ public final class Game implements ConfigurationSerializable {
                     }
                 });
             }
-        }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), (100L + this.gameState.getHeadstart() * 20L));
+        }.runTaskLaterAsynchronously(this.manhuntPlugin, (100L + this.gameState.getHeadstart() * 20L));
 
         new BukkitRunnable() {
 
@@ -228,7 +233,7 @@ public final class Game implements ConfigurationSerializable {
                 broadcastToPlayers(LanguageFileLoader.getInstance().getString("hunters-started"));
 
             }
-        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), (100L + this.gameState.getHeadstart() * 20L));
+        }.runTaskLater(this.manhuntPlugin, (100L + this.gameState.getHeadstart() * 20L));
     }
 
     public void broadcastToPlayers(@NotNull final String message) {
@@ -355,7 +360,7 @@ public final class Game implements ConfigurationSerializable {
                 broadcastToPlayers(LanguageFileLoader.getInstance().getString("game-has-resumed"));
 
             }
-        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 100L);
+        }.runTaskLater(this.manhuntPlugin, 100L);
     }
 
     /**
@@ -413,7 +418,7 @@ public final class Game implements ConfigurationSerializable {
         out.writeUTF("Connect");
         out.writeUTF(DefaultSettingsContainer.getInstance().getSetting(
                 "bungeecord-hub-name"));
-        player.sendPluginMessage(MCManHunt.getPlugin(MCManHunt.class), "BungeeCord",
+        player.sendPluginMessage(this.manhuntPlugin, "BungeeCord",
                 out.toByteArray());
 
     }
