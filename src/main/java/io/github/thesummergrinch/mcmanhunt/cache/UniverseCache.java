@@ -85,18 +85,8 @@ public final class UniverseCache implements ConfigurationSerializable {
      * world-files, if the {@link Universe} in question has been marked for
      * destruction.
      */
-    @Deprecated
     public void onDisable() {
-
-        universeCache.values().forEach(universe -> {
-
-            if (universe.getMarkedForDestruction()) {
-
-                universe.destroyUniverse();
-
-            }
-
-        });
+        universeCache.values().forEach(Universe::unloadAndDestroy);
     }
 
     /**
