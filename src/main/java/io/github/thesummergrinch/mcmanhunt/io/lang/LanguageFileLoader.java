@@ -1,7 +1,7 @@
 package io.github.thesummergrinch.mcmanhunt.io.lang;
 
 import io.github.thesummergrinch.mcmanhunt.MCManHunt;
-import io.github.thesummergrinch.mcmanhunt.io.settings.DefaultSettingsContainer;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,12 +18,15 @@ public final class LanguageFileLoader {
 
     private static final String RESOURCE_BASENAME = "MCManHunt";
 
+    private final FileConfiguration fileConfiguration;
     private ResourceBundle resourceBundle;
     private Locale locale;
 
     private LanguageFileLoader() {
 
-        this.locale = new Locale(DefaultSettingsContainer.getInstance().getSetting("locale").substring(0,2), DefaultSettingsContainer.getInstance().getSetting("locale").substring(2,4));
+        this.fileConfiguration = MCManHunt.getPlugin(MCManHunt.class).getFileConfiguration();
+
+        this.locale = new Locale(this.fileConfiguration.getString("locale").substring(0,2), this.fileConfiguration.getString("locale").substring(2,4));
 
         try {
 

@@ -14,18 +14,18 @@ public class SavedGamesLoader {
     private static volatile SavedGamesLoader INSTANCE;
 
     private final FileConfiguration savedGamesFileConfiguration;
-    private final Plugin plugin;
+    private final MCManHunt manhuntPlugin;
 
     private File dataFile;
 
     private SavedGamesLoader() {
 
-        this.plugin = MCManHunt.getPlugin(MCManHunt.class);
+        this.manhuntPlugin = MCManHunt.getPlugin(MCManHunt.class);
 
         try {
-            this.dataFile = createDataFile(this.plugin);
+            this.dataFile = createDataFile(this.manhuntPlugin);
         } catch (IOException exception) {
-            this.plugin.getLogger().severe("Could not create saved-game file." +
+            this.manhuntPlugin.getLogger().severe("Could not create saved-game file." +
                     " Please contact developer: https://www.github" +
                     ".com/TheSummerGrinch");
         }
@@ -72,7 +72,7 @@ public class SavedGamesLoader {
         try {
             this.savedGamesFileConfiguration.save(this.dataFile);
         } catch (IOException exception) {
-            this.plugin.getLogger().severe("Could not save games... Please " +
+            this.manhuntPlugin.getLogger().severe("Could not save games... Please " +
                     "contact developer: https://www.github" +
                     ".com/TheSummerGrinch");
         }

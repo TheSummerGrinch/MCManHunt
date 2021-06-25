@@ -1,21 +1,27 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow;
 
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import io.github.thesummergrinch.mcmanhunt.universe.Universe;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitializeGameCommandExecutor implements CommandExecutor, TabCompleter {
+public class InitializeGameCommandExecutor implements TabExecutor {
+
+    private final MCManHunt manhuntPlugin;
+
+    public InitializeGameCommandExecutor(final MCManHunt manhuntPlugin) {
+        this.manhuntPlugin = manhuntPlugin;
+    }
 
     // The suggested names for ManHunt-games. May move to config.
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
@@ -24,6 +30,13 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
             add("manhunt");
             add("world");
 
+        }
+    };
+
+    private static final List<String> DELETE_ON_STOP_PARAMETERS = new ArrayList<String>() {
+        {
+            add("true");
+            add("false");
         }
     };
 
@@ -43,8 +56,11 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
                 sender.sendMessage(LanguageFileLoader.getInstance()
                         .getString("init-worlds"));
 
-                universe = new Universe(args[0]);
-
+                if (args.length == 2) {
+                    universe = new Universe(args[0], Boolean.parseBoolean(args[1]));
+                } else {
+                    universe = new Universe(args[0]);
+                }
                 sender.sendMessage(LanguageFileLoader.getInstance()
                         .getString("worlds-ready"));
             }
@@ -54,7 +70,7 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
                 sender.sendMessage(LanguageFileLoader.getInstance()
                         .getString("init-game"));
 
-                new Game(universe);
+                new Game(this.manhuntPlugin, universe);
 
             }
 
@@ -72,7 +88,11 @@ public class InitializeGameCommandExecutor implements CommandExecutor, TabComple
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        if (args.length == 1) return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+        if (args.length == 1) {
+            return InitializeGameCommandExecutor.SUGGESTED_PARAMETERS;
+        } else if (args.length == 2) {
+            return InitializeGameCommandExecutor.DELETE_ON_STOP_PARAMETERS;
+        }
         return new ArrayList<String>();
     }
 }

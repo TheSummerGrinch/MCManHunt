@@ -3,16 +3,15 @@ package io.github.thesummergrinch.mcmanhunt.commands.game.op.universe;
 import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.io.lang.LanguageFileLoader;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetDestroyUniverseOnStopCommandExecutor implements CommandExecutor, TabCompleter {
+public class SetDestroyUniverseOnStopCommandExecutor implements TabExecutor {
 
     /**
      * {@inheritDoc}

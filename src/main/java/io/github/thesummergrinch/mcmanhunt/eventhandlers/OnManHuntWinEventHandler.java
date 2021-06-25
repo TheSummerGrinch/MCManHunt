@@ -14,6 +14,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class OnManHuntWinEventHandler implements Listener {
 
+    private final MCManHunt manhuntPlugin;
+
+    public OnManHuntWinEventHandler(final MCManHunt manhuntPlugin) {
+        this.manhuntPlugin = manhuntPlugin;
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onManHuntWinEvent(@NotNull final ManHuntWinEvent event) {
 
@@ -41,6 +47,6 @@ public class OnManHuntWinEventHandler implements Listener {
                 GameCache.getInstance().getGameFromCache(event.getGameName()).stop();
 
             }
-        }.runTaskLater(MCManHunt.getPlugin(MCManHunt.class), 200L);
+        }.runTaskLater(this.manhuntPlugin, 200L);
     }
 }
