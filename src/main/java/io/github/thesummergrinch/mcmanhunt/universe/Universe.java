@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -181,6 +182,8 @@ public final class Universe implements ConfigurationSerializable {
      */
     public void destroyUniverse() {
 
+        UniverseCache.getInstance().removeUniverse(this.universeName);
+
         this.worldHashMap.keySet().forEach(worldName -> {
 
             Bukkit.unloadWorld(worldName, false);
@@ -226,25 +229,27 @@ public final class Universe implements ConfigurationSerializable {
 
     public void setMarkedForDestruction(final boolean markedForDestruction) {
 
-        this.markedForDestruction = true;
+        this.markedForDestruction = markedForDestruction;
 
-        unloadAndDestroy();
-
+        if (this.markedForDestruction
+                && MCManHunt.getPlugin(MCManHunt.class).getFileConfiguration().getBoolean("delete-world-after-game")) {
+            unloadAndDestroy();
+        }
     }
 
     public void unloadAndDestroy() {
 
-        if (this.universeName.equals("world")) return;
+        // if (this.universeName.equals("world")) return;
 
         for (Map.Entry<String, UUID> entry : this.worldHashMap.entrySet()) {
 
             String name = entry.getKey();
 
-            Bukkit.unloadWorld(name, !markedForDestruction);
+            Bukkit.unloadWorld(name, !this.markedForDestruction);
 
         }
 
-        if (!markedForDestruction) return;
+        if (!this.markedForDestruction) return;
 
         if (MCManHunt.getPlugin(MCManHunt.class).getServer().getPluginManager()
                 .getPlugin("Multiverse-Core") != null) {
@@ -275,14 +280,21 @@ public final class Universe implements ConfigurationSerializable {
 
                     } catch (IOException exception) {
 
-                        MCManHunt.getPlugin(MCManHunt.class).getLogger()
-                                .log(Level.SEVERE, "Could not delete World "
-                                    + worldName + ". Please check whether the world exists, " +
-                                    "or contact the developer (GitHub: Github.com/TheSummerGrinch).");
+                        if (exception instanceof NoSuchFileException) {
+                            // Do nothing. This may be thrown due to a mismatch
+                            // in file-separators. Will delete the files just
+                            // fine though.
+                        } else {
+                            MCManHunt.getPlugin(MCManHunt.class).getLogger()
+                                    .severe("Could not delete World "
+                                            + worldName + ". Please check whether the world exists, " +
+                                            "or contact the developer (GitHub: Github.com/TheSummerGrinch).");
+                            exception.printStackTrace();
+                        }
 
                     }
                 }
-            }.runTaskAsynchronously(MCManHunt.getPlugin(MCManHunt.class));
+            }.runTaskLaterAsynchronously(MCManHunt.getPlugin(MCManHunt.class), 50L);
         });
 
         UniverseCache.getInstance().removeUniverse(this.universeName);
