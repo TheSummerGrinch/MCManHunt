@@ -1,5 +1,6 @@
 package io.github.thesummergrinch.mcmanhunt.commands.game.op.gameflow;
 
+import io.github.thesummergrinch.mcmanhunt.MCManHunt;
 import io.github.thesummergrinch.mcmanhunt.cache.GameCache;
 import io.github.thesummergrinch.mcmanhunt.cache.UniverseCache;
 import io.github.thesummergrinch.mcmanhunt.game.gamecontrols.Game;
@@ -15,6 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitializeGameCommandExecutor implements TabExecutor {
+
+    private final MCManHunt manhuntPlugin;
+
+    public InitializeGameCommandExecutor(final MCManHunt manhuntPlugin) {
+        this.manhuntPlugin = manhuntPlugin;
+    }
 
     // The suggested names for ManHunt-games. May move to config.
     private static final List<String> SUGGESTED_PARAMETERS = new ArrayList<String>() {
@@ -63,7 +70,7 @@ public class InitializeGameCommandExecutor implements TabExecutor {
                 sender.sendMessage(LanguageFileLoader.getInstance()
                         .getString("init-game"));
 
-                new Game(universe);
+                new Game(this.manhuntPlugin, universe);
 
             }
 
