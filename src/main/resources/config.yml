@@ -59,5 +59,9 @@ update-alert: true
 
 # Sets whether or not to delete a ManHunt-World (which has been marked for
 # deletion) immediately after a game ends. Set to false by default. If set to
-# false, the World will be deleted when the server stops.
+# false, the user will have to manually delete the worlds.
 delete-world-after-game: false
+
+# Sets whether or not to mark a ManHunt-world for deletion by default. False by
+# default.
+mark-worlds-automatically: false
