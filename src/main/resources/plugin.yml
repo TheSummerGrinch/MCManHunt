@@ -15,8 +15,8 @@ commands:
     permission: mcmanhunt.chat.lobby
     aliases: [ sl ]
   initializegame:
-    description: Initializes a game.
-    usage: /intializegame [gamename]
+    description: Initializes a game. Optional argument that allows the user to set whether or not the world should be deleted when the game ends.
+    usage: /intializegame [gamename] <true|false>
     permission: mcmanhunt.game.op
     aliases: [ initgame, mhinit ]
   joingame:
